@@ -204,8 +204,8 @@ public class FindNear
     }
 
     /**
-     * Processes a single .gpsl file. Checks the extension first, then calls
-     * readAndProcess(File file, double[] limits).
+     * Processes a single .gpx or .gpsl file. Checks the extension first, then
+     * calls the appropriate readAndProcessXxxFile(File file).
      * 
      * @param file
      */
