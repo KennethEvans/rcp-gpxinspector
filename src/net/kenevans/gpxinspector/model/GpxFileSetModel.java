@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import net.kenevans.gpxinspector.utils.SWTUtils;
 
 /*
@@ -25,6 +23,11 @@ public class GpxFileSetModel extends GpxModel
     private GpxFileSetModel() {
     }
 
+    /**
+     * GpxFileSetModel constructor.
+     * 
+     * @param fileNames
+     */
     public GpxFileSetModel(String[] fileNames) {
         disposed = false;
         gpxFileModels = new LinkedList<GpxFileModel>();
@@ -38,11 +41,16 @@ public class GpxFileSetModel extends GpxModel
                 fileInProgress = fileName;
                 gpxFileModels.add(new GpxFileModel(this, fileName));
             }
-        } catch(JAXBException ex) {
-            SWTUtils.excMsgAsync("JAXB Error parsing " + fileInProgress, ex);
+        } catch(Throwable t) {
+            SWTUtils.excMsgAsync("Error parsing " + fileInProgress, t);
         }
     }
 
+    /**
+     * GpxFileSetModel constructor.
+     * 
+     * @param files
+     */
     public GpxFileSetModel(File[] files) {
         disposed = false;
         gpxFileModels = new LinkedList<GpxFileModel>();
@@ -51,8 +59,8 @@ public class GpxFileSetModel extends GpxModel
             for(File file : files) {
                 gpxFileModels.add(new GpxFileModel(this, file));
             }
-        } catch(JAXBException ex) {
-            SWTUtils.excMsgAsync("JAXB Error parsing " + fileInProgress, ex);
+        } catch(Throwable t) {
+            SWTUtils.excMsgAsync("Error parsing " + fileInProgress, t);
         }
     }
 

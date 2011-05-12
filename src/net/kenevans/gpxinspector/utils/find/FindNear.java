@@ -8,8 +8,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
@@ -217,7 +215,7 @@ public class FindNear
             try {
                 readAndProcessGpxFile(file);
             } catch(Exception ex) {
-                Utils.excMsg("Eror parsing GPX file", ex);
+                Utils.excMsg("Error parsing GPX file", ex);
             }
         } else if(options.getDoGpsl() && ext.toLowerCase().equals("gpsl")) {
             try {
@@ -229,7 +227,7 @@ public class FindNear
     }
 
     /**
-     * Reads and processes a single .gpx file.
+     * Reads and processes a single file.
      * 
      * @param file
      */
@@ -242,12 +240,12 @@ public class FindNear
         try {
             // Create with a null parent
             fileModel = new GpxFileModel(null, file);
-        } catch(JAXBException ex) {
+        } catch(Throwable t) {
             if(errStream == null) {
-                Utils.excMsg("Error parsing " + file.getPath(), ex);
+                Utils.excMsg("Error parsing " + file.getPath(), t);
             } else {
                 errStream.println("Error parsing " + file.getPath());
-                errStream.println(ex.getMessage());
+                errStream.println(t.getMessage());
             }
             return;
         }
@@ -820,9 +818,9 @@ public class FindNear
                     try {
                         fileError = false;
                         fileModel = new GpxFileModel(gpxFileSetModel, line);
-                    } catch(Exception ex) {
+                    } catch(Throwable t) {
                         SWTUtils.excMsgAsync("Error adding GpxFileModel for\n"
-                            + line, ex);
+                            + line, t);
                         fileError = true;
                     }
                     doingWaypoints = false;

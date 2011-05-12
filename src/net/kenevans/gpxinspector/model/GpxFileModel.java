@@ -11,10 +11,12 @@ import net.kenevans.gpx.RteType;
 import net.kenevans.gpx.TrkType;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
+import net.kenevans.gpxinspector.plugin.Activator;
+import net.kenevans.gpxinspector.plugin.ConverterDescriptor;
 import net.kenevans.gpxinspector.ui.FileInfoDialog;
+import net.kenevans.gpxinspector.utils.GpxException;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.parser.GPXClone;
-import net.kenevans.parser.GPXParser;
 
 import org.eclipse.swt.widgets.Display;
 
@@ -45,13 +47,105 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
     private GpxFileModel() {
     }
 
-    public GpxFileModel(GpxModel parent, String fileName) throws JAXBException {
+    public GpxFileModel(GpxModel parent, String fileName) throws Throwable {
         this(parent, new File(fileName));
     }
 
-    public GpxFileModel(GpxModel parent, File file) throws JAXBException {
+    public GpxFileModel(GpxModel parent, File file) throws Throwable {
         this.parent = parent;
+        // DEBUG
+        if(true) {
+            List<ConverterDescriptor> converters = Activator.getDefault()
+                .getConverterDescriptors();
+            for(ConverterDescriptor converter : converters) {
+                System.out.println(file.getName());
+                System.out.println("  " + converter.getName());
+                System.out.println("  " + converter.getId());
+                System.out.println("  Is parse supported: "
+                    + converter.isParseSupported(file));
+                System.out.println("  Is save supported: "
+                    + converter.isSaveSupported(file));
+            }
+        }
         reset(file);
+    }
+
+    /**
+     * Attempts to parse the file represented by the specified File using one of
+     * the converters. Returns null on failure. Otherwise returns a GpxType.
+     * 
+     * @param file A File representing the file to be read.
+     * @return A GpxType representing the file or null on failure.
+     * @throws Throwable
+     */
+    public GpxType parse(File file) throws Throwable {
+        if(file == null) {
+            throw new GpxException("Cannot parse a null file");
+        }
+        if(!file.exists()) {
+            throw new GpxException("File to parse does not exist:\n"
+                + file.getPath());
+        }
+        // Find the converters
+        List<ConverterDescriptor> converters = null;
+        try {
+            converters = Activator.getDefault().getConverterDescriptors();
+            if(converters == null) {
+                throw new GpxException("Error locating converters");
+            }
+            if(converters.size() == 0) {
+                throw new GpxException("No converters found");
+            }
+        } catch(Throwable t) {
+            throw new GpxException("Error locating converters", t);
+        }
+        // Find a converter that will parse the file, then parse it
+        for(ConverterDescriptor converter : converters) {
+            if(converter.isParseSupported(file)) {
+                return converter.parse(file);
+            }
+        }
+        throw new GpxException("No converters found to parse:\n"
+            + file.getPath());
+    }
+
+    /**
+     * Attempts to write the GpxType to the specified File using one of the
+     * converters.
+     * 
+     * @param creator Creator information, e.g. "GPX Inspector " +
+     *            SWTUtils.getPluginVersion("net.kenevans.gpxinspector").
+     * @param gpxType The GpxType to write.
+     * @param file A File representing the file to be written.
+     * @throws Throwable
+     */
+    public void save(String creator, GpxType gpxType, File file)
+        throws Throwable {
+        if(file == null) {
+            throw new GpxException("Cannot write a null file");
+        }
+        // Find the converters
+        List<ConverterDescriptor> converters = null;
+        try {
+            converters = Activator.getDefault().getConverterDescriptors();
+            if(converters == null) {
+                throw new GpxException("Error locating converters");
+            }
+            if(converters.size() == 0) {
+                throw new GpxException("No converters found");
+            }
+        } catch(Throwable t) {
+            throw new GpxException("Error locating converters", t);
+        }
+        // Find a converter that will write the file, then save it
+        for(ConverterDescriptor converter : converters) {
+            if(converter.isSaveSupported(file)) {
+                converter.save(creator, gpxType, file);
+                return;
+            }
+        }
+        throw new GpxException("No converters found to write:\n"
+            + file.getPath());
     }
 
     /**
@@ -60,10 +154,10 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
      * @param file
      * @throws JAXBException
      */
-    public void reset(File file) throws JAXBException {
+    public void reset(File file) throws Throwable {
         dirty = false;
         // try {
-        gpx = GPXParser.parse(file);
+        gpx = parse(file);
         // } catch(JAXBException ex) {
         // SWTUtils.excMsg("Error parsing " + file.getPath(), ex);
         // }
@@ -364,18 +458,22 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
 
     /**
      * Saves the GpxType in the original file.
+     * 
+     * @return If the save was successful or not.
      */
-    public void save() {
-        saveAs(file);
+    public boolean save() {
+        return saveAs(this.file);
     }
 
     /**
      * Saves the GpxType in a new file.
+     * 
+     * @return If the save was successful or not.
      */
-    public void saveAs(File file) {
+    public boolean saveAs(File file) {
         try {
             synchronizeGpx();
-            GPXParser.save(
+            save(
                 "GPX Inspector "
                     + SWTUtils.getPluginVersion("net.kenevans.gpxinspector"),
                 gpx, file);
@@ -383,8 +481,10 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
             fireChangedEvent(this);
             // Reset dirty, which was set by fireChangedEvent to true
             setDirty(false);
-        } catch(JAXBException ex) {
-            SWTUtils.excMsg("Error saving " + file.getPath(), ex);
+            return true;
+        } catch(Throwable t) {
+            SWTUtils.excMsg("Error saving " + file.getPath(), t);
+            return false;
         }
     }
 

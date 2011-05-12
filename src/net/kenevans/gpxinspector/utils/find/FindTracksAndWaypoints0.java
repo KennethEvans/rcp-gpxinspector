@@ -7,8 +7,6 @@ import java.io.PrintStream;
 import java.text.DecimalFormat;
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
@@ -182,12 +180,12 @@ public class FindTracksAndWaypoints0
         GpxFileModel fileModel = null;
         try {
             fileModel = new GpxFileModel(null, file);
-        } catch(JAXBException ex) {
+        } catch(Throwable t) {
             if(printStream == null) {
-                Utils.excMsg("Error parsing " + file.getPath(), ex);
+                Utils.excMsg("Error parsing " + file.getPath(), t);
             } else {
                 printStream.println("Error parsing " + file.getPath());
-                printStream.println(ex.getMessage());
+                printStream.println(t.getMessage());
             }
             return;
         }

@@ -19,8 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
-import javax.xml.bind.JAXBException;
-
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;
 import net.kenevans.gpxinspector.model.GpxModel;
@@ -355,8 +353,8 @@ public class GpxView extends ViewPart implements IPreferenceConstants
                     try {
                         model = new GpxFileModel(gpxFileSetModel, fileName);
                         gpxFileSetModel.add(model);
-                    } catch(JAXBException ex) {
-                        SWTUtils.excMsgAsync("Error parsing " + fileName, ex);
+                    } catch(Throwable t) {
+                        SWTUtils.excMsgAsync("Error parsing " + fileName, t);
                     }
                 } else if(FileTransfer.getInstance().isSupportedType(
                     event.currentDataType)) {
@@ -366,9 +364,9 @@ public class GpxView extends ViewPart implements IPreferenceConstants
                         try {
                             model = new GpxFileModel(gpxFileSetModel, fileName);
                             gpxFileSetModel.add(model);
-                        } catch(JAXBException ex) {
-                            SWTUtils.excMsgAsync("Error parsing " + fileName,
-                                ex);
+                        } catch(Throwable t) {
+                            SWTUtils
+                                .excMsgAsync("Error parsing " + fileName, t);
                         }
                     }
                 }
@@ -1140,8 +1138,8 @@ public class GpxView extends ViewPart implements IPreferenceConstants
                 try {
                     newModel = new GpxFileModel(gpxFileSetModel, filePath);
                     gpxFileSetModel.add(oldModel, newModel, mode);
-                } catch(JAXBException ex) {
-                    SWTUtils.excMsgAsync("Error parsing " + fileName, ex);
+                } catch(Throwable t) {
+                    SWTUtils.excMsgAsync("Error parsing " + fileName, t);
                 }
             }
         }
@@ -1438,8 +1436,8 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             try {
                 newModel = new GpxFileModel(gpxFileSetModel, fileName);
                 gpxFileSetModel.add(newModel);
-            } catch(JAXBException ex) {
-                SWTUtils.excMsgAsync("Error parsing " + fileName, ex);
+            } catch(Throwable t) {
+                SWTUtils.excMsgAsync("Error parsing " + fileName, t);
             }
         }
     }
@@ -1833,15 +1831,17 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             ListIterator<GpxTrackSegmentModel> segIterator = segments
                 .listIterator(firstIndex);
             for(Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
-                GpxTrackSegmentModel selModel = (GpxTrackSegmentModel)iterator.next();
+                GpxTrackSegmentModel selModel = (GpxTrackSegmentModel)iterator
+                    .next();
                 if(!segIterator.hasNext()) {
                     SWTUtils.errMsg("Unexpected error: Could not find all the "
                         + "selected segments");
                     treeViewer.getTree().setRedraw(true);
                     treeViewer.refresh(true);
                     return;
-               }
-                GpxTrackSegmentModel segModel = (GpxTrackSegmentModel)segIterator.next();
+                }
+                GpxTrackSegmentModel segModel = (GpxTrackSegmentModel)segIterator
+                    .next();
                 if(segModel != selModel) {
                     SWTUtils.errMsg("Selected segments must be contiguous");
                     treeViewer.getTree().setRedraw(true);
@@ -1856,18 +1856,18 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             // Merge the selected segments
             boolean first = true;
             for(Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
-                GpxTrackSegmentModel trackSegmentModel = (GpxTrackSegmentModel)iterator.next();
+                GpxTrackSegmentModel trackSegmentModel = (GpxTrackSegmentModel)iterator
+                    .next();
                 if(trackSegmentModel == firstSegment) {
                     continue;
                 }
                 // Loop over wayPoints in the segment
                 List<GpxWaypointModel> wayPoints = trackSegmentModel
-                .getWaypointModels();
+                    .getWaypointModels();
                 removedList.add(trackSegmentModel);
                 for(GpxWaypointModel waypointModel : wayPoints) {
                     firstSegment.add(null,
-                        (GpxWaypointModel)waypointModel.clone(),
-                        PasteMode.END);
+                        (GpxWaypointModel)waypointModel.clone(), PasteMode.END);
                 }
             }
             // Remove the segments in the removeList. Has to be done outside
@@ -1877,8 +1877,8 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             }
         } else {
             // Should not happen if visibleWhen is implemented correctly
-            SWTUtils.errMsg("Unexpected error: Selection contains a " +
-                targetModel.getClass().getName());
+            SWTUtils.errMsg("Unexpected error: Selection contains a "
+                + targetModel.getClass().getName());
             return;
         }
 

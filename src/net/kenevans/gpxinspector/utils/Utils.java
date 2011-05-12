@@ -49,13 +49,13 @@ public class Utils
 
     /**
      * Exception message dialog. Displays message plus the exception and
-     * exception message.
+     * exception message. Actually handles the more general Throwable.
      * 
      * @param msg
-     * @param ex
+     * @param t
      */
-    public static void excMsg(String msg, Exception ex) {
-        msg += "\n" + "Exception: " + ex + "\n" + ex.getMessage();
+    public static void excMsg(String msg, Throwable t) {
+        msg += "\n" + "Throwable: " + t + "\n" + t.getMessage();
         // Show it in a message box
         JOptionPane.showMessageDialog(null, msg, "Error",
             JOptionPane.ERROR_MESSAGE);
