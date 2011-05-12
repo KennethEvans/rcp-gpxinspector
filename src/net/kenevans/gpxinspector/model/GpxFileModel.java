@@ -11,8 +11,8 @@ import net.kenevans.gpx.RteType;
 import net.kenevans.gpx.TrkType;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
+import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.plugin.Activator;
-import net.kenevans.gpxinspector.plugin.ConverterDescriptor;
 import net.kenevans.gpxinspector.ui.FileInfoDialog;
 import net.kenevans.gpxinspector.utils.GpxException;
 import net.kenevans.gpxinspector.utils.SWTUtils;
@@ -54,7 +54,7 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
     public GpxFileModel(GpxModel parent, File file) throws Throwable {
         this.parent = parent;
         // DEBUG
-        if(true) {
+        if(false) {
             List<ConverterDescriptor> converters = Activator.getDefault()
                 .getConverterDescriptors();
             for(ConverterDescriptor converter : converters) {

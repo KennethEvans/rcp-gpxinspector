@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;
 import net.kenevans.gpxinspector.model.GpxModel;
@@ -1114,18 +1115,53 @@ public class GpxView extends ViewPart implements IPreferenceConstants
      *            relative to the old one.
      */
     public void openGpxFile(GpxFileModel oldModel, PasteMode mode) {
+        // Find the converters
+        boolean useConverters = true;
+        List<ConverterDescriptor> converters = null;
+        try {
+            converters = Activator.getDefault().getConverterDescriptors();
+            if(converters == null || converters.size() == 0) {
+                useConverters = false;
+            }
+        } catch(Throwable t) {
+            useConverters = false;
+        }
         // Open a FileDialog
         FileDialog dlg = new FileDialog(Display.getDefault().getActiveShell(),
             SWT.MULTI);
 
-        dlg.setFilterPath(initialPath);
-        dlg.setFilterExtensions(new String[] {"*.gpx"});
+        File modelFile = null;
+        if(oldModel != null) {
+            modelFile = oldModel.getFile();
+            dlg.setFilterPath(modelFile.getPath());
+            dlg.setFileName(modelFile.getName());
+        }
+        String string;
+        int index = 0;
+        int filterIndex = 0;
+        if(useConverters) {
+            ArrayList<String> extList = new ArrayList<String>();
+            for(ConverterDescriptor converter : converters) {
+                string = converter.getFilterExtensions();
+                if(string != null && string.length() > 0) {
+                    extList.add(string);
+                    if(converter.isParseSupported(modelFile)) {
+                        filterIndex = index;
+                    }
+                    index++;
+                }
+            }
+            String[] ext = new String[extList.size()];
+            ext = extList.toArray(ext);
+            dlg.setFilterExtensions(ext);
+            dlg.setFilterIndex(filterIndex);
+        }
         String selectedPath = dlg.open();
         if(selectedPath != null) {
             initialPath = selectedPath;
             // Extract the directory part of the selectedPath
             String initialDirectory = initialPath;
-            int index = selectedPath.lastIndexOf(File.separator);
+            index = selectedPath.lastIndexOf(File.separator);
             if(index > 0) {
                 initialDirectory = selectedPath.substring(0, index);
             }

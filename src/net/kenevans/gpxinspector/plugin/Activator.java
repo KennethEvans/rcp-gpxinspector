@@ -3,6 +3,7 @@ package net.kenevans.gpxinspector.plugin;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 
 import org.eclipse.core.runtime.IConfigurationElement;

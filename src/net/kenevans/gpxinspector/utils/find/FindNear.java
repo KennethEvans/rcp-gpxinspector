@@ -10,6 +10,7 @@ import java.util.List;
 
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
+import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
@@ -195,33 +196,11 @@ public class FindNear
                 nDirs++;
                 find(file);
             } else {
-                nFiles++;
-                process(file);
-            }
-        }
-    }
-
-    /**
-     * Processes a single .gpx or .gpsl file. Checks the extension first, then
-     * calls the appropriate readAndProcessXxxFile(File file).
-     * 
-     * @param file
-     */
-    private void process(File file) {
-        if(!file.exists()) return;
-        String ext = Utils.getExtension(file);
-        if(ext == null) return;
-        if(options.getDoGpx() && ext.toLowerCase().equals("gpx")) {
-            try {
-                readAndProcessGpxFile(file);
-            } catch(Exception ex) {
-                Utils.excMsg("Error parsing GPX file", ex);
-            }
-        } else if(options.getDoGpsl() && ext.toLowerCase().equals("gpsl")) {
-            try {
-                readAndProcessGpslFile(file);
-            } catch(Exception ex) {
-                Utils.excMsg("Eror parsing GPSL file", ex);
+                // Don't look at any files that can't be parsed
+                if(ConverterDescriptor.isAnyParseSupported(file)) {
+                    nFiles++;
+                    process(file);
+                }
             }
         }
     }
@@ -234,7 +213,7 @@ public class FindNear
     /**
      * @param file The file.
      */
-    public void readAndProcessGpxFile(File file) {
+    public void process(File file) {
         // Create a new GpxFileModel with no parent
         GpxFileModel fileModel = null;
         try {
@@ -398,7 +377,7 @@ public class FindNear
                 return;
             }
             // Trim the waypoints
-            if(waypointModels != null) {
+            if(options.getTrim() && waypointModels != null) {
                 if(!foundWaypoints) {
                     // Clear the waypoints
                     waypointModels.clear();
@@ -420,7 +399,7 @@ public class FindNear
                 }
             }
             // Trim the tracks
-            if(trackModels != null) {
+            if(options.getTrim() && trackModels != null) {
                 if(!foundTracks) {
                     // Clear the tracks
                     trackModels.clear();
@@ -457,6 +436,7 @@ public class FindNear
      * 
      * @param file
      */
+    @Deprecated
     // TODO Implement waypoints
     public void readAndProcessGpslFile(File file) {
         // For safety

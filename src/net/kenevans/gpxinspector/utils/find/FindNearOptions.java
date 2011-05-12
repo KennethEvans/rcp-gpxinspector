@@ -53,6 +53,7 @@ public class FindNearOptions
     private boolean doGpx = true;
     private boolean doWpt = true;
     private boolean doTrk = true;
+    private boolean trim = false;
 
     /**
      * @return The value of dirSpecified.
@@ -233,6 +234,20 @@ public class FindNearOptions
      */
     public void setDoTrk(boolean doTrk) {
         this.doTrk = doTrk;
+    }
+
+    /**
+     * @return The value of trim.
+     */
+    public boolean getTrim() {
+        return trim;
+    }
+
+    /**
+     * @param trim The new value for trim.
+     */
+    public void setTrim(boolean trim) {
+        this.trim = trim;
     }
 
 }

@@ -61,6 +61,7 @@ public class FindNearDialog extends Dialog
     private Button doGpxButton;
     private Button doWptButton;
     private Button doTrkButton;
+    private Button doTrimButton;
 
     /**
      * Constructor.
@@ -88,7 +89,8 @@ public class FindNearDialog extends Dialog
      * @param parent The parent of this dialog.
      * @param style Style passed to the parent.
      */
-    public FindNearDialog(Shell parent, int style, FindNearOptions options, int flags) {
+    public FindNearDialog(Shell parent, int style, FindNearOptions options,
+        int flags) {
         super(parent, style);
         this.options = options;
         this.flags = flags;
@@ -410,6 +412,13 @@ public class FindNearDialog extends Dialog
             .grab(true, false).applyTo(doTrkButton);
         doTrkButton.setText("Tracks");
         doTrkButton.setToolTipText("Set whether to do tracks.");
+
+        doTrimButton = new Button(box, SWT.CHECK);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL)
+            .grab(true, false).applyTo(doTrimButton);
+        doTrimButton.setText("Remove Non-Matching Items");
+        doTrimButton.setToolTipText("Remove items that do not match the find"
+            + " criteria.  Marks the file as modified.");
     }
 
     private void createDialogButtons(Composite parent) {
@@ -491,6 +500,9 @@ public class FindNearDialog extends Dialog
         if(doTrkButton != null) {
             options.setDoTrk(doTrkButton.getSelection());
         }
+        if(doTrimButton != null) {
+            options.setTrim(doTrimButton.getSelection());
+        }
     }
 
     /**
@@ -547,6 +559,7 @@ public class FindNearDialog extends Dialog
         }
         doWptButton.setSelection(options.getDoWpt());
         doTrkButton.setSelection(options.getDoTrk());
+        doTrimButton.setSelection(options.getTrim());
     }
 
     /**

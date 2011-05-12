@@ -1,9 +1,10 @@
-package net.kenevans.gpxinspector.plugin;
+package net.kenevans.gpxinspector.converters;
 
 import java.io.File;
+import java.util.List;
 
 import net.kenevans.gpx.GpxType;
-import net.kenevans.gpxinspector.converters.IGpxConverter;
+import net.kenevans.gpxinspector.plugin.Activator;
 
 import org.eclipse.core.runtime.IConfigurationElement;
 
@@ -40,8 +41,16 @@ public class ConverterDescriptor implements IGpxConverter
      */
     @Override
     public String getFilterExtensions() {
-        // TODO Auto-generated method stub
-        return null;
+        if(ce == null) {
+            return null;
+        }
+        try {
+            IGpxConverter converter = (IGpxConverter)ce
+                .createExecutableExtension("class");
+            return converter.getFilterExtensions();
+        } catch(Throwable t) {
+            return null;
+        }
     }
 
     /*
@@ -136,6 +145,42 @@ public class ConverterDescriptor implements IGpxConverter
         IGpxConverter converter = (IGpxConverter)ce
             .createExecutableExtension("class");
         return converter.parse(file);
+    }
+
+    /**
+     * Static method to check if parse is supported by any converter for the
+     * given File. Use to avoid trying to read irrelevant files.
+     * 
+     * @param file
+     * @return
+     */
+    public static boolean isAnyParseSupported(File file) {
+        List<ConverterDescriptor> converters = Activator.getDefault()
+            .getConverterDescriptors();
+        for(ConverterDescriptor converter : converters) {
+            if(converter.isParseSupported(file)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Static method to check if save is supported by any converter for the
+     * given File. Use to avoid trying to save irrelevant files.
+     * 
+     * @param file
+     * @return
+     */
+    public static boolean isAnySaveSupported(File file) {
+        List<ConverterDescriptor> converters = Activator.getDefault()
+            .getConverterDescriptors();
+        for(ConverterDescriptor converter : converters) {
+            if(converter.isSaveSupported(file)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
