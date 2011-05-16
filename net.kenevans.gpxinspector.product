@@ -20,7 +20,6 @@
 
    <windowImages i16="icons/GPXInspector16.png" i32="icons/GPXInspector32.png"/>
 
-
    <launcher name="GpxInspector">
       <solaris/>
       <win useIco="true">
@@ -28,7 +27,6 @@
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -67,8 +65,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       <plugin id="javax.mail"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.servlet.jsp"/>
+      <plugin id="net.kenevans.commons-io"/>
       <plugin id="net.kenevans.gpx"/>
       <plugin id="net.kenevans.gpxinspector"/>
+      <plugin id="net.kenevans.gpxinspector.gpsl"/>
       <plugin id="net.kenevans.jak"/>
       <plugin id="net.kenevans.jaxb"/>
       <plugin id="org.apache.ant"/>

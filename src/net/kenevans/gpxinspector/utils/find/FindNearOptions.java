@@ -54,6 +54,8 @@ public class FindNearOptions
     private boolean doWpt = true;
     private boolean doTrk = true;
     private boolean trim = false;
+    
+    private String filter = "*.*";
 
     /**
      * @return The value of dirSpecified.
@@ -248,6 +250,20 @@ public class FindNearOptions
      */
     public void setTrim(boolean trim) {
         this.trim = trim;
+    }
+
+    /**
+     * @return The value of filter.
+     */
+    public String getFilter() {
+        return filter;
+    }
+
+    /**
+     * @param filter The new value for filter.
+     */
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
 }

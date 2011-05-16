@@ -3,10 +3,13 @@ package net.kenevans.gpxinspector.utils.find;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
@@ -185,7 +188,13 @@ public class FindNear
             System.exit(1);
         }
 
-        File dirList[] = dir.listFiles();
+        // Filter the files beforehand using the file filter
+        String filter = options.getFilter();
+        FileFilter fileFilter = null;
+        if(filter != null && filter.length() > 0) {
+            fileFilter = new WildcardFileFilter(filter);
+        }
+        File dirList[] = dir.listFiles(fileFilter);
         int len = dirList.length;
 
         int nFiles = 0;

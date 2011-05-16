@@ -56,6 +56,7 @@ public class FindNearDialog extends Dialog
     private Text latText;
     private Text lonText;
     private Text radiusText;
+    private Text filterText;
     private Combo unitsCombo;
     private Button doGpslButton;
     private Button doGpxButton;
@@ -386,6 +387,42 @@ public class FindNearDialog extends Dialog
         // }
         // });
 
+        // Make a zero margin composite for the file filter
+        composite = new Composite(box, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+            .grab(true, false).span(2, 1).applyTo(composite);
+        gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 2;
+        composite.setLayout(gridLayout);
+
+        label = new Label(composite, SWT.NONE);
+        label.setText("File filter");
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .applyTo(label);
+
+        filterText = new Text(composite, SWT.NONE);
+        GridDataFactory
+            .fillDefaults()
+            .align(SWT.FILL, SWT.CENTER)
+            .grab(true, true)
+            .hint(
+                new Point(SWTUtils.getTextWidth(filterText, TEXT_COLS_LONG),
+                    SWT.DEFAULT)).applyTo(filterText);
+        filterText
+            .setToolTipText(
+                "Filter the files for the search using '?' and '*'.\n" +
+                "Note that it only searches files with extensions it\n" +
+                "knows how to convert in any case.  Blank is no filter.");
+        filterText.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent ex) {
+                if(ex.keyCode == SWT.CR || ex.keyCode == SWT.KEYPAD_CR) {
+                    // TODO
+                }
+            }
+        });
+
         // File types
         if((flags & FILETYPES) != 0) {
             doGpxButton = new Button(box, SWT.CHECK);
@@ -481,6 +518,8 @@ public class FindNearDialog extends Dialog
             options.setRadius(Double.NaN);
         }
 
+        options.setFilter(filterText.getText());
+
         int index = unitsCombo.getSelectionIndex();
         if(index >= 0 && index < FindNearOptions.getUnitTypes().length) {
             options.setUnits(FindNearOptions.getUnitTypes()[index]);
@@ -536,6 +575,7 @@ public class FindNearDialog extends Dialog
         } else {
             radiusText.setText(String.format("%.6f", doubleVal));
         }
+        filterText.setText(options.getFilter());
         Units[] units = FindNearOptions.getUnitTypes();
         int len = units.length;
         Units unit = options.getUnits();
