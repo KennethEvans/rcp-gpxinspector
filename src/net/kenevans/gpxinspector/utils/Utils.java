@@ -7,12 +7,38 @@
 package net.kenevans.gpxinspector.utils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class Utils
 {
+    /**
+     * Generates a timestamp.
+     * 
+     * @return String timestamp with the current time
+     */
+    public static String timeStamp() {
+        Date now = new Date();
+        final SimpleDateFormat defaultFormatter = new SimpleDateFormat(
+            "MMM dd, yyyy HH:mm:ss.SSS");
+        return defaultFormatter.format(now);
+    }
+
+    /**
+     * Generates a timestamp given a pattern
+     * 
+     * @param pattern appropriate for SimpleDateFormat
+     * @return String timestamp with the current time
+     */
+    public static String timeStamp(String pattern) {
+        Date now = new Date();
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat(pattern);
+        return dateFormatter.format(now);
+    }
+
     /**
      * Generic method to get a file suing a JFileChooder
      * 

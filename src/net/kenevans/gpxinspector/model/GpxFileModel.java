@@ -105,7 +105,7 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
                 return converter.parse(file);
             }
         }
-        throw new GpxException("No converters found to parse:\n"
+        throw new GpxException("No converters found to parse file:\n"
             + file.getPath());
     }
 
@@ -144,7 +144,7 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
                 return;
             }
         }
-        throw new GpxException("No converters found to write:\n"
+        throw new GpxException("No converters found to write file:\n"
             + file.getPath());
     }
 

@@ -314,7 +314,7 @@ public class SaveFilesDialog extends Dialog
                     }
                     // Open a FileDialog
                     FileDialog dlg = new FileDialog(Display.getDefault()
-                        .getActiveShell(), SWT.NONE);
+                        .getActiveShell(), SWT.SAVE);
 
                     File modelFile = null;
                     if(fileModel != null) {

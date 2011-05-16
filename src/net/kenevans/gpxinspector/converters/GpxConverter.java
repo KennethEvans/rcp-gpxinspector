@@ -68,12 +68,10 @@ public class GpxConverter implements IGpxConverter
      */
     @Override
     public boolean isSaveSupported(File file) {
-        // TODO Auto-generated method stub
-        // This should be lower case
         String fileExt = "." + Utils.getExtension(file);
         if(fileExt != null) {
             for(String ext : extensions) {
-                if(fileExt.equals(ext)) {
+                if(fileExt.equalsIgnoreCase(ext)) {
                     return true;
                 }
             }
@@ -102,7 +100,9 @@ public class GpxConverter implements IGpxConverter
     @Override
     public void save(String creator, GpxType gpxType, File file)
         throws Throwable {
-        // TODO Auto-generated method stub
+        // Put the current time in the MetaData
+        GPXParser.setMetaDataTime(gpxType);
+
         GPXParser.save(
             "GPX Inspector "
                 + SWTUtils.getPluginVersion("net.kenevans.gpxinspector"),
