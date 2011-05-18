@@ -8,7 +8,6 @@ import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;
 import net.kenevans.gpxinspector.plugin.Activator;
-import net.kenevans.gpxinspector.utils.GpxException;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 
 import org.eclipse.jface.layout.GridDataFactory;

@@ -1900,7 +1900,6 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             // Define the first segment that will hold all the others
             GpxTrackSegmentModel firstSegment = (GpxTrackSegmentModel)targetModel;
             // Merge the selected segments
-            boolean first = true;
             for(Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
                 GpxTrackSegmentModel trackSegmentModel = (GpxTrackSegmentModel)iterator
                     .next();

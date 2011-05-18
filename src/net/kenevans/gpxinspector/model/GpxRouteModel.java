@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.kenevans.gpx.RteType;
-import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.ui.RteInfoDialog;
 import net.kenevans.gpxinspector.utils.SWTUtils;

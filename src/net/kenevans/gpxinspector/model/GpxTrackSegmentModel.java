@@ -3,7 +3,6 @@ package net.kenevans.gpxinspector.model;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.kenevans.gpx.TrkType;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.ui.TrksegInfoDialog;

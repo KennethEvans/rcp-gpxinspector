@@ -1,12 +1,10 @@
 package net.kenevans.gpxinspector.model;
 
-import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
 import net.kenevans.gpx.TrkType;
 import net.kenevans.gpx.TrksegType;
-import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.ui.TrkInfoDialog;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.parser.GPXClone;
