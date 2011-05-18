@@ -1,5 +1,7 @@
 package net.kenevans.gpxinspector.ui;
 
+import net.kenevans.gpxinspector.plugin.IPluginConstants;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -26,7 +28,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Kenneth Evans, Jr.
  */
-public abstract class InfoDialog extends Dialog
+public abstract class InfoDialog extends Dialog implements IPluginConstants
 {
     protected static final int TEXT_COLS_LARGE = 50;
     protected static final int LIST_ROWS = 2;
@@ -34,6 +36,41 @@ public abstract class InfoDialog extends Dialog
     protected boolean success = false;
     String title = "Info";
     Shell shell;
+
+    /**
+     * A list of the possible (specified) DistanceUnits. Used for looping over
+     * the types.
+     */
+    protected static final DistanceUnits[] distanceUnitTypes = {
+        DistanceUnits.FEET, DistanceUnits.MILES, DistanceUnits.METERS,
+        DistanceUnits.KILOMETERS};
+
+    /**
+     * A list of the possible (specified) VelocityUnits. Used for looping over
+     * the types.
+     */
+    protected static final VelocityUnits[] velocityUnitTypes = {
+        VelocityUnits.FEETPERSEC, VelocityUnits.MILESPERHOUR,
+        VelocityUnits.METERSPERSEC, VelocityUnits.KILOMETERSPERHR};
+
+    /**
+     * Index for setting distance combo. Initial value is MILES (1)
+     * 
+     * @see InfoDialog#distanceUnitTypes
+     */
+    protected static int distanceUnitsIndex = 1;
+    /**
+     * Index for setting speed combo. Initial value is MILESPERHPOUR (1)
+     * 
+     * @see InfoDialog#velocityUnitTypes
+     */
+    protected static int speedUnitsIndex = 1;
+    /**
+     * Index for setting elevation combo. Initial value is FEET (0)
+     * 
+     * @see InfoDialog#distanceUnitTypes
+     */
+    protected static int elevationUnitsIndex = 0;
 
     /**
      * Constructor.

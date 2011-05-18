@@ -18,9 +18,13 @@ public interface IPreferenceConstants extends IPluginConstants
     public static final String P_GPX_DIR = "gpxDirectory";
     public static final String D_GPX_DIR = "c:/Users/evans/Documents/GPSLink";
 
+    public static final String P_NO_MOVE_SPEED = "notMovingSpeed";
+    // Corresponds to .5 m/sec.  1 mi/hr would be .44704
+    public static final String D_NO_MOVE_SPEED = "0.5";
+
     public static final String P_KML_FILENAME = "kmlFileName";
     public static final String D_KML_FILENAME = "c:/Users/evans/Documents/GPSLink/AAA.kml";
-    
+
     /** The track color */
     public static final String P_TRK_COLOR = "trkColor";
     public static final String D_TRK_COLOR = "ff0000";
@@ -73,8 +77,8 @@ public interface IPreferenceConstants extends IPluginConstants
     public static final String P_TRK_ICON_URL = "homeIconUrl";
     public static final String D_TRK_ICON_URL = "http://maps.google.com/mapfiles/kml/pushpin/wht-pushpin.png";
     /**
-     * The URL for the routepoint icon. Using white will allow the mask to be more
-     * effective. (The default icon is Yellow = #ff00ffff).
+     * The URL for the routepoint icon. Using white will allow the mask to be
+     * more effective. (The default icon is Yellow = #ff00ffff).
      */
     public static final String P_RTE_ICON_URL = "rteIconUrl";
     public static final String D_RTE_ICON_URL = "http://maps.google.com/mapfiles/kml/paddle/wht-circle.png";

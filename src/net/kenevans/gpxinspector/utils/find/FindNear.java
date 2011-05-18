@@ -18,7 +18,7 @@ import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
-import net.kenevans.gpxinspector.utils.GpsUtils;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.gpxinspector.utils.Utils;
 import net.kenevans.gpxinspector.utils.find.FindNearOptions.Units;
@@ -293,7 +293,7 @@ public class FindNear
                 waypoint = waypointModel.getWaypoint();
                 lat = waypoint.getLat().doubleValue();
                 lon = waypoint.getLon().doubleValue();
-                if(GpsUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+                if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
                     found = true;
                     foundWaypoints = true;
                 }
@@ -336,7 +336,7 @@ public class FindNear
                     for(WptType trackPoint : trackPoints) {
                         lat = trackPoint.getLat().doubleValue();
                         lon = trackPoint.getLon().doubleValue();
-                        if(GpsUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+                        if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
                             foundTracks = true;
                             found = true;
                         }
@@ -596,7 +596,7 @@ public class FindNear
                     }
 
                     // Check
-                    if(GpsUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+                    if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
                         found = true;
                         if(!fileNamePrinted) {
                             if(outStream != null) {

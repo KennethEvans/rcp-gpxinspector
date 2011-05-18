@@ -35,6 +35,7 @@ import net.kenevans.gpxinspector.ui.GpxContentProvider;
 import net.kenevans.gpxinspector.ui.GpxLabelProvider;
 import net.kenevans.gpxinspector.ui.LocalSelection;
 import net.kenevans.gpxinspector.ui.SaveFilesDialog;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.gpxinspector.utils.ScrolledTextDialog;
 import net.kenevans.gpxinspector.utils.find.FindNear;
@@ -244,11 +245,20 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         final IPreferenceStore prefs = Activator.getDefault()
             .getPreferenceStore();
         gpxDirectory = prefs.getString(P_GPX_DIR);
-        // Add a property change listener for perferences
+        // Add a property change listener for preferences
         preferencesListener = new IPropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent event) {
                 if(event.getProperty().equals(P_GPX_DIR)) {
                     gpxDirectory = prefs.getString(P_GPX_DIR);
+                } else if(event.getProperty().equals(P_NO_MOVE_SPEED)) {
+                    String stringVal = prefs.getString(P_NO_MOVE_SPEED);
+                    try {
+                        double val = Double.parseDouble(stringVal);
+                        GpxUtils.NO_MOVE_SPEED = val;
+                    } catch(NumberFormatException ex) {
+                        SWTUtils.excMsg("Got invalid value for \"No Move\" "
+                            + "speed", ex);
+                    }
                 }
             }
         };

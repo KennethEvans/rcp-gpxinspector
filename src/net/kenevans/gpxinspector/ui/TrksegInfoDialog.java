@@ -4,8 +4,10 @@ import net.kenevans.gpx.ExtensionsType;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxTrackSegmentModel;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.LabeledList;
 import net.kenevans.gpxinspector.utils.LabeledText;
+import net.kenevans.gpxinspector.utils.TrackStat;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -21,7 +23,8 @@ import org.eclipse.swt.widgets.Text;
  * By Kenneth Evans, Jr.
  */
 
-public class TrksegInfoDialog extends InfoDialog
+//Extends TrkInfoDialog instead of InfoDialog to reuse statistics code
+public class TrksegInfoDialog extends TrkInfoDialog
 {
     private GpxTrackSegmentModel model;
     private Text trkPointsText;
@@ -106,6 +109,9 @@ public class TrksegInfoDialog extends InfoDialog
             .applyTo(labeledText.getComposite());
         trkPointsText = labeledText.getText();
         trkPointsText.setToolTipText("Number of trackpoints.");
+
+        // Create the statistics
+        createStatisticsControls(box);
     }
 
     /*
@@ -127,6 +133,7 @@ public class TrksegInfoDialog extends InfoDialog
     protected void setWidgetsFromModel() {
         TrksegType trkseg = model.getTrackseg();
         ExtensionsType extType = trkseg.getExtensions();
+        extensionsList.removeAll();
         if(extType == null) {
             extensionsList.add("null");
         } else {
@@ -140,13 +147,10 @@ public class TrksegInfoDialog extends InfoDialog
         // Calculated
         int nPoints = trkseg.getTrkpt().size();
         trkPointsText.setText(Integer.toString(nPoints));
-    }
 
-    /**
-     * @return The value of model.
-     */
-    public GpxTrackSegmentModel getModel() {
-        return model;
+        // Get the statistics
+        TrackStat stat = GpxUtils.trksegStatistics(trkseg);
+        setStatistics(stat);
     }
 
 }

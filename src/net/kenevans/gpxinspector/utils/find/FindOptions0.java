@@ -1,6 +1,6 @@
 package net.kenevans.gpxinspector.utils.find;
 
-import net.kenevans.gpxinspector.utils.GpsUtils;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.GpxException;
 
 /*
@@ -11,8 +11,8 @@ import net.kenevans.gpxinspector.utils.GpxException;
 public class FindOptions0
 {
     public static enum Units {
-        UNSPECIFIED("unspecified", 0), FEET("ft", GpsUtils.FT2MI), MILES("mi",
-            1), METERS("m", GpsUtils.M2MI), KILOMETERS("km", GpsUtils.KM2MI);
+        UNSPECIFIED("unspecified", 0), FEET("ft", GpxUtils.FT2MI), MILES("mi",
+            1), METERS("m", GpxUtils.M2MI), KILOMETERS("km", GpxUtils.KM2MI);
         private final String name;
         private final double factor;
 
@@ -31,7 +31,7 @@ public class FindOptions0
     };
 
     /**
-     * A list of the possible (specified) Units. Used for looping over the
+     * A list of the possible (specified) DistanceUnits. Used for looping over the
      * types. Perhaps there is a better way.
      */
     private static final Units[] unitTypes = {Units.FEET, Units.MILES,
@@ -130,11 +130,11 @@ public class FindOptions0
             for(int i = 0; i < nLimit; i++) {
                 if(coord == 0) {
                     res1 = scale
-                        * GpsUtils.greatCircleDistance(latitude - delta1 / 2,
+                        * GpxUtils.greatCircleDistance(latitude - delta1 / 2,
                             longitude, latitude + delta1 / 2, longitude);
                 } else {
                     res1 = scale
-                        * GpsUtils.greatCircleDistance(latitude, longitude
+                        * GpxUtils.greatCircleDistance(latitude, longitude
                             - delta1 / 2, latitude, longitude + delta1 / 2);
                 }
                 if(res1 == 0) {

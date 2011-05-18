@@ -673,6 +673,7 @@ public class FileInfoDialog extends InfoDialog
         LabeledText.read(creatorText, gpx.getCreator());
         LabeledText.read(versionText, gpx.getVersion());
         ExtensionsType extType = gpx.getExtensions();
+        extensionsList.removeAll();
         if(extType == null) {
             extensionsList.add("null");
         } else {
@@ -707,6 +708,7 @@ public class FileInfoDialog extends InfoDialog
             LabeledText.read(timeText,
                 metadataType != null ? metadataType.getTime() : null);
             extType = metadataType.getExtensions();
+            metadataExtensionsList.removeAll();
             if(extType == null) {
                 metadataExtensionsList.add("null");
             } else {

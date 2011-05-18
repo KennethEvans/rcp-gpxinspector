@@ -20,6 +20,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
     public void initializeDefaultPreferences() {
         IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
         prefs.setDefault(P_GPX_DIR, D_GPX_DIR);
+        prefs.setDefault(P_NO_MOVE_SPEED, D_NO_MOVE_SPEED);
         prefs.setDefault(P_STARTUP_FILES, D_STARTUP_FILES);
         prefs.setDefault(P_USE_STARTUP_FILES, D_USE_STARTUP_FILES);
 

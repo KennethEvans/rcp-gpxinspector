@@ -403,6 +403,7 @@ public class WptInfoDialog extends InfoDialog
         LabeledText.read(satText, wpt.getSat());
         LabeledText.read(vdopText, wpt.getVdop());
         ExtensionsType extType = wpt.getExtensions();
+        extensionsList.removeAll();
         if(extType == null) {
             extensionsList.add("null");
         } else {

@@ -4,14 +4,20 @@ import net.kenevans.gpx.ExtensionsType;
 import net.kenevans.gpx.TrkType;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.LabeledList;
 import net.kenevans.gpxinspector.utils.LabeledText;
+import net.kenevans.gpxinspector.utils.TrackStat;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
@@ -23,6 +29,8 @@ import org.eclipse.swt.widgets.Text;
 
 public class TrkInfoDialog extends InfoDialog
 {
+    /** String used for non-available data */
+    private static final String NOT_AVAILABLE = "NA";
     private GpxTrackModel model;
     private Text nameText;
     private Text descText;
@@ -32,6 +40,23 @@ public class TrkInfoDialog extends InfoDialog
     private Text segText;
     private Text trkPointsText;
     private List extensionsList;
+    private Label timeLabel;
+    private Label distanceLabel;
+    private Label speedLabel;
+    private Label elevationLabel;
+    private Combo distanceCombo;
+    private Combo speedCombo;
+    private Combo elevationCombo;
+
+    /**
+     * Constructor. This constructor seems to be necessary so the subclass can
+     * call super(Shell, int).
+     * 
+     * @param parent
+     */
+    public TrkInfoDialog(Shell parent, int style) {
+        super(parent, style);
+    }
 
     /**
      * Constructor.
@@ -151,6 +176,154 @@ public class TrkInfoDialog extends InfoDialog
             .applyTo(labeledText.getComposite());
         trkPointsText = labeledText.getText();
         trkPointsText.setToolTipText("Number of trackpoints by segment.");
+
+        // Create the statistics
+        createStatisticsControls(box);
+    }
+
+    /**
+     * Creates the statistics group.
+     * 
+     * @param parent
+     */
+    protected void createStatisticsControls(Composite parent) {
+        // Time statistics
+        timeLabel = new Label(parent, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(true, false).applyTo(timeLabel);
+        timeLabel.setToolTipText("Time statistics.");
+
+        // Distance composite
+        String toolTipText = "Distance statistics.";
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+            .grab(true, false).applyTo(composite);
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 3;
+        composite.setLayout(gridLayout);
+        composite.setToolTipText(toolTipText);
+        
+        // Distance label
+        Label label = new Label(composite, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(false, false).applyTo(label);
+        label.setText("Distance:");
+        label.setToolTipText(toolTipText);
+
+        // Distance combo
+        distanceCombo = new Combo(composite, SWT.NULL);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(false, false).applyTo(distanceCombo);
+        DistanceUnits[] distanceUnits = distanceUnitTypes;
+        int len = distanceUnits.length;
+        String[] items = new String[len];
+        for(int i = 0; i < len; i++) {
+            items[i] = distanceUnits[i].getName();
+        }
+        distanceCombo.setItems(items);
+        distanceCombo.setToolTipText("Set the units for distance.");
+        distanceCombo.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                distanceUnitsIndex = distanceCombo.getSelectionIndex();
+                setWidgetsFromModel();
+            }
+        });
+
+        // Distance info
+        distanceLabel = new Label(composite, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(true, false).applyTo(distanceLabel);
+        distanceLabel.setToolTipText(toolTipText);
+
+        // Elevation composite
+        toolTipText = "Elevation statistics.  Average is over track points.";
+        composite = new Composite(parent, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+            .grab(true, false).applyTo(composite);
+        gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 3;
+        composite.setLayout(gridLayout);
+        composite.setToolTipText(toolTipText);
+
+        // Elevation label
+        label = new Label(composite, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(false, false).applyTo(label);
+        label.setText("Elevation:");
+        label.setToolTipText(toolTipText);
+
+        // Elevation combo
+        elevationCombo = new Combo(composite, SWT.NULL);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(false, false).applyTo(elevationCombo);
+        DistanceUnits[] elevationUnits = distanceUnitTypes;
+        len = elevationUnits.length;
+        items = new String[len];
+        for(int i = 0; i < len; i++) {
+            items[i] = elevationUnits[i].getName();
+        }
+        elevationCombo.setItems(items);
+        elevationCombo.setToolTipText("Set the units for elevation.");
+        elevationCombo.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                elevationUnitsIndex = elevationCombo.getSelectionIndex();
+                setWidgetsFromModel();
+            }
+        });
+
+        // Elevation info
+        elevationLabel = new Label(composite, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(true, false).applyTo(elevationLabel);
+        elevationLabel.setToolTipText(toolTipText);
+
+        // Speed composite
+        toolTipText = "Speed statistics.  Average is over time.";
+        composite = new Composite(parent, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
+            .grab(true, false).applyTo(composite);
+        gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 3;
+        composite.setLayout(gridLayout);
+        composite.setToolTipText(toolTipText);
+        
+        // Distance label
+        label = new Label(composite, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(false, false).applyTo(label);
+        label.setText("Speed:");
+        label.setToolTipText(toolTipText);
+
+        // Speed combo
+        speedCombo = new Combo(composite, SWT.NULL);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(false, false).applyTo(speedCombo);
+        VelocityUnits[] speedUnits = velocityUnitTypes;
+        len = speedUnits.length;
+        items = new String[len];
+        for(int i = 0; i < len; i++) {
+            items[i] = speedUnits[i].getName();
+        }
+        speedCombo.setItems(items);
+        speedCombo.setToolTipText("Set the units for speed.");
+        speedCombo.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent e) {
+                speedUnitsIndex = speedCombo.getSelectionIndex();
+                setWidgetsFromModel();
+            }
+        });
+
+        // Speed label
+        speedLabel = new Label(composite, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .grab(true, false).applyTo(speedLabel);
+        speedLabel.setToolTipText(toolTipText);
     }
 
     /*
@@ -197,6 +370,7 @@ public class TrkInfoDialog extends InfoDialog
         LabeledText.read(srcText, trk.getSrc());
         LabeledText.read(typeText, trk.getType());
         ExtensionsType extType = trk.getExtensions();
+        extensionsList.removeAll();
         if(extType == null) {
             extensionsList.add("null");
         } else {
@@ -228,13 +402,116 @@ public class TrkInfoDialog extends InfoDialog
             nPointsString = nPointsTotal + "=" + nPointsString;
         }
         trkPointsText.setText(nPointsString);
+
+        // Get the statistics
+        TrackStat stat = GpxUtils.trkStatistics(trk);
+        setStatistics(stat);
     }
 
     /**
-     * @return The value of model.
+     * Sets the statistics controls from the given statistics.
      */
-    public GpxTrackModel getModel() {
-        return model;
-    }
+    protected void setStatistics(TrackStat stat) {
+        // Time
+        String statString = "Time: Elapsed: ";
+        double val = stat.getElapsedTime();
+        statString += GpxUtils.timeString(val);
+        statString += ", Moving: ";
+        val = stat.getMovingTime();
+        statString += GpxUtils.timeString(val);
+        timeLabel.setText(statString);
+        // Should not be necessary ?
+        timeLabel.pack();
 
+        // Distance
+        DistanceUnits distanceUnits = distanceUnitTypes[distanceUnitsIndex];
+        distanceCombo.select(distanceUnitsIndex);
+        statString = "Length: ";
+        val = stat.getLength();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            statString += String.format("%.2f %s",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        distanceLabel.setText(statString);
+        // Should not be necessary ?
+        distanceLabel.pack();
+
+        // Elevation
+        distanceUnits = distanceUnitTypes[elevationUnitsIndex];
+        elevationCombo.select(elevationUnitsIndex);
+        val = stat.getAvgEle();
+        statString = "Avg: ";
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            statString += String.format("%.2f %s",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        double delEle = Double.NaN;
+        val = stat.getMinEle();
+        statString += ", Min: ";
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            delEle = -val;
+            statString += String.format("%.2f %s",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        val = stat.getMaxEle();
+        statString += ", Max: ";
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            delEle += val;
+            statString += String.format("%.2f %s",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        val = delEle;
+        statString += ", Delta: ";
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            statString += String.format("%.2f %s",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        elevationLabel.setText(statString);
+        // Should not be necessary ?
+        elevationLabel.pack();
+
+        // Speed
+        VelocityUnits velocityUnits = velocityUnitTypes[speedUnitsIndex];
+        speedCombo.select(speedUnitsIndex);
+        val = stat.getAvgSpeed();
+        statString = "Avg: ";
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            statString += String
+                .format("%.2f %s", velocityUnits.convertMetersPerSec(val),
+                    velocityUnits.getName());
+        }
+        val = stat.getMaxSpeed();
+        statString += ", Max: ";
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            statString += String
+                .format("%.2f %s", velocityUnits.convertMetersPerSec(val),
+                    velocityUnits.getName());
+        }
+        val = stat.getAvgMovingSpeed();
+        statString += ", Avg Moving: ";
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE;
+        } else {
+            statString += String
+                .format("%.2f %s", velocityUnits.convertMetersPerSec(val),
+                    velocityUnits.getName());
+        }
+        speedLabel.setText(statString);
+        // Should not be necessary ?
+        speedLabel.pack();
+    }
 }

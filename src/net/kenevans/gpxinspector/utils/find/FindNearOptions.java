@@ -1,6 +1,6 @@
 package net.kenevans.gpxinspector.utils.find;
 
-import net.kenevans.gpxinspector.utils.GpsUtils;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 
 /*
  * Created on Sep 6, 2010
@@ -10,8 +10,8 @@ import net.kenevans.gpxinspector.utils.GpsUtils;
 public class FindNearOptions
 {
     public static enum Units {
-        UNSPECIFIED("unspecified", 0), FEET("ft", GpsUtils.FT2MI), MILES("mi",
-            1), METERS("m", GpsUtils.M2MI), KILOMETERS("km", GpsUtils.KM2MI);
+        UNSPECIFIED("unspecified", 0), FEET("ft", GpxUtils.FT2MI), MILES("mi",
+            1), METERS("m", GpxUtils.M2MI), KILOMETERS("km", GpxUtils.KM2MI);
         private final String name;
         private final double factor;
 
@@ -30,7 +30,7 @@ public class FindNearOptions
     };
 
     /**
-     * A list of the possible (specified) Units. Used for looping over the
+     * A list of the possible (specified) DistanceUnits. Used for looping over the
      * types. Perhaps there is a better way.
      */
     private static final Units[] unitTypes = {Units.FEET, Units.MILES,

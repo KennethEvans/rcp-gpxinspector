@@ -12,7 +12,7 @@ import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
-import net.kenevans.gpxinspector.utils.GpsUtils;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.GpxException;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.gpxinspector.utils.Utils;
@@ -207,7 +207,7 @@ public class FindTracksAndWaypoints0
             waypoint = waypointModel.getWaypoint();
             lat = waypoint.getLat().doubleValue();
             lon = waypoint.getLon().doubleValue();
-            if(GpsUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+            if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
                 if(!fileNamePrinted) {
                     System.out.println(file.getAbsolutePath());
                     fileNamePrinted = true;
@@ -228,7 +228,7 @@ public class FindTracksAndWaypoints0
                 for(WptType trackPoint : trackPoints) {
                     lat = trackPoint.getLat().doubleValue();
                     lon = trackPoint.getLon().doubleValue();
-                    if(GpsUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+                    if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
                         found = true;
                         if(!fileNamePrinted) {
                             System.out.println(file.getAbsolutePath());
@@ -432,9 +432,9 @@ public class FindTracksAndWaypoints0
         double lonMax = options.getLonMax();
         double deltaLat = options.getDeltaLat();
         double deltaLon = options.getDeltaLon();
-        double miLat = GpsUtils.greatCircleDistance(latitude - deltaLat / 2,
+        double miLat = GpxUtils.greatCircleDistance(latitude - deltaLat / 2,
             longitude, latitude + deltaLat / 2, longitude);
-        double miLon = GpsUtils.greatCircleDistance(latitude, longitude
+        double miLon = GpxUtils.greatCircleDistance(latitude, longitude
             - deltaLon / 2, latitude, longitude + deltaLon / 2);
         double radius = options.getRadius();
         String latDist = "";
@@ -494,9 +494,9 @@ public class FindTracksAndWaypoints0
         String info = "Scale Information" + ls;
         double del = .000001;
         for(int i = 0; i < 7; i++) {
-            double miLat = GpsUtils.greatCircleDistance(latitude - del / 2,
+            double miLat = GpxUtils.greatCircleDistance(latitude - del / 2,
                 longitude, latitude + del / 2, longitude);
-            double miLon = GpsUtils.greatCircleDistance(latitude, longitude
+            double miLon = GpxUtils.greatCircleDistance(latitude, longitude
                 - del / 2, latitude, longitude + del / 2);
             info += "  delta=" + format1.format(del) + ": Latitide: "
                 + format2.format(miLat) + " mi, "

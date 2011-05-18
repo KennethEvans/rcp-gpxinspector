@@ -186,6 +186,7 @@ public class RteInfoDialog extends InfoDialog
         LabeledText.read(srcText, rte.getSrc());
         LabeledText.read(typeText, rte.getType());
         ExtensionsType extType = rte.getExtensions();
+        extensionsList.removeAll();
         if(extType == null) {
             extensionsList.add("null");
         } else {
