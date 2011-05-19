@@ -49,6 +49,7 @@ public class GpxInspectorPreferencePage extends FieldEditorPreferencePage
         notMovingFieldEditor.getLabelControl(parent).setToolTipText(toolTip);
         notMovingFieldEditor.getTextControl(parent).setToolTipText(toolTip);
         addField(notMovingFieldEditor);
+        // KE: Consider using wrapped Text instead of Label for these comments.
         // Label label = new Label(parent, SWT.WRAP);
         // label
         // .setText("Speeds below the \"Not Moving\" speed are considered to not be\n"
