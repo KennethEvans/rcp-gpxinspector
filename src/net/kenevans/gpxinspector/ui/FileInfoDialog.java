@@ -113,7 +113,7 @@ public class FileInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_COLS_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false).grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -121,7 +121,7 @@ public class FileInfoDialog extends InfoDialog
         nameText.setToolTipText("Name.");
 
         // Size
-        labeledText = new LabeledText(box, "Size (bytes):", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Size (bytes):", TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false).grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -129,7 +129,7 @@ public class FileInfoDialog extends InfoDialog
         sizeText.setToolTipText("Size.");
 
         // Date
-        labeledText = new LabeledText(box, "Last Modified:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Last Modified:", TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false).grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -140,7 +140,7 @@ public class FileInfoDialog extends InfoDialog
         if(model.isDirty()) {
             // Really only need a label here
             labeledText = new LabeledText(box,
-                "* File has been modified but not saved", TEXT_COLS_LARGE);
+                "* File has been modified but not saved", TEXT_WIDTH_LARGE);
             labeledText.getText().setEditable(false);
             GridDataFactory.fillDefaults().grab(true, false)
                 .applyTo(labeledText.getComposite());
@@ -164,7 +164,7 @@ public class FileInfoDialog extends InfoDialog
 
         // Creator
         LabeledText labeledText = new LabeledText(box, "Creator:",
-            TEXT_COLS_LARGE);
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         creatorText = labeledText.getText();
@@ -176,7 +176,7 @@ public class FileInfoDialog extends InfoDialog
                 + "open the file.");
 
         // Version
-        labeledText = new LabeledText(box, "Version:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Version:", TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -187,7 +187,7 @@ public class FileInfoDialog extends InfoDialog
 
         // Extensions
         LabeledList labeledList = new LabeledList(box, "Extensions:",
-            TEXT_COLS_LARGE, LIST_ROWS);
+            TEXT_WIDTH_LARGE, LIST_ROWS);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledList.getComposite());
         extensionsList = labeledList.getList();
@@ -217,7 +217,7 @@ public class FileInfoDialog extends InfoDialog
         createCopyrightGroup(box);
 
         // Desc
-        LabeledText labeledText = new LabeledText(box, "Desc:", TEXT_COLS_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Desc:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         descText = labeledText.getText();
@@ -225,7 +225,7 @@ public class FileInfoDialog extends InfoDialog
             + "element intended for the user, not the GPS.");
 
         // Keywords
-        labeledText = new LabeledText(box, "Keywords:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Keywords:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         keywordsText = labeledText.getText();
@@ -233,14 +233,14 @@ public class FileInfoDialog extends InfoDialog
             + "search engines. Comma separated.");
 
         // Name
-        labeledText = new LabeledText(box, "Name:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         metadataNameText = labeledText.getText();
         metadataNameText.setToolTipText("Metadata name");
 
         // Time
-        labeledText = new LabeledText(box, "Time:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Time:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         timeText = labeledText.getText();
@@ -248,7 +248,7 @@ public class FileInfoDialog extends InfoDialog
 
         // Extensions
         LabeledList labeledList = new LabeledList(box, "Extensions:",
-            TEXT_COLS_LARGE, LIST_ROWS);
+            TEXT_WIDTH_LARGE, LIST_ROWS);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledList.getComposite());
         metadataExtensionsList = labeledList.getList();
@@ -275,7 +275,7 @@ public class FileInfoDialog extends InfoDialog
         createLinkGroup(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_COLS_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         authorNameText = labeledText.getText();
@@ -296,14 +296,14 @@ public class FileInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Id
-        LabeledText labeledText = new LabeledText(box, "Id:", TEXT_COLS_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Id:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         idText = labeledText.getText();
         idText.setToolTipText("Id part of author's email (id@domain).");
 
         // Domain
-        labeledText = new LabeledText(box, "Domain:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Domain:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         domainText = labeledText.getText();
@@ -324,21 +324,21 @@ public class FileInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Link
-        LabeledText labeledText = new LabeledText(box, "Href:", TEXT_COLS_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Href:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         linkHrefText = labeledText.getText();
         linkHrefText.setToolTipText("Href.");
 
         // Text
-        labeledText = new LabeledText(box, "Text:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Text:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         linkTextText = labeledText.getText();
         linkTextText.setToolTipText("Author's name.");
 
         // Text
-        labeledText = new LabeledText(box, "Type:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Type:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         linkTypeText = labeledText.getText();
@@ -360,28 +360,28 @@ public class FileInfoDialog extends InfoDialog
 
         // MinLat
         LabeledText labeledText = new LabeledText(box, "MinLat:",
-            TEXT_COLS_LARGE);
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         minLatText = labeledText.getText();
         minLatText.setToolTipText("Minimum latiture.");
 
         // MaxLat
-        labeledText = new LabeledText(box, "MaxLat:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "MaxLat:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         maxLatText = labeledText.getText();
         maxLatText.setToolTipText("Minimum latiture.");
 
         // MinLon
-        labeledText = new LabeledText(box, "MinLon:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "MinLon:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         minLonText = labeledText.getText();
         minLonText.setToolTipText("Minimum latiture.");
 
         // MaxLon
-        labeledText = new LabeledText(box, "MaxLon:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "MaxLon:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         maxLonText = labeledText.getText();
@@ -403,7 +403,7 @@ public class FileInfoDialog extends InfoDialog
 
         // Author
         LabeledText labeledText = new LabeledText(box, "Author:",
-            TEXT_COLS_LARGE);
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         authorText = labeledText.getText();
@@ -411,14 +411,14 @@ public class FileInfoDialog extends InfoDialog
             + "The GPX file's owner/creator.");
 
         // License
-        labeledText = new LabeledText(box, "License:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "License:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         licenseText = labeledText.getText();
         licenseText.setToolTipText("License.");
 
         // Year
-        labeledText = new LabeledText(box, "Year:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Year:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         yearText = labeledText.getText();

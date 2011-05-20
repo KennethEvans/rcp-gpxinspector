@@ -9,6 +9,10 @@ import net.kenevans.gpxinspector.utils.GpxUtils;
 
 public interface IPluginConstants
 {
+    /** The text width to use in */
+    public static final int TEXT_WIDTH_LARGE = 50;
+    public static final int TEXT_WIDTH_MED = 40;
+    public static final int TEXT_WIDTH_SMALL = 10;
     public static final int KML_COLOR_MODE_COLOR = 0;
     public static final int KML_COLOR_MODE_COLORSET = 1;
     public static final int KML_COLOR_MODE_RAINBOW = 2;

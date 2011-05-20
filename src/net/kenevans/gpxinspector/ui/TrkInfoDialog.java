@@ -112,14 +112,14 @@ public class TrkInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_COLS_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         nameText = labeledText.getText();
         nameText.setToolTipText("The GPS name of the element.");
 
         // Desc
-        labeledText = new LabeledText(box, "Desc:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Desc:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         descText = labeledText.getText();
@@ -129,7 +129,7 @@ public class TrkInfoDialog extends InfoDialog
             + "user, not the GPS.");
 
         // Number
-        labeledText = new LabeledText(box, "Number:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Number:", TEXT_WIDTH_LARGE);
         // labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -137,7 +137,7 @@ public class TrkInfoDialog extends InfoDialog
         numberText.setToolTipText("GPS slot number for element.");
 
         // Source
-        labeledText = new LabeledText(box, "Source:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Source:", TEXT_WIDTH_LARGE);
         // labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -146,7 +146,7 @@ public class TrkInfoDialog extends InfoDialog
             + "idea of reliability and accuracy of data.");
 
         // Type
-        labeledText = new LabeledText(box, "Type:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Type:", TEXT_WIDTH_LARGE);
         // labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -155,14 +155,14 @@ public class TrkInfoDialog extends InfoDialog
 
         // Extensions
         LabeledList labeledList = new LabeledList(box, "Extensions:",
-            TEXT_COLS_LARGE, LIST_ROWS);
+            TEXT_WIDTH_LARGE, LIST_ROWS);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledList.getComposite());
         extensionsList = labeledList.getList();
         extensionsList.setToolTipText("Extensions (Read only).");
 
         // Segments
-        labeledText = new LabeledText(box, "Segments:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Segments:", TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -170,7 +170,7 @@ public class TrkInfoDialog extends InfoDialog
         segText.setToolTipText("Number of segments.");
 
         // Trackpoints
-        labeledText = new LabeledText(box, "Trackpoints:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Trackpoints:", TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());

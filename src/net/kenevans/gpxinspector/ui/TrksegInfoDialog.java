@@ -95,7 +95,7 @@ public class TrksegInfoDialog extends TrkInfoDialog
 
         // Extensions
         LabeledList labeledList = new LabeledList(box, "Extensions:",
-            TEXT_COLS_LARGE, LIST_ROWS);
+            TEXT_WIDTH_LARGE, LIST_ROWS);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledList.getComposite());
         extensionsList = labeledList.getList();
@@ -103,7 +103,7 @@ public class TrksegInfoDialog extends TrkInfoDialog
 
         // Trackpoints
         LabeledText labeledText = new LabeledText(box, "Trackpoints:",
-            TEXT_COLS_LARGE);
+            TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());

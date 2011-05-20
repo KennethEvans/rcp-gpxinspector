@@ -132,7 +132,8 @@ public class GpxUtils
                 // + " NO_MOVE_SPEED=" + String.format("%.4f", NO_MOVE_SPEED));
                 if(speed > NO_MOVE_SPEED) {
                     movingTime += deltaTime;
-                    // Notice this is (dl/dt)*dt = dl
+                    // We keep track of the sum of dl and later divide by the
+                    // moving time.
                     avgMovingSpeed += deltaLength;
                 }
                 if(speed > maxSpeed) {

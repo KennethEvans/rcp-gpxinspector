@@ -16,7 +16,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -76,10 +76,10 @@ public class StartupPreferencePage extends PreferencePage implements
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 3;
         composite.setLayout(gridLayout);
-        Label label = new Label(composite, SWT.WRAP);
-        label.setText("Choose the GPX files to load on startup:");
+        Text text = new Text(composite, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY);
+        text.setText("Choose the GPX files to load on startup:");
         GridDataFactory.fillDefaults().grab(false, false).span(3, 1)
-            .applyTo(label);
+            .hint(TEXT_WIDTH_MED, SWT.DEFAULT).applyTo(text);
 
         // Use SWT.NONE here. SWT.DEFAULT results in a scrolled window without
         // the contents on some platforms
@@ -93,11 +93,11 @@ public class StartupPreferencePage extends PreferencePage implements
         useStartupFilesEditor.setPreferenceStore(prefs);
         useStartupFilesEditor.load();
 
-        label = new Label(parent, SWT.WRAP);
-        label
-            .setText("Note: These settings will be applied at the next startup.");
+        text = new Text(composite, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY);
+        text.setText("Note: These settings will be applied at the next "
+            + "startup.");
         GridDataFactory.fillDefaults().grab(false, false).span(3, 1)
-            .applyTo(label);
+            .hint(TEXT_WIDTH_MED, SWT.DEFAULT).applyTo(text);
 
         return composite;
     }

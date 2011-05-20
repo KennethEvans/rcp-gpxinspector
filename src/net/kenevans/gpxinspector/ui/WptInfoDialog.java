@@ -125,14 +125,14 @@ public class WptInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_COLS_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         nameText = labeledText.getText();
         nameText.setToolTipText("The GPS name of the element.");
 
         // Desc
-        labeledText = new LabeledText(box, "Desc:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Desc:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         descText = labeledText.getText();
@@ -142,14 +142,14 @@ public class WptInfoDialog extends InfoDialog
             + "user, not the GPS.");
 
         // Comment
-        labeledText = new LabeledText(box, "Cmt:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Cmt:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         cmtText = labeledText.getText();
         cmtText.setToolTipText("GPS waypoint comment. Sent to GPS as comment.");
 
         // Lat
-        labeledText = new LabeledText(box, "Lat:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Lat:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         latText = labeledText.getText();
@@ -157,7 +157,7 @@ public class WptInfoDialog extends InfoDialog
             + "WGS84 datum.");
 
         // Lon
-        labeledText = new LabeledText(box, "Lon:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Lon:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         lonText = labeledText.getText();
@@ -165,14 +165,14 @@ public class WptInfoDialog extends InfoDialog
             + "WGS84 datum.");
 
         // Ele
-        labeledText = new LabeledText(box, "Ele:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Ele:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         eleText = labeledText.getText();
         eleText.setToolTipText("Elevation in meters of the point.");
 
         // Symbol
-        labeledText = new LabeledText(box, "Sym:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Sym:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         symText = labeledText.getText();
@@ -182,14 +182,14 @@ public class WptInfoDialog extends InfoDialog
             + "GPS, if known.");
 
         // Ageofdgpsdata
-        labeledText = new LabeledText(box, "Ageofdgpsdata:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Ageofdgpsdata:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         ageOfText = labeledText.getText();
         ageOfText.setToolTipText("Number of seconds since last DGPS update.");
 
         // Dgpsid
-        labeledText = new LabeledText(box, "Dgpsid:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Dgpsid:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         dgpsidText = labeledText.getText();
@@ -197,7 +197,7 @@ public class WptInfoDialog extends InfoDialog
             + "correction.");
 
         // Fix
-        labeledText = new LabeledText(box, "Fix:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Fix:", TEXT_WIDTH_LARGE);
         // labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -205,7 +205,7 @@ public class WptInfoDialog extends InfoDialog
         fixText.setToolTipText("Type of GPX fix.");
 
         // Geoidheight
-        labeledText = new LabeledText(box, "Geoidheight:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Geoidheight:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         geoidHeightText = labeledText.getText();
@@ -214,35 +214,35 @@ public class WptInfoDialog extends InfoDialog
                 + "above\n" + "WGS-84 earth ellipsoid. (NMEA GGA message).");
 
         // Hdop
-        labeledText = new LabeledText(box, "Hdop:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Hdop:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         hdopText = labeledText.getText();
         hdopText.setToolTipText("Horizontal dilution of precision.");
 
         // Vdop
-        labeledText = new LabeledText(box, "Vdop:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Vdop:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         vdopText = labeledText.getText();
         vdopText.setToolTipText("Vertical dilution of precision.");
 
         // Pdop
-        labeledText = new LabeledText(box, "Pdop:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Pdop:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         pdopText = labeledText.getText();
         pdopText.setToolTipText("Position dilution of precision.");
 
         // Magvar
-        labeledText = new LabeledText(box, "Magvar:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Magvar:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         magvarText = labeledText.getText();
         magvarText.setToolTipText("Magnetic variation at the point.");
 
         // Sat
-        labeledText = new LabeledText(box, "Sat:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Sat:", TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         satText = labeledText.getText();
@@ -251,7 +251,7 @@ public class WptInfoDialog extends InfoDialog
                 + "(Not number of satellites in view).");
 
         // Source
-        labeledText = new LabeledText(box, "Src:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Src:", TEXT_WIDTH_LARGE);
         // labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -260,7 +260,7 @@ public class WptInfoDialog extends InfoDialog
             + "idea of reliability and accuracy of data.");
 
         // Type
-        labeledText = new LabeledText(box, "Type:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Type:", TEXT_WIDTH_LARGE);
         // labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -268,7 +268,7 @@ public class WptInfoDialog extends InfoDialog
         typeText.setToolTipText("Type (classification) of element.");
 
         // Time
-        labeledText = new LabeledText(box, "Time:", TEXT_COLS_LARGE);
+        labeledText = new LabeledText(box, "Time:", TEXT_WIDTH_LARGE);
         // labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -282,7 +282,7 @@ public class WptInfoDialog extends InfoDialog
 
         // Extensions
         LabeledList labeledList = new LabeledList(box, "Extensions:",
-            TEXT_COLS_LARGE, LIST_ROWS);
+            TEXT_WIDTH_LARGE, LIST_ROWS);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledList.getComposite());
         extensionsList = labeledList.getList();

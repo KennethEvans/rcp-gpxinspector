@@ -30,9 +30,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class InfoDialog extends Dialog implements IPluginConstants
 {
-    protected static final int TEXT_COLS_LARGE = 50;
     protected static final int LIST_ROWS = 2;
-    protected static final int TEXT_COLS_SMALL = 10;
     protected boolean success = false;
     String title = "Info";
     Shell shell;

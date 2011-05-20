@@ -10,7 +10,7 @@ import org.eclipse.jface.preference.FileFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -82,16 +82,18 @@ public class KMLPreferencePage extends FieldEditorPreferencePage implements
         addField(new ComboFieldEditor(IPreferenceConstants.P_WPT_COLOR_MODE,
             "Waypoint color mode:", kmlColorModes, parent));
 
-        Label label = new Label(parent, SWT.WRAP);
-        label.setText("Note: Colors are text strings of the form bbggrr.\n"
-            + "Alphas are text strings of the form aa and represent the\n"
-            + "transparency (00 is transparent and ff is opaque).  These\n"
-            + "are combined internally to make a color of the form aabbggrr.\n"
-            + "E.g. 77ff0000 is semi-transparent blue. Icon colors and\n"
-            + "alphas are actually masks that are &&'ed with the icon URL's\n"
-            + "colors.");
-        GridDataFactory.fillDefaults().grab(false, false).span(2, 1)
-            .applyTo(label);
+        Text text = new Text(parent, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY);
+        text.setText("Note: Colors are text strings of the form bbggrr. "
+            + "Alphas are text strings of the form aa and represent the "
+            + "transparency (00 is transparent and ff is opaque).  These "
+            + "are combined internally to make a color of the form aabbggrr. "
+            + "E.g. 77ff0000 is semi-transparent blue. Icon colors and "
+            + "alphas are actually masks that are &&'ed with the icon URL's "
+            + "colors, so a red icon cannot be made blue."
+            + "\n\nThese settings take place "
+            + "immediately and do not require a restart.");
+        GridDataFactory.fillDefaults().grab(false, false).span(3, 1)
+            .hint(TEXT_WIDTH_MED, SWT.DEFAULT).applyTo(text);
     }
 
     /*
