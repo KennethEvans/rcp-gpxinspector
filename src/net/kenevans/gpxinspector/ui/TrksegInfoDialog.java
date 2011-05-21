@@ -1,7 +1,10 @@
 package net.kenevans.gpxinspector.ui;
 
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import net.kenevans.gpx.ExtensionsType;
 import net.kenevans.gpx.TrksegType;
+import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxTrackSegmentModel;
 import net.kenevans.gpxinspector.utils.GpxUtils;
@@ -151,6 +154,30 @@ public class TrksegInfoDialog extends TrkInfoDialog
         // Get the statistics
         TrackStat stat = GpxUtils.trksegStatistics(trkseg);
         setStatistics(stat);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see net.kenevans.gpxinspector.ui.TrkInfoDialog#copySummary()
+     */
+    protected void copySummary() {
+        // Get the statistics
+        TrksegType trkseg = model.getTrackseg();
+        TrackStat stat = GpxUtils.trksegStatistics(trkseg);
+        // Tracks do not have a time, use the timestamp of the first trackpoint
+        XMLGregorianCalendar xgcal = null;
+        String time;
+        for(WptType wpt : trkseg.getTrkpt()) {
+            xgcal = wpt.getTime();
+            if(xgcal == null) {
+                continue;
+            }
+        }
+        time = getSpreadsheetTimeFromXMLGregorianCalendar(xgcal);
+
+        // They also don't have a name, use the dialog title
+        copySummary(getTitle(), time, "", stat);
     }
 
 }

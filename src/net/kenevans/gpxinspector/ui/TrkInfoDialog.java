@@ -1,8 +1,15 @@
 package net.kenevans.gpxinspector.ui;
 
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import net.kenevans.gpx.ExtensionsType;
 import net.kenevans.gpx.TrkType;
 import net.kenevans.gpx.TrksegType;
+import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.LabeledList;
@@ -11,11 +18,16 @@ import net.kenevans.gpxinspector.utils.TrackStat;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
@@ -112,7 +124,8 @@ public class TrkInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:",
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         nameText = labeledText.getText();
@@ -204,7 +217,7 @@ public class TrkInfoDialog extends InfoDialog
         gridLayout.numColumns = 3;
         composite.setLayout(gridLayout);
         composite.setToolTipText(toolTipText);
-        
+
         // Distance label
         Label label = new Label(composite, SWT.NONE);
         GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
@@ -292,7 +305,7 @@ public class TrkInfoDialog extends InfoDialog
         gridLayout.numColumns = 3;
         composite.setLayout(gridLayout);
         composite.setToolTipText(toolTipText);
-        
+
         // Distance label
         label = new Label(composite, SWT.NONE);
         GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
@@ -324,6 +337,19 @@ public class TrkInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.CENTER)
             .grab(true, false).applyTo(speedLabel);
         speedLabel.setToolTipText(toolTipText);
+
+        // Copy statistics button
+        Button button = new Button(composite, SWT.PUSH);
+        button.setText("Copy");
+        button.setToolTipText("Copy a summary consisting of comma-separated "
+            + "values\nto the clipboard, potentially useful for spreadsheets.");
+        GridDataFactory.fillDefaults().align(SWT.CENTER, SWT.FILL)
+            .grab(true, true).applyTo(button);
+        button.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                copySummary();
+            }
+        });
     }
 
     /*
@@ -514,4 +540,154 @@ public class TrkInfoDialog extends InfoDialog
         // Should not be necessary ?
         speedLabel.pack();
     }
+
+    /**
+     * Returns a time string of the form mm/dd/yyyy from the specified
+     * XMLGregorianCalendar. If the input is null, then the value of
+     * NOT_AVAILABLE is returned.
+     * 
+     * @param xgcal
+     * @return
+     * @see #NOT_AVAILABLE
+     */
+    public static String getSpreadsheetTimeFromXMLGregorianCalendar(
+        XMLGregorianCalendar xgcal) {
+        if(xgcal == null) {
+            return NOT_AVAILABLE;
+        }
+        GregorianCalendar gcal = xgcal.toGregorianCalendar(
+            TimeZone.getTimeZone("GMT"), null, null);
+        // Get the date
+        Date date = gcal.getTime();
+        // Make a new local GregorianCalendar with this date
+        gcal = new GregorianCalendar();
+        gcal.setTime(date);
+        String time = String.format("%02d/%02d/%04d",
+            gcal.get(GregorianCalendar.MONTH) + 1,
+            gcal.get(GregorianCalendar.DAY_OF_MONTH),
+            gcal.get(GregorianCalendar.YEAR));
+        return time;
+    }
+
+    /**
+     * Copies a comma-separated track summary to the clipboard. This routine
+     * should be overwritten in inheriting classes to handle different models.
+     */
+    protected void copySummary() {
+        // Get the statistics
+        TrkType trk = model.getTrack();
+        TrackStat stat = GpxUtils.trkStatistics(trk);
+        // Tracks do not have a time, use the timestamp of the first trackpoint
+        XMLGregorianCalendar xgcal = null;
+        String time;
+        for(TrksegType seg : trk.getTrkseg()) {
+            for(WptType wpt : seg.getTrkpt()) {
+                xgcal = wpt.getTime();
+                if(xgcal == null) {
+                    continue;
+                }
+            }
+        }
+        time = getSpreadsheetTimeFromXMLGregorianCalendar(xgcal);
+
+        copySummary(trk.getName(), time,
+            trk.getDesc() == null ? "" : trk.getDesc(), stat);
+    }
+
+    /**
+     * Copies a comma-separated track summary to the clipboard. This routine
+     * should not have to overwritten in inheriting classes.
+     * 
+     * @param name The name.
+     * @param desc The description.
+     * @param stat The statistics.
+     */
+    protected void copySummary(String name, String date, String desc,
+        TrackStat stat) {
+        // Fill in data from arguments
+        String statString = name + "," + date + "," + desc + ",";
+
+        // Distance
+        DistanceUnits distanceUnits = distanceUnitTypes[distanceUnitsIndex];
+        double val = stat.getLength();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            statString += String.format("%.2f %s,",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        // Time
+        val = stat.getElapsedTime();
+        statString += GpxUtils.timeString(val) + ",";
+        val = stat.getMovingTime();
+        statString += GpxUtils.timeString(val) + ",";
+        // Elevation
+        distanceUnits = distanceUnitTypes[elevationUnitsIndex];
+        val = stat.getAvgEle();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            statString += String.format("%.2f %s,",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        double delEle = Double.NaN;
+        val = stat.getMinEle();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            delEle = -val;
+            statString += String.format("%.2f %s,",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        val = stat.getMaxEle();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            delEle += val;
+            statString += String.format("%.2f %s,",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+        val = delEle;
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            statString += String.format("%.2f %s,",
+                distanceUnits.convertMeters(val), distanceUnits.getName());
+        }
+
+        // Speed
+        VelocityUnits velocityUnits = velocityUnitTypes[speedUnitsIndex];
+        val = stat.getAvgSpeed();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            statString += String
+                .format("%.2f %s,", velocityUnits.convertMetersPerSec(val),
+                    velocityUnits.getName());
+        }
+        val = stat.getMaxSpeed();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            statString += String
+                .format("%.2f %s,", velocityUnits.convertMetersPerSec(val),
+                    velocityUnits.getName());
+        }
+        val = stat.getAvgMovingSpeed();
+        if(Double.isNaN(val)) {
+            statString += NOT_AVAILABLE + ",";
+        } else {
+            statString += String
+                .format("%.2f %s", velocityUnits.convertMetersPerSec(val),
+                    velocityUnits.getName());
+        }
+        System.out.println(statString);
+
+        // Copy it to the clipboard
+        Clipboard clipboard = new Clipboard(Display.getDefault());
+        clipboard.setContents(new Object[] {statString},
+            new Transfer[] {TextTransfer.getInstance()});
+        clipboard.dispose();
+    }
+
 }

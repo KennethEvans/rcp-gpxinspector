@@ -220,4 +220,12 @@ public class TrackStat
         this.avgEle = avgEle;
     }
 
+    /**
+     * @return The value of the elevation difference between min and max.
+     */
+    public double getDeltaEle() {
+        return maxEle - minEle;
+
+    }
+
 }
