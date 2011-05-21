@@ -689,7 +689,7 @@ public class TrkInfoDialog extends InfoDialog
         clipboard.dispose();
 
         // DEBUG
-        System.out.println(string);
+//        System.out.println(string);
     }
 
 }
