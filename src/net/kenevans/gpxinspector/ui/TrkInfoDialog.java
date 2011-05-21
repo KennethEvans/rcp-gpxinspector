@@ -605,53 +605,53 @@ public class TrkInfoDialog extends InfoDialog
     protected void copySummary(String name, String date, String desc,
         TrackStat stat) {
         // Fill in data from arguments
-        String statString = name + "," + date + "," + desc + ",";
+        String string = name + "," + date + "," + desc;
 
         // Distance
         DistanceUnits distanceUnits = distanceUnitTypes[distanceUnitsIndex];
         double val = stat.getLength();
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
-            statString += String.format("%.2f %s,",
+            string += String.format(",%.2f %s",
                 distanceUnits.convertMeters(val), distanceUnits.getName());
         }
         // Time
         val = stat.getElapsedTime();
-        statString += GpxUtils.timeString(val) + ",";
+        string += "," + GpxUtils.timeString(val);
         val = stat.getMovingTime();
-        statString += GpxUtils.timeString(val) + ",";
+        string += "," + GpxUtils.timeString(val);
         // Elevation
         distanceUnits = distanceUnitTypes[elevationUnitsIndex];
         val = stat.getAvgEle();
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
-            statString += String.format("%.2f %s,",
+            string += String.format(",%.2f %s",
                 distanceUnits.convertMeters(val), distanceUnits.getName());
         }
         double delEle = Double.NaN;
         val = stat.getMinEle();
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
             delEle = -val;
-            statString += String.format("%.2f %s,",
+            string += String.format(",%.2f %s",
                 distanceUnits.convertMeters(val), distanceUnits.getName());
         }
         val = stat.getMaxEle();
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
             delEle += val;
-            statString += String.format("%.2f %s,",
+            string += String.format(",%.2f %s",
                 distanceUnits.convertMeters(val), distanceUnits.getName());
         }
         val = delEle;
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
-            statString += String.format("%.2f %s,",
+            string += String.format(",%.2f %s",
                 distanceUnits.convertMeters(val), distanceUnits.getName());
         }
 
@@ -659,35 +659,37 @@ public class TrkInfoDialog extends InfoDialog
         VelocityUnits velocityUnits = velocityUnitTypes[speedUnitsIndex];
         val = stat.getAvgSpeed();
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
-            statString += String
-                .format("%.2f %s,", velocityUnits.convertMetersPerSec(val),
+            string += String
+                .format(",%.2f %s", velocityUnits.convertMetersPerSec(val),
                     velocityUnits.getName());
         }
         val = stat.getMaxSpeed();
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
-            statString += String
-                .format("%.2f %s,", velocityUnits.convertMetersPerSec(val),
+            string += String
+                .format(",%.2f %s", velocityUnits.convertMetersPerSec(val),
                     velocityUnits.getName());
         }
         val = stat.getAvgMovingSpeed();
         if(Double.isNaN(val)) {
-            statString += NOT_AVAILABLE + ",";
+            string += "," + NOT_AVAILABLE;
         } else {
-            statString += String
-                .format("%.2f %s", velocityUnits.convertMetersPerSec(val),
+            string += String
+                .format(",%.2f %s", velocityUnits.convertMetersPerSec(val),
                     velocityUnits.getName());
         }
-        System.out.println(statString);
 
         // Copy it to the clipboard
         Clipboard clipboard = new Clipboard(Display.getDefault());
-        clipboard.setContents(new Object[] {statString},
+        clipboard.setContents(new Object[] {string},
             new Transfer[] {TextTransfer.getInstance()});
         clipboard.dispose();
+
+        // DEBUG
+        System.out.println(string);
     }
 
 }
