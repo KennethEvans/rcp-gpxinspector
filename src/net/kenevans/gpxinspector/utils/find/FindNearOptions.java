@@ -7,31 +7,60 @@ import net.kenevans.gpxinspector.utils.GpxUtils;
  * By Kenneth Evans, Jr.
  */
 
+/**
+ * FindNearOptions holds option for finding trackpoints, waypoints, or route
+ * waypoints within a radois of a given latitude and longiture.
+ * 
+ * @author Kenneth Evans, Jr.
+ */
 public class FindNearOptions
 {
+    /**
+     * Units is an enum to hold the name of a unit and a factor to convert the
+     * unit to meters.
+     * 
+     * @author Kenneth Evans, Jr.
+     */
     public static enum Units {
-        UNSPECIFIED("unspecified", 0), FEET("ft", GpxUtils.FT2MI), MILES("mi",
-            1), METERS("m", GpxUtils.M2MI), KILOMETERS("km", GpxUtils.KM2MI);
+        UNSPECIFIED("unspecified", 0), FEET("ft", 1. / GpxUtils.M2FT), MILES(
+            "mi", 1. / GpxUtils.M2MI), METERS("m", 1.), KILOMETERS("km", 1000.);
         private final String name;
         private final double factor;
 
+        /**
+         * Units constructor
+         * 
+         * @param name The name of the unit, e.g. "mi".
+         * @param factor The factor to convert the unit to meters.
+         */
         Units(String name, double factor) {
             this.name = name;
             this.factor = factor;
         }
 
+        /**
+         * Gets the value of the name of these units.
+         * 
+         * @return
+         */
         public String getName() {
             return name;
         }
 
-        public double radiusInMiles(double radius) {
+        /**
+         * Gets the value of the given radius in meters.
+         * 
+         * @param radius The radius in these units.
+         * @return
+         */
+        public double radiusInMeters(double radius) {
             return factor * radius;
         }
     };
 
     /**
-     * A list of the possible (specified) DistanceUnits. Used for looping over the
-     * types. Perhaps there is a better way.
+     * A list of the possible (specified) DistanceUnits. Used for looping over
+     * the types. Perhaps there is a better way.
      */
     private static final Units[] unitTypes = {Units.FEET, Units.MILES,
         Units.METERS, Units.KILOMETERS};
@@ -54,7 +83,7 @@ public class FindNearOptions
     private boolean doWpt = true;
     private boolean doTrk = true;
     private boolean trim = false;
-    
+
     private String filter = "*.*";
 
     /**

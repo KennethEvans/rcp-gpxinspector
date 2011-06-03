@@ -54,19 +54,19 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
     public GpxFileModel(GpxModel parent, File file) throws Throwable {
         this.parent = parent;
         // DEBUG
-        if(false) {
-            List<ConverterDescriptor> converters = Activator.getDefault()
-                .getConverterDescriptors();
-            for(ConverterDescriptor converter : converters) {
-                System.out.println(file.getName());
-                System.out.println("  " + converter.getName());
-                System.out.println("  " + converter.getId());
-                System.out.println("  Is parse supported: "
-                    + converter.isParseSupported(file));
-                System.out.println("  Is save supported: "
-                    + converter.isSaveSupported(file));
-            }
-        }
+        // if(false) {
+        // List<ConverterDescriptor> converters = Activator.getDefault()
+        // .getConverterDescriptors();
+        // for(ConverterDescriptor converter : converters) {
+        // System.out.println(file.getName());
+        // System.out.println("  " + converter.getName());
+        // System.out.println("  " + converter.getId());
+        // System.out.println("  Is parse supported: "
+        // + converter.isParseSupported(file));
+        // System.out.println("  Is save supported: "
+        // + converter.isSaveSupported(file));
+        // }
+        // }
         reset(file);
     }
 
@@ -319,9 +319,9 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
      */
     public boolean remove(GpxTrackModel model) {
         boolean retVal = trackModels.remove(model);
-        System.out.println("remove " + model + " " + model.getParent());
-        System.out.println("  from " + this + " " + this.getParent());
         // DEBUG
+        // System.out.println("remove " + model + " " + model.getParent());
+        // System.out.println("  from " + this + " " + this.getParent());
         int n = 0;
         for(GpxTrackModel item : trackModels) {
             System.out.printf("%d %s %s\n", n++, item.toString(), item

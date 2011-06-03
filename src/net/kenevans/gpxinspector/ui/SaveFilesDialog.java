@@ -12,7 +12,6 @@ import net.kenevans.gpxinspector.utils.SWTUtils;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
@@ -113,11 +112,8 @@ public class SaveFilesDialog extends Dialog
     private void createContents(final Shell shell) {
         shell.setLayout(new FillLayout());
 
-        // Make it scroll
-        ScrolledComposite scrolledComposite = new ScrolledComposite(shell,
-            SWT.H_SCROLL | SWT.V_SCROLL);
-        Composite parent = new Composite(scrolledComposite, SWT.NONE);
-        scrolledComposite.setContent(parent);
+        // Note we do not need a ScrolledComposite here as the table will scroll
+        Composite parent = new Composite(shell, SWT.NONE);
         GridLayout gridLayout = new GridLayout();
         gridLayout.numColumns = 1;
         parent.setLayout(gridLayout);
@@ -204,11 +200,6 @@ public class SaveFilesDialog extends Dialog
             }
         });
         shell.setDefaultButton(button);
-
-        scrolledComposite.setMinSize(parent.computeSize(SWT.DEFAULT,
-            SWT.DEFAULT));
-        scrolledComposite.setExpandHorizontal(true);
-        scrolledComposite.setExpandVertical(true);
     }
 
     /**
@@ -227,7 +218,7 @@ public class SaveFilesDialog extends Dialog
         // Name
         table = new Table(box, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
             | SWT.H_SCROLL);
-        GridDataFactory.fillDefaults().grab(true, false).applyTo(table);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
         table.setToolTipText("Files to save.");
         table.setHeaderVisible(false);
         new TableColumn(table, SWT.NULL);

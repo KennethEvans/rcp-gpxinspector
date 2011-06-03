@@ -8,7 +8,6 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -138,14 +137,18 @@ public abstract class InfoDialog extends Dialog implements IPluginConstants
      * @param shell
      */
     protected void createContents(final Shell shell) {
-        shell.setLayout(new FillLayout());
+        GridLayout gridLayout = new GridLayout();
+        gridLayout.numColumns = 1;
+        shell.setLayout(gridLayout);
 
-        // Make it scroll
+        // Make the data scroll
         ScrolledComposite scrolledComposite = new ScrolledComposite(shell,
             SWT.H_SCROLL | SWT.V_SCROLL);
         Composite parent = new Composite(scrolledComposite, SWT.NONE);
         scrolledComposite.setContent(parent);
-        GridLayout gridLayout = new GridLayout();
+        GridDataFactory.fillDefaults().grab(true, true)
+            .applyTo(scrolledComposite);
+        gridLayout = new GridLayout();
         gridLayout.numColumns = 1;
         parent.setLayout(gridLayout);
 
@@ -153,8 +156,19 @@ public abstract class InfoDialog extends Dialog implements IPluginConstants
         createControls(parent);
 
         // Create the buttons
+        // Make a Composite to hold the buttons separately from the
+        // ScrolledComposite
+        Composite buttonsParent = new Composite(shell, SWT.NONE);
+        GridDataFactory.fillDefaults().align(SWT.END, SWT.FILL)
+            .applyTo(buttonsParent);
+        gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 1;
+        buttonsParent.setLayout(gridLayout);
+
         // Make a zero margin composite for the OK and Cancel buttons
-        Composite composite = new Composite(parent, SWT.NONE);
+        Composite composite = new Composite(buttonsParent, SWT.NONE);
         // Change END to FILL to center the buttons
         GridDataFactory.fillDefaults().align(SWT.END, SWT.FILL)
             .grab(true, false).applyTo(composite);

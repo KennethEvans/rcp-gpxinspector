@@ -1,15 +1,11 @@
 package net.kenevans.gpxinspector.utils.find;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
@@ -22,6 +18,8 @@ import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.gpxinspector.utils.Utils;
 import net.kenevans.gpxinspector.utils.find.FindNearOptions.Units;
+
+import org.apache.commons.io.filefilter.WildcardFileFilter;
 
 /*
  * Created on Sep 6, 2010
@@ -270,11 +268,10 @@ public class FindNear
         boolean wptPrinted = false;
         boolean trkPrinted = false;
         // The radius in miles
-        double radius = options.getUnits().radiusInMiles(options.getRadius());
+        double radius = options.getUnits().radiusInMeters(options.getRadius());
         // Note these lists always exit, but they may be empty
         List<GpxWaypointModel> waypointModels = fileModel.getWaypointModels();
         List<GpxTrackModel> trackModels = fileModel.getTrackModels();
-        ;
         List<TrksegType> trackSegments;
         List<WptType> trackPoints;
         WptType waypoint;
@@ -440,191 +437,6 @@ public class FindNear
     }
 
     /**
-     * Reads and processes a single .gpsl file. Only works for Mode.PRINT, which
-     * is the default. Currently only does tracks.
-     * 
-     * @param file
-     */
-    @Deprecated
-    // TODO Implement waypoints
-    public void readAndProcessGpslFile(File file) {
-        // For safety
-        if(mode != Mode.PRINT) {
-            return;
-        }
-        // The radius in miles
-        double radius = options.getUnits().radiusInMiles(options.getRadius());
-        String GPSLINK_ID = "!GPSLINK";
-        String DELIMITER = "Delimiter";
-        String GMTOFFSET = "GMTOffset";
-        boolean fileNamePrinted = false;
-        // boolean wptPrinted = false;
-        boolean trkPrinted = false;
-        double lat0 = options.getLatitude();
-        double lon0 = options.getLongitude();
-        long lineNum = 0;
-        boolean error = false;
-        String line = null;
-        String[] tokens = null;
-        String delimiter = "\t";
-        // String name = null;
-        // double fileGMTOffsetHr = 0.0;
-        String trackName = null;
-        boolean trkDataInProgress = false;
-        // boolean trkDataAborted = false;
-
-        double lat;
-        double lon;
-        // double altitude;
-        // String symbol = null;
-        // String time = "";
-        // boolean startTrack = false;
-        boolean found = false;
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new FileReader(file));
-
-            // Read ID
-            line = in.readLine();
-            lineNum++;
-            if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
-                    + ":\n" + file.getName());
-                return;
-            }
-            if(!line.equals(GPSLINK_ID)) {
-                Utils.errMsg("Invalid GPSLink file (Bad ID) at line " + lineNum
-                    + ":\n" + file.getName());
-                return;
-            }
-
-            // Read timestamp
-            line = in.readLine();
-            lineNum++;
-            if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
-                    + ":\n" + file.getName());
-                return;
-            }
-
-            // Delimiter
-            line = in.readLine();
-            lineNum++;
-            if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
-                    + ":\n" + file.getName());
-                return;
-            }
-            tokens = line.split("=");
-            if(tokens.length < 2 || !tokens[0].equals(DELIMITER)) {
-                Utils.warnMsg("No delimiter found at line + lineNum "
-                    + ", assuming TAB:\n" + file.getName());
-                delimiter = "\t";
-            }
-            delimiter = tokens[1];
-            if(!delimiter.equals(",") && !delimiter.equals("\t")) {
-                Utils.warnMsg("Invalid delimiter found at line + lineNum "
-                    + ", assuming TAB:\n" + file.getName());
-                delimiter = "\t";
-            }
-
-            // GMTOffset
-            line = in.readLine();
-            lineNum++;
-            if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
-                    + ":\n" + file.getName());
-                return;
-            }
-            tokens = line.split("=");
-            if(tokens.length < 2 || !tokens[0].equals(GMTOFFSET)) {
-                Utils.warnMsg("No " + GMTOFFSET + " found at " + lineNum
-                    + ", assuming 0:\n" + file.getName());
-                // fileGMTOffsetHr = 0.0;
-            } else {
-                // fileGMTOffsetHr = Double.valueOf(tokens[1]).doubleValue();
-            }
-
-            // Loop over the rest of the lines
-            while((line = in.readLine()) != null) {
-                lineNum++;
-
-                // Skip comments
-                if(line.startsWith("#")) continue;
-                // Insure there at least two characters
-                if(line.length() < 2) continue;
-                // Only handle lines that have a type identifier
-                if(!line.subSequence(1, 2).equals(delimiter)) continue;
-
-                // Branch on type
-                tokens = line.split(delimiter);
-                String startChar = line.substring(0, 1);
-                // Only look at tracks and trackpoints
-                if(startChar.equals("H")) {
-                    // Track
-                    trackName = tokens[1];
-                    if(trackName == null) {
-                        Utils.errMsg("Line " + lineNum
-                            + " Cannot create track:\n" + file.getName());
-                        error = true;
-                        break;
-                    }
-                    trkDataInProgress = true;
-                    // trkDataAborted = false;
-                    found = false;
-                } else if(startChar.equals("T")) {
-                    // TrackPoint
-                    if(found) continue;
-                    if(tokens.length < 6) {
-                        Utils.errMsg("Line " + lineNum
-                            + ": invalid trackpoint:\n" + file.getName());
-                        error = true;
-                        break;
-                    }
-                    // name = tokens[1];
-                    ;
-                    lat = Double.valueOf(tokens[2]).doubleValue();
-                    lon = Double.valueOf(tokens[3]).doubleValue();
-                    // altitude = Double.valueOf(tokens[4]).doubleValue();
-                    // symbol = "";
-                    // time = tokens[5];
-
-                    if(!trkDataInProgress) {
-                        Utils.errMsg("Line " + lineNum
-                            + " Found trackpoint without track:\n"
-                            + file.getName());
-                    }
-
-                    // Check
-                    if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
-                        found = true;
-                        if(!fileNamePrinted) {
-                            if(outStream != null) {
-                                outStream.println(file.getAbsolutePath());
-                            }
-                            fileNamePrinted = true;
-                        }
-                        if(!trkPrinted) {
-                            if(outStream != null) {
-                                outStream.println(" Tracks");
-                            }
-                            trkPrinted = true;
-                        }
-                        if(outStream != null) {
-                            outStream.println("  " + trackName);
-                        }
-                    }
-                }
-            }
-            if(in != null) in.close();
-            if(error) return;
-        } catch(Exception ex) {
-            Utils.errMsg("Error reading " + file.getName() + "\nat line "
-                + lineNum + "\n" + ex + "\n" + ex.getMessage());
-        }
-    }
-
-    /**
      * Finds files using the given FindNearOptions including the dirName.
      * Deletes all waypoints and tracks that do not satisfy the radius criteria,
      * leaving only the ones that do. Adds the found and trimmed files to the
@@ -711,8 +523,6 @@ public class FindNear
             List<GpxWaypointModel> waypointModels1 = null;
             String[] outLines = baosOut.toString().split(SWTUtils.LS);
             for(String line : outLines) {
-                // DEBUG
-                // System.out.println(line);
                 if(line.startsWith("  ")) {
                     // Is a track or waypoint
                     if(fileError) {
