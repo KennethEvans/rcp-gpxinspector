@@ -104,6 +104,8 @@ public class GpxView extends ViewPart implements IPreferenceConstants
      * plugin.xml), then it should not appear.
      */
     private static boolean ACTIVATE_DEBUG_HANDLER = false;
+    /** The name for a newly created GPX file. */
+    private static final String NEW_FILE_NAME = "New.gpx";
     /**
      * Whether to implement a Text with the contents of the current selection or
      * not. Used for learning.
@@ -477,15 +479,26 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         IHandlerService handlerService = (IHandlerService)getSite().getService(
             IHandlerService.class);
 
-        // Save
+        // New
         AbstractHandler handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                newGpxFile();
+                return null;
+            }
+        };
+        String id = "net.kenevans.gpxinspector.newGpxFile";
+        handlerService.activateHandler(id, handler);
+
+        // Save
+        handler = new AbstractHandler() {
             public Object execute(ExecutionEvent event)
                 throws ExecutionException {
                 saveGpxFiles();
                 return null;
             }
         };
-        String id = "net.kenevans.gpxinspector.save";
+        id = "net.kenevans.gpxinspector.save";
         handlerService.activateHandler(id, handler);
 
         // Remove
@@ -532,26 +545,48 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         id = "net.kenevans.gpxinspector.expand";
         handlerService.activateHandler(id, handler);
 
-        // Check all
+        // Check selected
         handler = new AbstractHandler() {
             public Object execute(ExecutionEvent event)
                 throws ExecutionException {
-                checkAll(true);
+                checkSelected(true);
                 return null;
             }
         };
-        id = "net.kenevans.gpxinspector.checkAll";
+        id = "net.kenevans.gpxinspector.checkSelected";
         handlerService.activateHandler(id, handler);
 
-        // Uncheck all
+        // Uncheck selected
         handler = new AbstractHandler() {
             public Object execute(ExecutionEvent event)
                 throws ExecutionException {
-                checkAll(false);
+                checkSelected(false);
                 return null;
             }
         };
-        id = "net.kenevans.gpxinspector.uncheckAll";
+        id = "net.kenevans.gpxinspector.uncheckSelected";
+        handlerService.activateHandler(id, handler);
+
+        // Select All
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                selectAll(true);
+                return null;
+            }
+        };
+        id = "net.kenevans.gpxinspector.selectAll";
+        handlerService.activateHandler(id, handler);
+
+        // Select None
+        handler = new AbstractHandler() {
+            public Object execute(ExecutionEvent event)
+                throws ExecutionException {
+                selectAll(false);
+                return null;
+            }
+        };
+        id = "net.kenevans.gpxinspector.selectNone";
         handlerService.activateHandler(id, handler);
 
         // Add startup files from preferences
@@ -1049,7 +1084,7 @@ public class GpxView extends ViewPart implements IPreferenceConstants
      * 
      * @param checked
      */
-    protected void checkAll(boolean checked) {
+    protected void checkSelected(boolean checked) {
         // Note that we cannot use treeviewer.setSubtreeChecked, etc. as they
         // do not notify listeners so the underlying model is not changed. And
         // they tend to only apply to visible children.
@@ -1067,6 +1102,22 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         treeViewer.getTree().setRedraw(true);
         // TODO Is this necessary?
         treeViewer.refresh(true);
+    }
+
+    /**
+     * Select all items in the tree if checked is true. Clear the selection if
+     * checked if false.
+     * 
+     * @param checked
+     */
+    protected void selectAll(boolean checked) {
+        if(checked) {
+            // This seems to be what Ctrl-A does. It selects the visible
+            // elements.
+            treeViewer.getTree().selectAll();
+        } else {
+            treeViewer.setSelection(null);
+        }
     }
 
     /**
@@ -1192,25 +1243,47 @@ public class GpxView extends ViewPart implements IPreferenceConstants
     }
 
     /**
+     * Creates a new GPX file.
+     */
+    public void newGpxFile() {
+        try {
+            // String tempDir = System.getProperty("java.io.tmpdir");
+            String fileName = NEW_FILE_NAME;
+            // if(tempDir != null) {
+            // fileName = tempDir + File.separator + fileName;
+            // }
+            File file = new File(fileName);
+            GpxFileModel model = new GpxFileModel(gpxFileSetModel, file, true);
+            gpxFileSetModel.add(null, model, PasteMode.END);
+            // The saving is done by the dialog
+            // Reset the input to cause the listeners to change
+            Object oldInput = treeViewer.getInput();
+            treeViewer.setInput(oldInput);
+            treeViewer.expandToLevel(treeLevel);
+        } catch(Throwable t) {
+            SWTUtils.excMsgAsync("Error with SaveFilesDialog", t);
+            t.printStackTrace();
+        }
+    }
+
+    /**
      * Saves the selected GPX files.
      */
     public void saveGpxFiles() {
-        if(true) {
-            try {
-                SaveFilesDialog dialog = new SaveFilesDialog(Display
-                    .getDefault().getActiveShell(), gpxFileSetModel);
-                Boolean success = dialog.open();
-                if(success) {
-                    // The saving is done by the dialog
-                    // Reset the input to cause the listeners to change
-                    Object oldInput = treeViewer.getInput();
-                    treeViewer.setInput(oldInput);
-                    treeViewer.expandToLevel(treeLevel);
-                }
-            } catch(Exception ex) {
-                SWTUtils.excMsgAsync("Error with SaveFilesDialog", ex);
-                ex.printStackTrace();
+        try {
+            SaveFilesDialog dialog = new SaveFilesDialog(Display.getDefault()
+                .getActiveShell(), gpxFileSetModel);
+            Boolean success = dialog.open();
+            if(success) {
+                // The saving is done by the dialog
+                // Reset the input to cause the listeners to change
+                Object oldInput = treeViewer.getInput();
+                treeViewer.setInput(oldInput);
+                treeViewer.expandToLevel(treeLevel);
             }
+        } catch(Exception ex) {
+            SWTUtils.excMsgAsync("Error with SaveFilesDialog", ex);
+            ex.printStackTrace();
         }
     }
 

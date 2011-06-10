@@ -1,5 +1,6 @@
 package net.kenevans.gpxinspector.utils.find;
 
+import net.kenevans.gpxinspector.kml.KmlUtils;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.gpxinspector.utils.find.FindNearOptions.Units;
 
@@ -63,6 +64,9 @@ public class FindNearDialog extends Dialog
     private Button doWptButton;
     private Button doTrkButton;
     private Button doTrimButton;
+    private Button pastePlacemarkButton;
+    private Button copyPlacemarkButton;
+    private Button copyCircleButton;
 
     /**
      * Constructor.
@@ -411,10 +415,9 @@ public class FindNearDialog extends Dialog
                 new Point(SWTUtils.getTextWidth(filterText, TEXT_COLS_LONG),
                     SWT.DEFAULT)).applyTo(filterText);
         filterText
-            .setToolTipText(
-                "Filter the files for the search using '?' and '*'.\n" +
-                "Note that it only searches files with extensions it\n" +
-                "knows how to convert in any case.  Blank is no filter.");
+            .setToolTipText("Filter the files for the search using '?' and '*'.\n"
+                + "Note that it only searches files with extensions it\n"
+                + "knows how to convert in any case.  Blank is no filter.");
         filterText.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent ex) {
                 if(ex.keyCode == SWT.CR || ex.keyCode == SWT.KEYPAD_CR) {
@@ -450,12 +453,101 @@ public class FindNearDialog extends Dialog
         doTrkButton.setText("Tracks");
         doTrkButton.setToolTipText("Set whether to do tracks.");
 
-        doTrimButton = new Button(box, SWT.CHECK);
-        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL)
-            .grab(true, false).applyTo(doTrimButton);
-        doTrimButton.setText("Remove Non-Matching Items");
-        doTrimButton.setToolTipText("Remove items that do not match the find"
-            + " criteria.  Marks the file as modified.");
+        // Trim button
+        if((flags & SOURCE) != 0) {
+            // Only do the trim button if files are involved
+            doTrimButton = new Button(box, SWT.CHECK);
+            GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL)
+                .grab(true, false).span(2, 1).applyTo(doTrimButton);
+            doTrimButton.setText("Remove Non-Matching Items");
+            doTrimButton
+                .setToolTipText("Remove items that do not match the find"
+                    + " criteria.  Marks the file as modified.");
+        }
+
+        // Make a zero margin composite for the copy and paste buttons
+        composite = new Composite(box, SWT.NONE);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
+        gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 3;
+        composite.setLayout(gridLayout);
+
+        // Paste Placemark
+        pastePlacemarkButton = new Button(composite, SWT.PUSH);
+        pastePlacemarkButton.setText("Paste Placemark");
+        pastePlacemarkButton.setToolTipText("Get the latitude and longitude "
+            + "from a Google Earth\nPlacemark that was copied "
+            + "to the clipboard.");
+        GridDataFactory.fillDefaults().applyTo(pastePlacemarkButton);
+        pastePlacemarkButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                double[] coords = KmlUtils.coordinatesFromClipboardPlacemark();
+                if(coords == null) {
+                    return;
+                }
+                if(Double.isNaN(coords[0])) {
+                    lonText.setText("");
+                } else {
+                    lonText.setText(String.format("%.6f", coords[0]));
+                }
+                if(Double.isNaN(coords[1])) {
+                    latText.setText("");
+                } else {
+                    latText.setText(String.format("%.6f", coords[1]));
+                }
+            }
+        });
+
+        // Copy Placemark
+        copyPlacemarkButton = new Button(composite, SWT.PUSH);
+        copyPlacemarkButton.setText("Copy Placemark");
+        String msg = "Copy a Google Earth Placemark to the system clipboard "
+            + "with the\n"
+            + "latitude and longitude of the center of the search.";
+        copyPlacemarkButton.setToolTipText(msg);
+        GridDataFactory.fillDefaults().applyTo(copyPlacemarkButton);
+        copyPlacemarkButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                String name = "Find Center";
+                String lat = latText.getText();
+                String lon = lonText.getText();
+                String ele = "0";
+                KmlUtils.copyPlacemarkToClipboard(name, lat, lon, ele);
+            }
+        });
+
+        // Copy Circle
+        copyCircleButton = new Button(composite, SWT.PUSH);
+        copyCircleButton.setText("Copy Circle");
+        msg = "Copy a Google Earth Placemark and Line to the system clipboard\n"
+            + "marking the center and radius of the search.";
+        copyCircleButton.setToolTipText(msg);
+        GridDataFactory.fillDefaults().applyTo(copyCircleButton);
+        copyCircleButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                String name = "Find Center";
+                String lat = latText.getText();
+                String lon = lonText.getText();
+                String ele = "0";
+                double radius = 0;
+                Units units = Units.UNSPECIFIED;
+                try {
+                    radius = Double.parseDouble(radiusText.getText());
+                } catch(NumberFormatException ex) {
+                    radius = Double.NaN;
+                }
+                int index = unitsCombo.getSelectionIndex();
+                if(index >= 0 && index < FindNearOptions.getUnitTypes().length) {
+                    units = FindNearOptions.getUnitTypes()[index];
+                }
+                // Convert to meters
+                radius = units.radiusInMeters(radius);
+                KmlUtils.copyPlacemarkToClipboard("GPX Inspector Find", name,
+                    lat, lon, ele, radius);
+            }
+        });
     }
 
     private void createDialogButtons(Composite parent) {
@@ -599,7 +691,9 @@ public class FindNearDialog extends Dialog
         }
         doWptButton.setSelection(options.getDoWpt());
         doTrkButton.setSelection(options.getDoTrk());
-        doTrimButton.setSelection(options.getTrim());
+        if(doTrimButton != null) {
+            doTrimButton.setSelection(options.getTrim());
+        }
     }
 
     /**

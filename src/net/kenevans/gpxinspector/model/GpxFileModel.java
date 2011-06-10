@@ -14,6 +14,7 @@ import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.plugin.Activator;
 import net.kenevans.gpxinspector.ui.FileInfoDialog;
+import net.kenevans.gpxinspector.ui.SaveFilesDialog;
 import net.kenevans.gpxinspector.utils.GpxException;
 import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.parser.GPXClone;
@@ -34,6 +35,8 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
     private LinkedList<GpxWaypointModel> waypointModels;
     /** Indicates whether the file has changed or not. */
     private boolean dirty = false;
+    /** Indicates whether the file was a new file or not. */
+    private boolean newFile = false;
     /**
      * Indicates whether the GpxType is unsynchronized or not or not. Note that
      * synchronized is a keyword so unsynchronized is used.
@@ -48,11 +51,22 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
     }
 
     public GpxFileModel(GpxModel parent, String fileName) throws Throwable {
-        this(parent, new File(fileName));
+        this(parent, new File(fileName), false);
     }
 
-    public GpxFileModel(GpxModel parent, File file) throws Throwable {
+    /**
+     * GpxFileModel constructor.
+     * 
+     * @param parent The parent model.
+     * @param file The File that contains the file name.
+     * @param newFile True if this is a new file that needs to be created rather
+     *            than parsed.
+     * @throws Throwable
+     */
+    public GpxFileModel(GpxModel parent, File file, boolean newFile)
+        throws Throwable {
         this.parent = parent;
+        this.newFile = newFile;
         // DEBUG
         // if(false) {
         // List<ConverterDescriptor> converters = Activator.getDefault()
@@ -67,7 +81,7 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
         // + converter.isSaveSupported(file));
         // }
         // }
-        reset(file);
+        reset(file, newFile);
     }
 
     /**
@@ -154,13 +168,18 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
      * @param file
      * @throws JAXBException
      */
-    public void reset(File file) throws Throwable {
+    public void reset(File file, boolean newFile) throws Throwable {
         dirty = false;
-        // try {
-        gpx = parse(file);
-        // } catch(JAXBException ex) {
-        // SWTUtils.excMsg("Error parsing " + file.getPath(), ex);
-        // }
+        if(newFile) {
+            gpx = new GpxType();
+            dirty = true;
+        } else {
+            // try {
+            gpx = parse(file);
+            // } catch(JAXBException ex) {
+            // SWTUtils.excMsg("Error parsing " + file.getPath(), ex);
+            // }
+        }
         this.file = file;
         trackModels = new LinkedList<GpxTrackModel>();
         List<TrkType> tracks = gpx.getTrk();
@@ -218,11 +237,24 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
         }
         if(isDirty()) {
             // FIXME
-            boolean res = SWTUtils.confirmMsg(this.getLabel()
-                + "\nhas been modified and not saved.\n"
-                + "Select OK to save it or Cancel to continue without saving.");
-            if(res) {
-                save();
+            String msg;
+            if(newFile) {
+                msg = this.getLabel()
+                    + " is new and not saved yet.\n"
+                    + "Select OK to do Save As or Cancel to delete without saving.";
+                boolean res = SWTUtils.confirmMsg(msg);
+                if(res) {
+                    SaveFilesDialog.saveAs(this);
+                    newFile = false;
+                }
+            } else {
+                msg = this.getLabel()
+                    + "\nhas been modified and not saved.\n"
+                    + "Select OK to save it or Cancel to delete without saving.";
+                boolean res = SWTUtils.confirmMsg(msg);
+                if(res) {
+                    save();
+                }
             }
         }
         for(GpxModel model : trackModels) {
@@ -477,7 +509,7 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
                 "GPX Inspector "
                     + SWTUtils.getPluginVersion("net.kenevans.gpxinspector"),
                 gpx, file);
-            reset(file);
+            reset(file, false);
             fireChangedEvent(this);
             // Reset dirty, which was set by fireChangedEvent to true
             setDirty(false);
@@ -729,6 +761,20 @@ public class GpxFileModel extends GpxModel implements IGpxElementConstants
      */
     public void setUnsynchronized(boolean unsynchronized) {
         this.unsynchronized = unsynchronized;
+    }
+
+    /**
+     * @return The value of newFile.
+     */
+    public boolean isNewFile() {
+        return newFile;
+    }
+
+    /**
+     * @param newFile The new value for newFile.
+     */
+    public void setNewFile(boolean newFile) {
+        this.newFile = newFile;
     }
 
 }

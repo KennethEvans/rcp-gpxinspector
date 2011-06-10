@@ -2,6 +2,7 @@ package net.kenevans.gpxinspector.ui;
 
 import net.kenevans.gpx.ExtensionsType;
 import net.kenevans.gpx.WptType;
+import net.kenevans.gpxinspector.kml.KmlUtils;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxTrackSegmentModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
@@ -10,7 +11,10 @@ import net.kenevans.gpxinspector.utils.LabeledText;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
@@ -24,6 +28,8 @@ import org.eclipse.swt.widgets.Text;
 
 public class WptInfoDialog extends InfoDialog
 {
+    /** Set to true to replace elevations from the clipboard when they are zero. */
+    private static final boolean REPLACE_ZERO_ELE = true;
     private GpxWaypointModel model;
     private Text nameText;
     private Text descText;
@@ -45,6 +51,8 @@ public class WptInfoDialog extends InfoDialog
     private Text satText;
     private Text vdopText;
     private List extensionsList;
+    private Button pastePlacemarkButton;
+    private Button copyPlacemarkButton;
 
     /**
      * Constructor.
@@ -125,7 +133,8 @@ public class WptInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:",
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         nameText = labeledText.getText();
@@ -287,6 +296,75 @@ public class WptInfoDialog extends InfoDialog
             .applyTo(labeledList.getComposite());
         extensionsList = labeledList.getList();
         extensionsList.setToolTipText("Extensions (Read only).");
+
+        // Make a zero margin composite for the copy and paste buttons
+        Composite composite = new Composite(box, SWT.NONE);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
+        gridLayout = new GridLayout();
+        gridLayout.marginHeight = 0;
+        gridLayout.marginWidth = 0;
+        gridLayout.numColumns = 2;
+        composite.setLayout(gridLayout);
+
+        // Paste Placemark
+        pastePlacemarkButton = new Button(composite, SWT.PUSH);
+        pastePlacemarkButton.setText("Paste Placemark");
+        String msg = null;
+        if(REPLACE_ZERO_ELE) {
+            msg = "Get the latitude, longitude,"
+                + "and elevation from a Google Earth\nPlacemark that was copied "
+                + "to the clipboard.";
+        } else {
+            msg = "Get the latitude, longitude,"
+                + "and elevation from a Google Earth\nPlacemark that was copied "
+                + "to the clipboard. Only non-zero\nelevations are replaced";
+        }
+        pastePlacemarkButton.setToolTipText(msg);
+        GridDataFactory.fillDefaults().applyTo(pastePlacemarkButton);
+        pastePlacemarkButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                double[] coords = KmlUtils.coordinatesFromClipboardPlacemark();
+                if(coords == null) {
+                    return;
+                }
+                if(Double.isNaN(coords[0])) {
+                    lonText.setText("");
+                } else {
+                    lonText.setText(String.format("%.6f", coords[0]));
+                }
+                if(Double.isNaN(coords[1])) {
+                    latText.setText("");
+                } else {
+                    latText.setText(String.format("%.6f", coords[1]));
+                }
+                if(Double.isNaN(coords[2])) {
+                    if(REPLACE_ZERO_ELE) {
+                        eleText.setText("");
+                    }
+                } else {
+                    if(REPLACE_ZERO_ELE || coords[2] != 0) {
+                        eleText.setText(String.format("%.6f", coords[2]));
+                    }
+                }
+            }
+        });
+
+        // Copy Placemark
+        copyPlacemarkButton = new Button(composite, SWT.PUSH);
+        copyPlacemarkButton.setText("Copy Placemark");
+        msg = "Copy a Google Earth Placemark to the system clipboard with the\n"
+            + "name, latitude, longitude, and elevation of this waypoint.";
+        copyPlacemarkButton.setToolTipText(msg);
+        GridDataFactory.fillDefaults().applyTo(copyPlacemarkButton);
+        copyPlacemarkButton.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                String name = nameText.getText();
+                String lat = latText.getText();
+                String lon = lonText.getText();
+                String ele = eleText.getText();
+                KmlUtils.copyPlacemarkToClipboard(name, lat, lon, ele);
+            }
+        });
     }
 
     /*

@@ -87,13 +87,13 @@
                style="push">
          </separator>
          <command
-               label="Check All"
-               commandId="net.kenevans.gpxinspector.checkAll">
+               label="Check Selected"
+               commandId="net.kenevans.gpxinspector.checkSelected">
                style="push">
          </command>
          <command
-               label="Uncheck All"
-               commandId="net.kenevans.gpxinspector.uncheckAll">
+               label="Uncheck Selected"
+               commandId="net.kenevans.gpxinspector.uncheckSelected">
                style="push">
          </command>
          <separator
@@ -341,14 +341,24 @@
                style="push">
          </separator>
          <command
-               label="Check All"
-               commandId="net.kenevans.gpxinspector.checkAll">
+               label="Check Selected"
+               commandId="net.kenevans.gpxinspector.checkSelected">
                style="push">
          </command>
          <command
-               label="Uncheck All"
-               commandId="net.kenevans.gpxinspector.uncheckAll">
+               label="Uncheck Selected"
+               commandId="net.kenevans.gpxinspector.uncheckSelected">
                style="push">
+         </command>
+         <command
+               commandId="net.kenevans.gpxinspector.selectAll"
+               label="Select Visible">
+            style="push">
+         </command>
+         <command
+               commandId="net.kenevans.gpxinspector.selectNone"
+               label="Select None">
+            style="push">
          </command>
          <command
                commandId="net.kenevans.gpxinspector.refreshTree"
@@ -610,6 +620,11 @@
       <menuContribution
             locationURI="menu:file?after=additions">
          <command
+               commandId="net.kenevans.gpxinspector.newGpxFile"
+               label="New GPX File"
+               style="push">
+         </command>
+         <command
                commandId="net.kenevans.gpxinspector.openGpxFile"
                icon="icons/GPXInspector16.png"
                label="Open GPX File..."
@@ -688,6 +703,11 @@
       </command>
       <command
             categoryId="net.kenevans.gpxinspector.category"
+            id="net.kenevans.gpxinspector.newGpxFile"
+            name="New GPX File">
+      </command>
+      <command
+            categoryId="net.kenevans.gpxinspector.category"
             defaultHandler="net.kenevans.gpxinspector.handlers.OpenGpxFileHandler"
             id="net.kenevans.gpxinspector.openGpxFile"
             name="Open GPX File...">
@@ -716,8 +736,8 @@
       </command>
       <command
             categoryId="net.kenevans.gpxinspector.category"
-            id="net.kenevans.gpxinspector.checkAll"
-            name="Check All">
+            id="net.kenevans.gpxinspector.checkSelected"
+            name="Check Selected">
       </command>
       <command
             categoryId="net.kenevans.gpxinspector.category"
@@ -726,8 +746,18 @@
       </command>
       <command
             categoryId="net.kenevans.gpxinspector.category"
-            id="net.kenevans.gpxinspector.uncheckAll"
-            name="Uncheck All">
+            id="net.kenevans.gpxinspector.selectAll"
+            name="Select Visible">
+      </command>
+      <command
+            categoryId="net.kenevans.gpxinspector.category"
+            id="net.kenevans.gpxinspector.selectNone"
+            name="Select None">
+      </command>
+      <command
+            categoryId="net.kenevans.gpxinspector.category"
+            id="net.kenevans.gpxinspector.uncheckSelected"
+            name="Uncheck Selected">
       </command>
       <command
             categoryId="net.kenevans.gpxinspector.category"

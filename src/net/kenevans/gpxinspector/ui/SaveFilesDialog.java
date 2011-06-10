@@ -287,73 +287,81 @@ public class SaveFilesDialog extends Dialog
             data = item.getData();
             if(data != null && (data instanceof GpxFileModel)) {
                 fileModel = (GpxFileModel)item.getData();
-                if(!saveAsButton.getSelection()) {
+                if(!saveAsButton.getSelection() && !fileModel.isNewFile()) {
                     fileModel.save();
                 } else {
-                    // Find the converters
-                    boolean useConverters = true;
-                    List<ConverterDescriptor> converters = null;
-                    try {
-                        converters = Activator.getDefault()
-                            .getConverterDescriptors();
-                        if(converters == null || converters.size() == 0) {
-                            useConverters = false;
-                        }
-                    } catch(Throwable t) {
-                        useConverters = false;
-                    }
-                    // Open a FileDialog
-                    FileDialog dlg = new FileDialog(Display.getDefault()
-                        .getActiveShell(), SWT.SAVE);
-
-                    File modelFile = null;
-                    if(fileModel != null) {
-                        modelFile = fileModel.getFile();
-                        dlg.setFilterPath(modelFile.getPath());
-                        dlg.setFileName(modelFile.getName());
-                    }
-                    String string;
-                    int index = 0;
-                    int filterIndex = 0;
-                    if(useConverters) {
-                        ArrayList<String> extList = new ArrayList<String>();
-                        for(ConverterDescriptor converter : converters) {
-                            string = converter.getFilterExtensions();
-                            if(string != null && string.length() > 0) {
-                                extList.add(string);
-                                if(converter.isParseSupported(modelFile)) {
-                                    filterIndex = index;
-                                }
-                                index++;
-                            }
-                        }
-                        String[] ext = new String[extList.size()];
-                        ext = extList.toArray(ext);
-                        dlg.setFilterExtensions(ext);
-                        dlg.setFilterIndex(filterIndex);
-                    }
-                    String selectedPath = dlg.open();
-                    if(selectedPath != null) {
-                        File file = new File(selectedPath);
-                        boolean doIt = true;
-                        if(file.exists()) {
-                            Boolean res = SWTUtils.confirmMsg("File exists: "
-                                + file.getPath() + "\nOK to overwrite?");
-                            if(!res) {
-                                doIt = false;
-                            }
-                        }
-                        if(doIt) {
-                            fileModel.saveAs(file);
-                        }
-                    }
+                    saveAs(fileModel);
                 }
             }
         }
     }
 
     /**
-     * Sets the values form the fileSetModel to the Text's.
+     * Brings up a FileDialog to save the given GpxFileModel
+     * 
+     * @param fileModel
+     */
+    public static void saveAs(GpxFileModel fileModel) {
+        // Find the converters
+        boolean useConverters = true;
+        List<ConverterDescriptor> converters = null;
+        try {
+            converters = Activator.getDefault().getConverterDescriptors();
+            if(converters == null || converters.size() == 0) {
+                useConverters = false;
+            }
+        } catch(Throwable t) {
+            useConverters = false;
+        }
+        // Open a FileDialog
+        FileDialog dlg = new FileDialog(Display.getDefault().getActiveShell(),
+            SWT.SAVE);
+
+        File modelFile = null;
+        if(fileModel != null) {
+            modelFile = fileModel.getFile();
+            dlg.setFilterPath(modelFile.getPath());
+            dlg.setFileName(modelFile.getName());
+        }
+        String string;
+        int index = 0;
+        int filterIndex = 0;
+        if(useConverters) {
+            ArrayList<String> extList = new ArrayList<String>();
+            for(ConverterDescriptor converter : converters) {
+                string = converter.getFilterExtensions();
+                if(string != null && string.length() > 0) {
+                    extList.add(string);
+                    if(converter.isParseSupported(modelFile)) {
+                        filterIndex = index;
+                    }
+                    index++;
+                }
+            }
+            String[] ext = new String[extList.size()];
+            ext = extList.toArray(ext);
+            dlg.setFilterExtensions(ext);
+            dlg.setFilterIndex(filterIndex);
+        }
+        String selectedPath = dlg.open();
+        if(selectedPath != null) {
+            File file = new File(selectedPath);
+            boolean doIt = true;
+            if(file.exists()) {
+                Boolean res = SWTUtils.confirmMsg("File exists: "
+                    + file.getPath() + "\nOK to overwrite?");
+                if(!res) {
+                    doIt = false;
+                }
+            }
+            if(doIt) {
+                fileModel.saveAs(file);
+            }
+        }
+    }
+
+    /**
+     * Sets the values from the fileSetModel to the Text's.
      */
     private void setTableFromModel() {
         if(table == null || fileSetModel == null) {

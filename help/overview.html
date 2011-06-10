@@ -4,23 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <link href="book.css" rel="stylesheet" type="text/css" />
 <title>GPX Inspector</title>
+<style type="text/css">
+<!--
+.style1 {color: #FF0000}
+-->
+</style>
 </head>
 <body>
 <h1 align="center">GPX Inspector</h1>
-<p>GPX Inspector is an application that allows you to view and manage GPX files.  Its main contribution is to let you see your tracks, routes, and waypoints in Google Earth. It is is based on <a href="http://eclipse.org/">Eclipse</a> and requires Java to be installed. You shlould be able to get Java <a href="http://www.java.com/en/download/index.jsp">here</a>. </p>
+<p>GPX Inspector is an application that allows you to view and manage GPX files.  It also has the feature of  letting you see your tracks, routes, and waypoints in Google Earth.</p>
+<p> GPX Inspector is is based on <a href="http://eclipse.org/">Eclipse</a> and requires Java to be installed. You should be able to get Java <a href="http://www.java.com/en/download/index.jsp">here</a>. You install it by unzipping the files into some directory and uninstall it by removing them. It does not use the Windows registry. You run it from its executable, GpxInspector.exe on Windows or GpxInspector on UNIX systems. It is currently only available for Windows, primarily owing to a lack of available test machines for other platforms.</p>
+<p>It should read GPX 1.0 or GPX 1.1  file format versions, but uses GPX 1.1 for internal use and saving. </p>
 <p> The main part of the interface is a tree view, which consists of all the files you have loaded and the tracks, routes, and waypoints in them. You can expand or contract the tree, and other options are available by right clicking a tree item. You can drag and drop GPX files to the tree view. You can select all visible items in the tree with Ctrl-A.</p>
+<p>Note that most of the user interface elements, such as buttons, text entries, checkboxes, etc., have tool tips which should appear when you hold the cursor over them. This is the easiest way to get help on what these controls do. </p>
 <h2>Menus</h2>
 <h3>File Menu </h3>
+<h4>New GPX File</h4>
+<p>Creates a new GPX file. </p>
 <h4>Open GPX File</h4>
-Brings up a file dialog to open GPX files.  You can select multiple files. They will then appear in the tree.
-<h4>Find Near</h4>
-Brings up a dialog that lets you choose find options.  On clicking OK, it sets the check mark on only the files already loaded that match the criteria.
- See <a href="#FindNear">Find Near</a> for more information.
-<h4>Find Files Near</h4>
-Similar to find files, excepts that it searches a specified directory and loads any files that have a element (waypoint or trackpoint) that matches the criterion. Only the matching elements are added. See <a href="#FindNear">Find Near</a> for more information.
+<p>Brings up a file dialog to open GPX files.  You can select multiple files. They will then appear in the tree. There is also an icon at the top of the tree view to do this. </p>
+<h4>Save Selected GPX Files... </h4>
+<p>Brings up a dialog to save files. The ones that have been changed are checked when the dialog comes up. You can change the check marks and decide whether to use Save (saves the file under the same name without prompting) or Save As (brings up a File Selection Dialog so you can choose a different name). You can also Do Nothing or Reset the dialog to how it came up as well as Check All or Check None of the files to be saved. </p>
 <h4>Save KML</h4>
-Creates a KML file using the loaded files that are checked.  There is a dialog to specify options.  Optionally you can send the KML file to Google Earth.
- See <a href="#KML">KML</a> for more information.
+<p>Creates a KML file using the loaded files that are checked.  There is a dialog to specify options.  Optionally you can send the KML file to Google Earth.
+  See <a href="#KML">KML</a> for more information. There is also an icon at the top of the tree view to do this. </p>
+<h4> Find Near</h4>
+<p>Brings up a dialog that lets you choose find options.  On clicking OK, it sets the check mark on only the files already loaded that match the criteria.
+  Optionally you can choose whether to remove items that do not match. See <a href="#FindNear">Find Near</a> for more information. </p>
+<h4>Find Files Near</h4>
+Similar to find files, excepts that it searches a specified directory and loads any files that have a element (waypoint or trackpoint) that matches the criterion. You can choose whether only the matching items in the files are left or whether all items are left. If only the matching items are left, the file will be marked as modified. <span class="style1">Be careful of saving it as any existing non-matching items will be lost.</span> See <a href="#FindNear">Find Near</a> for more information.
 <h4>Exit</h4>
 Exits GPX Inspector.
 <h3>Window Menu </h3>
@@ -44,16 +56,69 @@ Brings up the preferences dialog. Preferences are values you can set for for par
 <h4>Help Contents</h4>
 <p>Brings up HTML help, including this page, for GPX Inspector in its own built-in browser. </p>
 <h4>About GPX Inspector</h4>
-<p>Brings up a dialog with information about GPX Inspector including the installed Eclipse plug-ins and information about your Java and Eclipse environment. </p>
+<p>Brings up a dialog with information about GPX Inspector including the installed Eclipse plug-ins and information about your Java and Eclipse environment.</p>
+<h3>Tree View Pull-down Menu and Context Menu</h3>
+<p>There is a pull-down menu at the top of the tree view. There is also a context menu that you get by right-clicking on items in the tree. The items that appear in these menus at any time may depend on the current selection, and not all of these items appear in both menus.  There are also icons at the top of the tree view that perform the same actions as a few of the menu items. These icons have tool tips. </p>
+<h4>Add</h4>
+<p>Depending on what is selected, add items to the tree. </p>
+<h4>Remove</h4>
+<p>Remove the selected items. There is also an icon at the top of the tree view to do this. </p>
+<h4>Remove All</h4>
+<p>Remove everything leaving an empty window.  There is also an icon at the top of the tree view to do this. </p>
+<h4>Check Selected  </h4>
+<p>Check the boxes for all the selected items. You can select all visible items with Ctrl-A. </p>
+<h4>Uncheck Selected </h4>
+<p>Check the boxes for all the selected items.  You can select all visible items with Ctrl-A. </p>
+<h4>Expand Level</h4>
+<p>Expands the tree by one level. This may not always work as desired. See <a href="troubleshooting.html#ExpandContract">Expand Level, Collapse Level</a> in <a href="troubleshooting.html">Troubleshooting</a> for details.  There is also an icon at the top of the tree view to do this. </p>
+<h4>Collapse Level</h4>
+<p>Collapses the tree by one level. This may not always work as desired. See <a href="troubleshooting.html#ExpandContract">Expand Level, Collapse Level</a> in <a href="troubleshooting.html">Troubleshooting</a> for details.  There is also an icon at the top of the tree view to do this. </p>
+<h4>Collapse All   </h4>
+<p>Collapses the tree entirely. </p>
+<h4>Select Visible</h4>
+<p>Selects the visible items in the tree. Should be equivalent to Ctrl-A. </p>
+<h4>Select None  </h4>
+<p>Deselects all items in the tree. </p>
+<h4>Refresh Tree</h4>
+<p>Redraw the main window tree in case it has become corrupted. Should not be necessary. </p>
+<h4>Info</h4>
+<p>Display an Info dialog with the properties of the selected item. These properties can be edited and saved. No changes are made to the file on disk until it is saved as a file. </p>
+<h4>Sort</h4>
+<p>Appears when one item is selected. Alphabetically sorts the items at the same level as the selected item. The sorting is only done for items with the same parent (next level up). For example, to sort waypoints in a file, select one of the waypoints and choose Sort. To sort tracks, pick one of the tracks.. When a file is selected, Sort sorts the files in the window. </p>
+<h4>Reverse</h4>
+<p>Works the same as Sort except reverses the items. </p>
+<h4>Save Checked as Startup Preference</h4>
+<p>Saves the checked files so they will be loaded the next time GPX Inspector starts. The files that are loaded on startup can also be changed in Window | Preferences | GPX Inspector | Startup. </p>
+<h4>Add Startup Files from Preferences</h4>
+<p>Add the files that are to be loaded at startup to the existing files. This can be used to reload them in case they were deleted. </p>
+<h4>Open GPX File</h4>
+<p>Same as on the File Menu. Brings up a file dialog to open GPX files.  You can select multiple files. They will then appear in the tree.</p>
+<h4>Save Selected GPX Files... </h4>
+<p>Same as on the File Menu. Brings up a dialog to save files. The ones that have been changed are checked when the dialog comes up. You can change the check marks and decide whether to use Save (saves the file under the same name without prompting) or Save As (brings up a File Selection Dialog so you can choose a different name). You can also Do Nothing or Reset the dialog to how it came up as well as Check All or Check None of the files. </p>
+<h4>Save KML</h4>
+<p>Same as on the File Menu. Creates a KML file using the loaded files that are checked.  There is a dialog to specify options.  Optionally you can send the KML file to Google Earth.
+  See <a href="#KML">KML</a> for more information.  </p>
+<h4>Cut </h4>
+<p>Removes the selected items from the table and copies them to the internal clipboard. (not the system clipboard). </p>
+<h4>Copy</h4>
+<p>Copies the selected item to the internal clipboard. (not the system clipboard), leaving the items in the table. </p>
+<h4>Paste</h4>
+<p>Pastes  the items from the clipboard at the end of any existing items of the same type.</p>
+<h4>Paste Special  </h4>
+<p>Pastes  the items in the clipboard, giving you a choice of where to paste them.</p>
+<ul>
+  <li><strong>Beginning</strong> of the similar items </li>
+  <li><strong>Before</strong> the selected item </li>
+  <li><strong>Replace</strong> the selected item </li>
+  <li><strong>After</strong> the selected item </li>
+  <li><strong>End</strong> of the similar items </li>
+</ul>
+<h4>Merge All Segments</h4>
+<p>Appears only when more than one track segment is selected. Merges all of the segments in that track  into one segment. </p>
+<h4>Merge Segments  </h4>
+<p>Appears only when more than one track segment is selected. Merges only the <em>selected</em> segments into one segment. </p>
 <h2><a name="KML" id="KML"></a>KML</h2>
 <h2><a name="FindNear" id="FindNear"></a>Find Near</h2>
 <h2><a name="Preferences" id="Preferences"></a>Preferences</h2>
-<h2>Not Implemented Yet</h2>
-<ul>
-  <li>Routes</li>
-  <li>Cut, Copy, Paste</li>
-  <li>Viewing and editing parameters  for tracks, routes, and waypoints.</li>
-  <li>Save</li>
-</ul>
 </body>
 </html>

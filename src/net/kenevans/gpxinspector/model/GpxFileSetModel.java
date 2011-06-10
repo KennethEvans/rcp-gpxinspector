@@ -57,7 +57,7 @@ public class GpxFileSetModel extends GpxModel
         String fileInProgress = null;
         try {
             for(File file : files) {
-                gpxFileModels.add(new GpxFileModel(this, file));
+                gpxFileModels.add(new GpxFileModel(this, file, false));
             }
         } catch(Throwable t) {
             SWTUtils.excMsgAsync("Error parsing " + fileInProgress, t);

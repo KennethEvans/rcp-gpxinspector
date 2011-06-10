@@ -179,7 +179,7 @@ public class FindTracksAndWaypoints0
         // Create a new GpxFileModel with no parent
         GpxFileModel fileModel = null;
         try {
-            fileModel = new GpxFileModel(null, file);
+            fileModel = new GpxFileModel(null, file, false);
         } catch(Throwable t) {
             if(printStream == null) {
                 Utils.excMsg("Error parsing " + file.getPath(), t);

@@ -225,7 +225,7 @@ public class FindNear
         GpxFileModel fileModel = null;
         try {
             // Create with a null parent
-            fileModel = new GpxFileModel(null, file);
+            fileModel = new GpxFileModel(null, file, false);
         } catch(Throwable t) {
             if(errStream == null) {
                 Utils.excMsg("Error parsing " + file.getPath(), t);
