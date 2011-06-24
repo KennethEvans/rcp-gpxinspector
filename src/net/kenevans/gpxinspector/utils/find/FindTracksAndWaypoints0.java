@@ -125,15 +125,15 @@ public class FindTracksAndWaypoints0
         File dirList[] = dir.listFiles();
         int len = dirList.length;
 
-        int nFiles = 0;
-        int nDirs = 0;
+        // int nFiles = 0;
+        // int nDirs = 0;
         for(int i = 0; i < len; i++) {
             File file = dirList[i];
             if(file.isDirectory()) {
-                nDirs++;
+                // nDirs++;
                 find(file);
             } else {
-                nFiles++;
+                // nFiles++;
                 process(file);
             }
         }
