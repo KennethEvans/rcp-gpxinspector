@@ -2,10 +2,10 @@ package net.kenevans.gpxinspector.preferences;
 
 import java.io.File;
 
+import net.kenevans.core.utils.SWTUtils;
+import net.kenevans.core.utils.TreeWithAddRemoveUpDown;
+import net.kenevans.core.utils.Utils;
 import net.kenevans.gpxinspector.plugin.Activator;
-import net.kenevans.gpxinspector.utils.SWTUtils;
-import net.kenevans.gpxinspector.utils.TreeWithAddRemoveUpDown;
-import net.kenevans.gpxinspector.utils.Utils;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
@@ -21,7 +21,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
- * This class is a python preferences pages. At this time, the only preference
+ * This class is a Python preferences pages. At this time, the only preference
  * available is dedicated to a prefered directory where user can save python
  * script recorded when using python commands via FableJep.
  * 

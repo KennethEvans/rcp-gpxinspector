@@ -5,13 +5,13 @@ package net.kenevans.gpxinspector.handlers;
  * By Kenneth Evans, Jr.
  */
 
+import net.kenevans.core.utils.SWTUtils;
+import net.kenevans.core.utils.Utils;
 import net.kenevans.gpxinspector.kml.KmlOptions;
 import net.kenevans.gpxinspector.kml.KmlUtils;
 import net.kenevans.gpxinspector.kml.SaveKmlDialog;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;
-import net.kenevans.gpxinspector.utils.SWTUtils;
-import net.kenevans.gpxinspector.utils.Utils;
 import net.kenevans.gpxinspector.views.GpxView;
 
 import org.eclipse.core.commands.AbstractHandler;

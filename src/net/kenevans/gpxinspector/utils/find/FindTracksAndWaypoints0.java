@@ -7,15 +7,15 @@ import java.io.PrintStream;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import net.kenevans.core.utils.SWTUtils;
+import net.kenevans.core.utils.Utils;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
-import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.GpxException;
-import net.kenevans.gpxinspector.utils.SWTUtils;
-import net.kenevans.gpxinspector.utils.Utils;
+import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.find.FindOptions0.Units;
 
 /*
@@ -114,11 +114,11 @@ public class FindTracksAndWaypoints0
      */
     public void find(File dir) {
         if(dir == null) {
-            Utils.errMsg("Invalid directory");
+            SWTUtils.errMsg("Invalid directory");
             System.exit(1);
         }
         if(!dir.isDirectory()) {
-            Utils.errMsg("Not a directory");
+            SWTUtils.errMsg("Not a directory");
             System.exit(1);
         }
 
@@ -154,13 +154,13 @@ public class FindTracksAndWaypoints0
                 readAndProcessGpxFile(file,
                     options.getUnits().radiusInMiles(options.getRadius()));
             } catch(Exception ex) {
-                Utils.excMsg("Eror parsing GPX file", ex);
+                SWTUtils.excMsg("Eror parsing GPX file", ex);
             }
             // } else if(ext.toLowerCase().equals("gpsl")) {
             // try {
             // readAndProcessGpslFile(file, options.getLimits());
             // } catch(GpxException ex) {
-            // Utils.excMsg("Eror parsing GPSL file", ex);
+            // SWTUtils.excMsg("Eror parsing GPSL file", ex);
             // }
         }
     }
@@ -182,7 +182,7 @@ public class FindTracksAndWaypoints0
             fileModel = new GpxFileModel(null, file, false);
         } catch(Throwable t) {
             if(printStream == null) {
-                Utils.excMsg("Error parsing " + file.getPath(), t);
+                SWTUtils.excMsg("Error parsing " + file.getPath(), t);
             } else {
                 printStream.println("Error parsing " + file.getPath());
                 printStream.println(t.getMessage());
@@ -190,7 +190,7 @@ public class FindTracksAndWaypoints0
             return;
         }
         if(fileModel == null) {
-            Utils.errMsg("readAndProcessGpxFile: fileModel is null");
+            SWTUtils.errMsg("readAndProcessGpxFile: fileModel is null");
             return;
         }
         List<GpxTrackModel> trackModels;
@@ -290,13 +290,13 @@ public class FindTracksAndWaypoints0
             line = in.readLine();
             lineNum++;
             if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
+                SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
                 return;
             }
             if(!line.equals(GPSLINK_ID)) {
-                Utils.errMsg("Invalid GPSLink file (Bad ID) at line " + lineNum
-                    + ":\n" + file.getName());
+                SWTUtils.errMsg("Invalid GPSLink file (Bad ID) at line "
+                    + lineNum + ":\n" + file.getName());
                 return;
             }
 
@@ -304,7 +304,7 @@ public class FindTracksAndWaypoints0
             line = in.readLine();
             lineNum++;
             if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
+                SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
                 return;
             }
@@ -313,19 +313,19 @@ public class FindTracksAndWaypoints0
             line = in.readLine();
             lineNum++;
             if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
+                SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
                 return;
             }
             tokens = line.split("=");
             if(tokens.length < 2 || !tokens[0].equals(DELIMITER)) {
-                Utils.warnMsg("No delimiter found at line + lineNum "
+                SWTUtils.warnMsg("No delimiter found at line + lineNum "
                     + ", assuming TAB:\n" + file.getName());
                 delimiter = "\t";
             }
             delimiter = tokens[1];
             if(!delimiter.equals(",") && !delimiter.equals("\t")) {
-                Utils.warnMsg("Invalid delimiter found at line + lineNum "
+                SWTUtils.warnMsg("Invalid delimiter found at line + lineNum "
                     + ", assuming TAB:\n" + file.getName());
                 delimiter = "\t";
             }
@@ -334,13 +334,13 @@ public class FindTracksAndWaypoints0
             line = in.readLine();
             lineNum++;
             if(line == null) {
-                Utils.errMsg("Unexpected end of file at line " + lineNum
+                SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
                 return;
             }
             tokens = line.split("=");
             if(tokens.length < 2 || !tokens[0].equals(GMTOFFSET)) {
-                Utils.warnMsg("No " + GMTOFFSET + " found at " + lineNum
+                SWTUtils.warnMsg("No " + GMTOFFSET + " found at " + lineNum
                     + ", assuming 0:\n" + file.getName());
                 // fileGMTOffsetHr = 0.0;
             } else {
@@ -366,7 +366,7 @@ public class FindTracksAndWaypoints0
                     // Track
                     trackName = tokens[1];
                     if(trackName == null) {
-                        Utils.errMsg("Line " + lineNum
+                        SWTUtils.errMsg("Line " + lineNum
                             + " Cannot create track:\n" + file.getName());
                         error = true;
                         break;
@@ -378,7 +378,7 @@ public class FindTracksAndWaypoints0
                     // TrackPoint
                     if(found) continue;
                     if(tokens.length < 6) {
-                        Utils.errMsg("Line " + lineNum
+                        SWTUtils.errMsg("Line " + lineNum
                             + ": invalid trackpoint:\n" + file.getName());
                         error = true;
                         break;
@@ -392,7 +392,7 @@ public class FindTracksAndWaypoints0
                     // time = tokens[5];
 
                     if(!trkDataInProgress) {
-                        Utils.errMsg("Line " + lineNum
+                        SWTUtils.errMsg("Line " + lineNum
                             + " Found trackpoint without track:\n"
                             + file.getName());
                     }
@@ -410,7 +410,7 @@ public class FindTracksAndWaypoints0
             if(in != null) in.close();
             if(error) return;
         } catch(Exception ex) {
-            Utils.errMsg("Error reading " + file.getName() + "\nat line "
+            SWTUtils.errMsg("Error reading " + file.getName() + "\nat line "
                 + lineNum + "\n" + ex + "\n" + ex.getMessage());
         }
     }
@@ -584,27 +584,27 @@ public class FindTracksAndWaypoints0
             }
         }
         if(!latSpecified && !(latMinSpecified && latMaxSpecified)) {
-            Utils.errMsg("lat or latMax and latMin must be specified");
+            SWTUtils.errMsg("lat or latMax and latMin must be specified");
             return false;
         }
         if(!lonSpecified && !(lonMinSpecified && lonMaxSpecified)) {
-            Utils.errMsg("lon or lonMax and lonMin must be specified");
+            SWTUtils.errMsg("lon or lonMax and lonMin must be specified");
             return false;
         }
         if(options.getUnits() == Units.UNSPECIFIED) {
             if(deltaUnits != null) {
-                Utils.errMsg("deltaUnits (" + deltaUnits + ") is not valid");
+                SWTUtils.errMsg("deltaUnits (" + deltaUnits + ") is not valid");
             } else {
-                Utils.errMsg("deltaUnits is not valid");
+                SWTUtils.errMsg("deltaUnits is not valid");
             }
             return false;
         }
         if(options.getDeltaLat() <= 0) {
-            Utils.errMsg("deltaLat must be greater than zero");
+            SWTUtils.errMsg("deltaLat must be greater than zero");
             return false;
         }
         if(options.getDeltaLon() <= 0) {
-            Utils.errMsg("deltaLon must be greater than zero");
+            SWTUtils.errMsg("deltaLon must be greater than zero");
             return false;
         }
         return true;

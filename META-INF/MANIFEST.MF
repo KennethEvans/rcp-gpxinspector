@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.core.resources,
  net.kenevans.jak;bundle-version="1.0.0",
  net.kenevans.jaxb;bundle-version="2.2.1",
  org.eclipse.help.ui;bundle-version="3.5.0",
- net.kenevans.commons-io;bundle-version="2.0.1"
+ net.kenevans.commons-io;bundle-version="2.0.1",
+ net.kenevans.core.utils;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

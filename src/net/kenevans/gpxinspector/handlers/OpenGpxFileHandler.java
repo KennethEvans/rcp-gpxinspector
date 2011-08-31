@@ -1,6 +1,6 @@
 package net.kenevans.gpxinspector.handlers;
 
-import net.kenevans.gpxinspector.utils.SWTUtils;
+import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpxinspector.views.GpxView;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -47,7 +47,7 @@ public class OpenGpxFileHandler extends AbstractHandler
             SWTUtils.errMsgAsync("GpxView is null");
             return null;
         }
-        
+
         // Run the method
         view.openGpxFile();
 

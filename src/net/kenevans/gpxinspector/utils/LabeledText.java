@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import net.kenevans.core.utils.SWTUtils;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -42,7 +43,7 @@ public class LabeledText
         // Make a zero margin composite
         composite = new Composite(parent, SWT.NONE);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL)
-        .grab(true, false).applyTo(composite);
+            .grab(true, false).applyTo(composite);
         GridLayout gridLayout = new GridLayout();
         gridLayout.marginHeight = 0;
         gridLayout.marginWidth = 0;

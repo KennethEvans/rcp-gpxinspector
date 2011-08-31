@@ -1,5 +1,7 @@
 package net.kenevans.gpxinspector.utils;
 
+import net.kenevans.core.utils.SWTUtils;
+
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;

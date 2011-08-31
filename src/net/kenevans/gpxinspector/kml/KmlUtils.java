@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.kenevans.core.utils.RainbowColorScheme;
+import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
@@ -24,8 +26,6 @@ import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
 import net.kenevans.gpxinspector.preferences.IPreferenceConstants;
 import net.kenevans.gpxinspector.utils.GpxUtils;
-import net.kenevans.gpxinspector.utils.RainbowColorScheme;
-import net.kenevans.gpxinspector.utils.SWTUtils;
 import de.micromata.opengis.kml.v_2_2_0.ColorMode;
 import de.micromata.opengis.kml.v_2_2_0.Document;
 import de.micromata.opengis.kml.v_2_2_0.Folder;

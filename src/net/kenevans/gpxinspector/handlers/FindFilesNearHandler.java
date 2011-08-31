@@ -5,8 +5,8 @@ package net.kenevans.gpxinspector.handlers;
  * By Kenneth Evans, Jr.
  */
 
-import net.kenevans.gpxinspector.utils.SWTUtils;
-import net.kenevans.gpxinspector.utils.Utils;
+import net.kenevans.core.utils.SWTUtils;
+import net.kenevans.core.utils.Utils;
 import net.kenevans.gpxinspector.utils.find.FindNearDialog;
 import net.kenevans.gpxinspector.utils.find.FindNearOptions;
 import net.kenevans.gpxinspector.views.GpxView;

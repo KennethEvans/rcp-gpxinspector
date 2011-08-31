@@ -7,6 +7,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.kenevans.core.utils.SWTUtils;
+import net.kenevans.core.utils.Utils;
 import net.kenevans.gpx.TrksegType;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.converters.ConverterDescriptor;
@@ -15,8 +17,6 @@ import net.kenevans.gpxinspector.model.GpxFileSetModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
 import net.kenevans.gpxinspector.utils.GpxUtils;
-import net.kenevans.gpxinspector.utils.SWTUtils;
-import net.kenevans.gpxinspector.utils.Utils;
 import net.kenevans.gpxinspector.utils.find.FindNearOptions.Units;
 
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -228,7 +228,7 @@ public class FindNear
             fileModel = new GpxFileModel(null, file, false);
         } catch(Throwable t) {
             if(errStream == null) {
-                Utils.excMsg("Error parsing " + file.getPath(), t);
+                SWTUtils.excMsg("Error parsing " + file.getPath(), t);
             } else {
                 errStream.println("Error parsing " + file.getPath());
                 errStream.println(t.getMessage());

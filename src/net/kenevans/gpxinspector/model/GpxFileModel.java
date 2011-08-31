@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
+import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpx.GpxType;
 import net.kenevans.gpx.RteType;
 import net.kenevans.gpx.TrkType;
@@ -16,7 +17,6 @@ import net.kenevans.gpxinspector.plugin.Activator;
 import net.kenevans.gpxinspector.ui.FileInfoDialog;
 import net.kenevans.gpxinspector.ui.SaveFilesDialog;
 import net.kenevans.gpxinspector.utils.GpxException;
-import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.parser.GPXClone;
 
 import org.eclipse.swt.widgets.Display;

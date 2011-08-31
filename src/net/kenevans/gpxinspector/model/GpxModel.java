@@ -4,7 +4,7 @@ import java.util.EventListener;
 
 import javax.swing.event.EventListenerList;
 
-import net.kenevans.gpxinspector.utils.SWTUtils;
+import net.kenevans.core.utils.SWTUtils;
 
 /*
  * Created on Aug 22, 2010

@@ -1,7 +1,7 @@
 package net.kenevans.gpxinspector.utils.find;
 
+import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpxinspector.kml.KmlUtils;
-import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.gpxinspector.utils.find.FindNearOptions.Units;
 
 import org.eclipse.jface.layout.GridDataFactory;

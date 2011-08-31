@@ -3,9 +3,9 @@ package net.kenevans.gpxinspector.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpx.WptType;
 import net.kenevans.gpxinspector.ui.WptInfoDialog;
-import net.kenevans.gpxinspector.utils.SWTUtils;
 import net.kenevans.parser.GPXClone;
 
 import org.eclipse.swt.widgets.Display;

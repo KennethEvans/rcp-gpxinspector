@@ -2,9 +2,9 @@ package net.kenevans.gpxinspector.converters;
 
 import java.io.File;
 
+import net.kenevans.core.utils.SWTUtils;
+import net.kenevans.core.utils.Utils;
 import net.kenevans.gpx.GpxType;
-import net.kenevans.gpxinspector.utils.SWTUtils;
-import net.kenevans.gpxinspector.utils.Utils;
 import net.kenevans.parser.GPXParser;
 
 /*

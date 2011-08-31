@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.kenevans.gpxinspector.utils.SWTUtils;
+import net.kenevans.core.utils.SWTUtils;
 
 /*
  * Created on Aug 22, 2010

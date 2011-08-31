@@ -1,6 +1,6 @@
 package net.kenevans.gpxinspector.handlers;
 
-import net.kenevans.gpxinspector.utils.SWTUtils;
+import net.kenevans.core.utils.SWTUtils;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
