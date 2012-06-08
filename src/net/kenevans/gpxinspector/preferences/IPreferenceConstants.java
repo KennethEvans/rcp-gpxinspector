@@ -14,12 +14,21 @@ public interface IPreferenceConstants extends IPluginConstants
     /** Whether to use the startup files */
     public static final String P_USE_STARTUP_FILES = "useStartupFiles";
     public static final Boolean D_USE_STARTUP_FILES = true;
+    /**
+     * Preferred file extension. This one is different than other preferences as
+     * it uses a ComboFieldEditor which wants an int as the default value. The
+     * possible values for the index are not known until runtime since they
+     * depend on what other parsers extensions are loaded . This string value is
+     * used to set the default index in the preference initializer.
+     */
+    public static final String P_PREFERRED_FILE_EXTENSION = "preferredFileExtension";
+    public static final String D_PREFERRED_FILE_EXTENSION = "*.gpx";
 
     public static final String P_GPX_DIR = "gpxDirectory";
     public static final String D_GPX_DIR = "c:/Users/evans/Documents/GPSLink";
 
     public static final String P_NO_MOVE_SPEED = "notMovingSpeed";
-    // Corresponds to .5 m/sec.  1 mi/hr would be .44704
+    // Corresponds to .5 m/sec. 1 mi/hr would be .44704
     public static final String D_NO_MOVE_SPEED = "0.5";
 
     public static final String P_KML_FILENAME = "kmlFileName";

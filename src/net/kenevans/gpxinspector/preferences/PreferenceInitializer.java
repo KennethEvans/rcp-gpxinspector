@@ -1,5 +1,9 @@
 package net.kenevans.gpxinspector.preferences;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.plugin.Activator;
 
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -23,6 +27,29 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         prefs.setDefault(P_NO_MOVE_SPEED, D_NO_MOVE_SPEED);
         prefs.setDefault(P_STARTUP_FILES, D_STARTUP_FILES);
         prefs.setDefault(P_USE_STARTUP_FILES, D_USE_STARTUP_FILES);
+
+        // We have to determine which index corresponds to the default.
+        boolean useConverters = true;
+        int defaultIndex = 0;
+        List<ConverterDescriptor> converters = null;
+        try {
+            converters = Activator.getDefault().getConverterDescriptors();
+            if(converters == null || converters.size() == 0) {
+                useConverters = false;
+            }
+        } catch(Throwable t) {
+            useConverters = false;
+        }
+        if(useConverters) {
+            for(int i = 0; i < converters.size(); i++) {
+                if(converters.get(i).getFilterExtensions()
+                    .equals(D_PREFERRED_FILE_EXTENSION)) {
+                    defaultIndex = i;
+                }
+            }
+        }
+        prefs.setDefault(P_PREFERRED_FILE_EXTENSION,
+            Integer.toString(defaultIndex));
 
         prefs.setDefault(P_KML_FILENAME, D_KML_FILENAME);
         prefs.setDefault(P_ICON_SCALE, D_ICON_SCALE);

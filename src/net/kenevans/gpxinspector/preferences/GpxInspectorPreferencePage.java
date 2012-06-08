@@ -1,8 +1,13 @@
 package net.kenevans.gpxinspector.preferences;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.plugin.Activator;
 
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
@@ -22,6 +27,7 @@ public class GpxInspectorPreferencePage extends FieldEditorPreferencePage
 {
     private DirectoryFieldEditor gpxDirectoryFieldEditor;
     private StringFieldEditor notMovingFieldEditor;
+    private ComboFieldEditor preferredExtensionFieldEditor;
 
     public GpxInspectorPreferencePage() {
         super(GRID);
@@ -42,6 +48,46 @@ public class GpxInspectorPreferencePage extends FieldEditorPreferencePage
         gpxDirectoryFieldEditor.getLabelControl(parent).setToolTipText(toolTip);
         gpxDirectoryFieldEditor.getTextControl(parent).setToolTipText(toolTip);
 
+        // Get the preferred extension
+        boolean useConverters = true;
+        List<ConverterDescriptor> converters = null;
+        String[][] availableExtensions = null;
+        try {
+            converters = Activator.getDefault().getConverterDescriptors();
+            if(converters == null || converters.size() == 0) {
+                useConverters = false;
+            }
+        } catch(Throwable t) {
+            useConverters = false;
+        }
+        if(useConverters) {
+            String string;
+            ArrayList<String> extList = new ArrayList<String>();
+            for(ConverterDescriptor converter : converters) {
+                string = converter.getFilterExtensions();
+                if(string != null && string.length() > 0) {
+                    extList.add(string);
+                }
+            }
+            availableExtensions = new String[extList.size()][2];
+            for(int i = 0; i < extList.size(); i++) {
+                availableExtensions[i][0] = extList.get(i);
+                availableExtensions[i][1] = Integer.toString(i);
+            }
+        } else {
+            availableExtensions = new String[1][2];
+            availableExtensions[0][0] = "*.gpx";
+            availableExtensions[0][1] = "0";
+        }
+        preferredExtensionFieldEditor = new ComboFieldEditor(
+            IPreferenceConstants.P_PREFERRED_FILE_EXTENSION,
+            "Preferred File Extension:", availableExtensions, parent);
+        addField(preferredExtensionFieldEditor);
+        toolTip = "Preferred file extension. There is only one choice"
+            + " unless other file converters have been loaded.";
+        preferredExtensionFieldEditor.getLabelControl(parent).setToolTipText(
+            toolTip);
+
         Text text = new Text(parent, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY);
         text.setText("Track points with speeds below the \"Not Moving\" "
             + "speed are considered to be stationary when calculating track "
@@ -58,6 +104,7 @@ public class GpxInspectorPreferencePage extends FieldEditorPreferencePage
         notMovingFieldEditor.getLabelControl(parent).setToolTipText(toolTip);
         notMovingFieldEditor.getTextControl(parent).setToolTipText(toolTip);
         addField(notMovingFieldEditor);
+
         text = new Text(parent, SWT.MULTI | SWT.WRAP | SWT.READ_ONLY);
         text.setText("\nThe above preferences take place "
             + "immediately and do not require a restart.");

@@ -1201,16 +1201,20 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         int index = 0;
         int filterIndex = 0;
         if(useConverters) {
+            // Use the index of the preferred extension as the default filter
+            IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
+            filterIndex = prefs.getInt(P_PREFERRED_FILE_EXTENSION);
             ArrayList<String> extList = new ArrayList<String>();
             for(ConverterDescriptor converter : converters) {
                 string = converter.getFilterExtensions();
                 if(string != null && string.length() > 0) {
                     extList.add(string);
+                    // Override the preference if there is an old model
                     if(converter.isParseSupported(modelFile)) {
                         filterIndex = index;
                     }
-                    index++;
                 }
+                index++;
             }
             String[] ext = new String[extList.size()];
             ext = extList.toArray(ext);
