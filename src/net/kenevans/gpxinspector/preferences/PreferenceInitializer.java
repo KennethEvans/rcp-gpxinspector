@@ -1,6 +1,5 @@
 package net.kenevans.gpxinspector.preferences;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.kenevans.gpxinspector.converters.ConverterDescriptor;
