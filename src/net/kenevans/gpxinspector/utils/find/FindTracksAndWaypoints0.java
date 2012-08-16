@@ -292,11 +292,13 @@ public class FindTracksAndWaypoints0
             if(line == null) {
                 SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
-                return;
+                in.close();
+               return;
             }
             if(!line.equals(GPSLINK_ID)) {
                 SWTUtils.errMsg("Invalid GPSLink file (Bad ID) at line "
                     + lineNum + ":\n" + file.getName());
+                in.close();
                 return;
             }
 
@@ -306,6 +308,7 @@ public class FindTracksAndWaypoints0
             if(line == null) {
                 SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
+                in.close();
                 return;
             }
 
@@ -315,6 +318,7 @@ public class FindTracksAndWaypoints0
             if(line == null) {
                 SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
+                in.close();
                 return;
             }
             tokens = line.split("=");
@@ -336,6 +340,7 @@ public class FindTracksAndWaypoints0
             if(line == null) {
                 SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
+                in.close();
                 return;
             }
             tokens = line.split("=");
