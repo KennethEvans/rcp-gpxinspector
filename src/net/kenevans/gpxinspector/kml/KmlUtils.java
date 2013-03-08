@@ -724,20 +724,6 @@ public class KmlUtils implements IPreferenceConstants
     }
 
     /**
-     * Copies a Google Earth Placemark to the system clipboard. This can be
-     * pasted into Google Earth.
-     * 
-     * @param name The name of the Placemark.
-     * @param lat The latitude.
-     * @param lon The longitude.
-     * @param ele The elevation.
-     */
-    public static void copyPlacemarkToClipboard(String name, String lat,
-        String lon, String ele) {
-        copyPlacemarkToClipboard(null, name, lat, lon, ele, Double.NaN);
-    }
-
-    /**
      * Copies a Google Earth Placemark to the system clipboard as well as an
      * optional circle about the Placemark denoting the given radius. The
      * clipboard contents can be pasted into Google Earth.
@@ -748,10 +734,53 @@ public class KmlUtils implements IPreferenceConstants
      * @param lat The latitude.
      * @param lon The longitude.
      * @param ele The elevation.
+     */
+    public static void copyPlacemarkToClipboard(String documentName,
+        String name, String lat, String lon, String ele) {
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+        text += "<kml xmlns=\"http://www.opengis.net/kml/2.2\" "
+            + "xmlns:gx=\"http://www.google.com/kml/ext/2.2\" "
+            + "xmlns:kml=\"http://www.opengis.net/kml/2.2\" " + ""
+            + "xmlns:atom=\"http://www.w3.org/2005/Atom\" "
+            + "xmlns:xal=\"urn:oasis:names:tc:ciq:xsdschema:xAL:2.0\">\n";
+        if(documentName != null) {
+            text += "<Document>\n";
+            text += "  <name>" + documentName + "</name>\n";
+        }
+
+        // Point
+        text += "  <Placemark>\n";
+        text += "    <name>" + name + "</name>\n";
+        text += "    <Point>\n";
+        text += "      <coordinates>" + lon + "," + lat + "," + ele
+            + "</coordinates>\n";
+        text += "    </Point>\n";
+        text += "  </Placemark>\n";
+
+        if(documentName != null) {
+            text += "</Document>\n";
+        }
+        text += "</kml>\n";
+        StringSelection selection = new StringSelection(text);
+        clipboard.setContents(selection, null);
+    }
+
+    /**
+     * Copies a Google Earth Placemark to the system clipboard with a circle
+     * about the coordinates with the given radius. The clipboard contents can
+     * be pasted into Google Earth.
+     * 
+     * @param documentName The name of the KML Document or null to not make a
+     *            Document. There does not have to be a document if only a
+     *            Placemark is used.
+     * @param lat The latitude.
+     * @param lon The longitude.
+     * @param ele The elevation.
      * @param radius The radius in meters of a circle to be drawn about the
      *            center or Double.NaN to not draw one.
      */
-    public static void copyPlacemarkToClipboard(String documentName,
+    public static void copyPlacemarkCircleToClipboard(String documentName,
         String name, String lat, String lon, String ele, double radius) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         String text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
@@ -764,13 +793,8 @@ public class KmlUtils implements IPreferenceConstants
             text += "<Document>\n";
             text += "  <name>" + documentName + "</name>\n";
         }
-        text += "  <Placemark>\n";
-        text += "    <name>" + name + "</name>\n";
-        text += "    <Point>\n";
-        text += "      <coordinates>" + lon + "," + lat + "," + ele
-            + "</coordinates>\n";
-        text += "    </Point>\n";
-        text += "  </Placemark>\n";
+
+        // Circle
         if(radius != Double.NaN && radius > 0) {
             double lat0 = 0, lon0 = 0;
             try {
@@ -792,7 +816,7 @@ public class KmlUtils implements IPreferenceConstants
             if(!Double.isNaN(a) && !Double.isInfinite(a) && !Double.isNaN(b)
                 && !Double.isInfinite(b)) {
                 text += "  <Placemark>\n";
-                text += "    <name>Circle</name>\n";
+                text += "    <name>" + name + "</name>\n";
                 text += "    <MultiGeometry>\n";
                 text += "      <LineString>\n";
                 text += "        <coordinates>";
@@ -802,7 +826,7 @@ public class KmlUtils implements IPreferenceConstants
                     lat1 = lat0 + b * Math.sin(i * delta);
                     lon1 = lon0 + a * Math.cos(i * delta);
                     if(i != 0) {
-                        text += " ";
+                        text += ",";
                     }
                     text += String.format("%.6f", lon1) + ","
                         + String.format("%.6f", lat1) + ",0";
@@ -811,8 +835,8 @@ public class KmlUtils implements IPreferenceConstants
                 text += "      </LineString>\n";
                 text += "    </MultiGeometry>\n";
             }
+            text += "  </Placemark>\n";
         }
-        text += "  </Placemark>\n";
         if(documentName != null) {
             text += "</Document>\n";
         }

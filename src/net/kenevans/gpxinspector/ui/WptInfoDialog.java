@@ -30,6 +30,12 @@ public class WptInfoDialog extends InfoDialog
 {
     /** Set to true to replace elevations from the clipboard when they are zero. */
     private static final boolean REPLACE_ZERO_ELE = true;
+    /**
+     * The name of the document into which to place placemarks. Use null. It
+     * will get placed inside the currently selected element in Google Earth,
+     * and giving it a name just gets confusing.
+     */
+    private static final String PLACEMARK_DOCUMENT_NAME = null;
     private GpxWaypointModel model;
     private Text nameText;
     private Text descText;
@@ -362,7 +368,8 @@ public class WptInfoDialog extends InfoDialog
                 String lat = latText.getText();
                 String lon = lonText.getText();
                 String ele = eleText.getText();
-                KmlUtils.copyPlacemarkToClipboard(name, lat, lon, ele);
+                KmlUtils.copyPlacemarkToClipboard(PLACEMARK_DOCUMENT_NAME,
+                    name, lat, lon, ele);
             }
         });
     }

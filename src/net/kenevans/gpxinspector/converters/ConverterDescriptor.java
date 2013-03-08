@@ -62,7 +62,7 @@ public class ConverterDescriptor implements IGpxConverter
      */
     @Override
     public boolean isParseSupported(File file) {
-        if(ce == null) {
+        if(ce == null || file == null) {
             return false;
         }
         try {
@@ -83,7 +83,7 @@ public class ConverterDescriptor implements IGpxConverter
      */
     @Override
     public boolean isSaveSupported(File file) {
-        if(ce == null) {
+        if(ce == null || file == null) {
             return false;
         }
         try {
@@ -129,7 +129,7 @@ public class ConverterDescriptor implements IGpxConverter
     @Override
     public void save(String creator, GpxType gpxType, File file)
         throws Throwable {
-        if(ce == null) {
+        if(ce == null || file == null) {
             return;
         }
         IGpxConverter converter = (IGpxConverter)ce
@@ -139,7 +139,7 @@ public class ConverterDescriptor implements IGpxConverter
 
     @Override
     public GpxType parse(File file) throws Throwable {
-        if(ce == null) {
+        if(ce == null || file == null) {
             return null;
         }
         IGpxConverter converter = (IGpxConverter)ce

@@ -42,6 +42,12 @@ public class FindNearDialog extends Dialog
 {
     private static final int TEXT_COLS_LONG = 50;
     private static final int TEXT_COLS_SHORT = 15;
+    /**
+     * The name of the document into which to place placemarks and circles. Use
+     * null. It will get placed inside the currently selected element in Google
+     * Earth, and giving it a name just gets confusing.
+     */
+    private static final String FIND_DOCUMENT_NAME = null;
     /** Flag indicating to create Source group. */
     public static int SOURCE = 1;
     /** Flag indicating to create GPX and GPSL buttons. */
@@ -514,7 +520,8 @@ public class FindNearDialog extends Dialog
                 String lat = latText.getText();
                 String lon = lonText.getText();
                 String ele = "0";
-                KmlUtils.copyPlacemarkToClipboard(name, lat, lon, ele);
+                KmlUtils.copyPlacemarkToClipboard(FIND_DOCUMENT_NAME, name,
+                    lat, lon, ele);
             }
         });
 
@@ -527,7 +534,7 @@ public class FindNearDialog extends Dialog
         GridDataFactory.fillDefaults().applyTo(copyCircleButton);
         copyCircleButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
-                String name = "Find Center";
+                String name = "Find Radius";
                 String lat = latText.getText();
                 String lon = lonText.getText();
                 String ele = "0";
@@ -544,8 +551,8 @@ public class FindNearDialog extends Dialog
                 }
                 // Convert to meters
                 radius = units.radiusInMeters(radius);
-                KmlUtils.copyPlacemarkToClipboard("GPX Inspector Find", name,
-                    lat, lon, ele, radius);
+                KmlUtils.copyPlacemarkCircleToClipboard(FIND_DOCUMENT_NAME,
+                    name, lat, lon, ele, radius);
             }
         });
     }
