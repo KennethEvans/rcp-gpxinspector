@@ -1316,7 +1316,9 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         }
         if(shell != null) {
             waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
-            if(waitCursor != null) shell.setCursor(waitCursor);
+            if(waitCursor != null) {
+                shell.setCursor(waitCursor);
+            }
         }
         treeViewer.getTree().setRedraw(false);
         for(GpxFileModel model : gpxFileSetModel.getGpxFileModels()) {
@@ -1361,7 +1363,9 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         }
         if(shell != null) {
             waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
-            if(waitCursor != null) shell.setCursor(waitCursor);
+            if(waitCursor != null) {
+                shell.setCursor(waitCursor);
+            }
         }
         treeViewer.getTree().setRedraw(false);
         String errors = fn.findAndAddToFileSetModel(gpxFileSetModel, options);
@@ -1416,7 +1420,9 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         }
         if(shell != null) {
             waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
-            if(waitCursor != null) shell.setCursor(waitCursor);
+            if(waitCursor != null) {
+                shell.setCursor(waitCursor);
+            }
         }
         treeViewer.getTree().setRedraw(false);
 
