@@ -1202,7 +1202,8 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         int filterIndex = 0;
         if(useConverters) {
             // Use the index of the preferred extension as the default filter
-            IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
+            IPreferenceStore prefs = Activator.getDefault()
+                .getPreferenceStore();
             filterIndex = prefs.getInt(P_PREFERRED_FILE_EXTENSION);
             ArrayList<String> extList = new ArrayList<String>();
             for(ConverterDescriptor converter : converters) {
@@ -1307,18 +1308,28 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             SWTUtils.errMsgAsync("Could not create FindNear instance");
             return;
         }
+        // TODO Check this is fixed
+        Cursor waitCursor = null;
         Shell shell = Display.getCurrent().getActiveShell();
-        // TODO Fix this
-        Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
-        if(waitCursor != null) shell.setCursor(waitCursor);
+        if(shell == null) {
+            shell = Display.getDefault().getActiveShell();
+        }
+        if(shell != null) {
+            waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
+            if(waitCursor != null) shell.setCursor(waitCursor);
+        }
         treeViewer.getTree().setRedraw(false);
         for(GpxFileModel model : gpxFileSetModel.getGpxFileModels()) {
             fn.processGpxFileModel(model, Mode.CHECK, options);
         }
         treeViewer.getTree().setRedraw(true);
         treeViewer.refresh(true);
-        shell.setCursor(null);
-        waitCursor.dispose();
+        if(shell != null) {
+            shell.setCursor(null);
+            if(waitCursor != null) {
+                waitCursor.dispose();
+            }
+        }
     }
 
     /**
@@ -1342,17 +1353,27 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             SWTUtils.errMsgAsync("Could not create FindNear instance");
             return;
         }
+        // TODO Check this is fixed
+        Cursor waitCursor = null;
         Shell shell = Display.getCurrent().getActiveShell();
-        // TODO Fix this
-        Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
-        if(waitCursor != null) shell.setCursor(waitCursor);
+        if(shell == null) {
+            shell = Display.getDefault().getActiveShell();
+        }
+        if(shell != null) {
+            waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
+            if(waitCursor != null) shell.setCursor(waitCursor);
+        }
         treeViewer.getTree().setRedraw(false);
         String errors = fn.findAndAddToFileSetModel(gpxFileSetModel, options);
         // All, done, restore things
         treeViewer.getTree().setRedraw(true);
         treeViewer.refresh(true);
-        shell.setCursor(null);
-        waitCursor.dispose();
+        if(shell != null) {
+            shell.setCursor(null);
+            if(waitCursor != null) {
+                waitCursor.dispose();
+            }
+        }
 
         // Display errors
         if(errors != null && errors.length() > 0) {
@@ -1387,10 +1408,16 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             SWTUtils.errMsgAsync("Could not create FindNear instance");
             return;
         }
+        // TODO Check this is fixed
+        Cursor waitCursor = null;
         Shell shell = Display.getCurrent().getActiveShell();
-        // TODO Fix this
-        Cursor waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
-        if(waitCursor != null) shell.setCursor(waitCursor);
+        if(shell == null) {
+            shell = Display.getDefault().getActiveShell();
+        }
+        if(shell != null) {
+            waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
+            if(waitCursor != null) shell.setCursor(waitCursor);
+        }
         treeViewer.getTree().setRedraw(false);
 
         // Null the out PrintStream
@@ -1411,8 +1438,12 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         treeViewer.getTree().setRedraw(true);
         treeViewer.refresh(true);
         treeViewer.expandToLevel(treeLevel);
-        shell.setCursor(null);
-        waitCursor.dispose();
+        if(shell != null) {
+            shell.setCursor(null);
+            if(waitCursor != null) {
+                waitCursor.dispose();
+            }
+        }
 
         // Display errors
         String errors = baosErr.toString();

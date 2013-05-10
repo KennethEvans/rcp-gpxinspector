@@ -692,17 +692,12 @@ public class KmlUtils implements IPreferenceConstants
         Matcher matcher = pattern.matcher(text);
         if(matcher.find()) {
             String match = matcher.group();
-            System.out.println(match);
             int len = match.length();
-            System.out.println(len);
             if(match.startsWith("<coordinates>")
                 && match.endsWith("</coordinates>")) {
                 match = match.substring(13, len - 14);
-                System.out.println(match);
                 String[] tokens = match.split(",");
-                System.out.println(tokens.length);
                 for(int i = 0; i < 3; i++) {
-                    System.out.println(tokens[i]);
                     try {
                         coords[i] = Double.parseDouble(tokens[i]);
                     } catch(NumberFormatException ex) {
@@ -714,7 +709,6 @@ public class KmlUtils implements IPreferenceConstants
                     + "clipboard placemark");
                 return null;
             }
-            System.out.println(match);
         } else {
             SWTUtils.errMsgAsync("Could not parse placemark from Clipboard. "
                 + "May not be a placemark.");
