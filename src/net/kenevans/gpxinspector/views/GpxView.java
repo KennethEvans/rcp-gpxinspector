@@ -1310,9 +1310,13 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         }
         // TODO Check this is fixed
         Cursor waitCursor = null;
-        Shell shell = Display.getCurrent().getActiveShell();
-        if(shell == null) {
-            shell = Display.getDefault().getActiveShell();
+        Shell shell = null;
+        Display display = Display.getCurrent();
+        if(display == null) {
+            display = Display.getDefault();
+        }
+        if(display != null) {
+            shell = display.getActiveShell();
         }
         if(shell != null) {
             waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
@@ -1357,9 +1361,13 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         }
         // TODO Check this is fixed
         Cursor waitCursor = null;
-        Shell shell = Display.getCurrent().getActiveShell();
-        if(shell == null) {
-            shell = Display.getDefault().getActiveShell();
+        Shell shell = null;
+        Display display = Display.getCurrent();
+        if(display == null) {
+            display = Display.getDefault();
+        }
+        if(display != null) {
+            shell = display.getActiveShell();
         }
         if(shell != null) {
             waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
@@ -1414,9 +1422,13 @@ public class GpxView extends ViewPart implements IPreferenceConstants
         }
         // TODO Check this is fixed
         Cursor waitCursor = null;
-        Shell shell = Display.getCurrent().getActiveShell();
-        if(shell == null) {
-            shell = Display.getDefault().getActiveShell();
+        Shell shell = null;
+        Display display = Display.getCurrent();
+        if(display == null) {
+            display = Display.getDefault();
+        }
+        if(display != null) {
+            shell = display.getActiveShell();
         }
         if(shell != null) {
             waitCursor = new Cursor(shell.getDisplay(), SWT.CURSOR_WAIT);
