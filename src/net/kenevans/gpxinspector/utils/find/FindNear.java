@@ -9,8 +9,8 @@ import java.util.List;
 
 import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.core.utils.Utils;
-import net.kenevans.gpx.TrksegType;
-import net.kenevans.gpx.WptType;
+import net.kenevans.gpxcombined.TrksegType;
+import net.kenevans.gpxcombined.WptType;
 import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;

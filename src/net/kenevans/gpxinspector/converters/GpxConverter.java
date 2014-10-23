@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.core.utils.Utils;
-import net.kenevans.gpx.GpxType;
+import net.kenevans.gpxcombined.GpxType;
 import net.kenevans.parser.GPXParser;
 
 /*

@@ -3,7 +3,7 @@ package net.kenevans.gpxinspector.converters;
 import java.io.File;
 import java.util.List;
 
-import net.kenevans.gpx.GpxType;
+import net.kenevans.gpxcombined.GpxType;
 import net.kenevans.gpxinspector.plugin.Activator;
 
 import org.eclipse.core.runtime.IConfigurationElement;

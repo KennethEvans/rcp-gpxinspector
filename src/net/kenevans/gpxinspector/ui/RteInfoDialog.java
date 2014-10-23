@@ -1,7 +1,7 @@
 package net.kenevans.gpxinspector.ui;
 
-import net.kenevans.gpx.ExtensionsType;
-import net.kenevans.gpx.RteType;
+import net.kenevans.gpxcombined.ExtensionsType;
+import net.kenevans.gpxcombined.RteType;
 import net.kenevans.gpxinspector.model.GpxRouteModel;
 import net.kenevans.gpxinspector.utils.LabeledList;
 import net.kenevans.gpxinspector.utils.LabeledText;

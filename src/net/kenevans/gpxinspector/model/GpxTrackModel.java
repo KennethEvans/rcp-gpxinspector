@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.kenevans.core.utils.SWTUtils;
-import net.kenevans.gpx.TrkType;
-import net.kenevans.gpx.TrksegType;
+import net.kenevans.gpxcombined.TrkType;
+import net.kenevans.gpxcombined.TrksegType;
 import net.kenevans.gpxinspector.ui.TrkInfoDialog;
 import net.kenevans.parser.GPXClone;
 

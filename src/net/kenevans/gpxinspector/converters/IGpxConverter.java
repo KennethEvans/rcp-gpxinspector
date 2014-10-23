@@ -2,7 +2,7 @@ package net.kenevans.gpxinspector.converters;
 
 import java.io.File;
 
-import net.kenevans.gpx.GpxType;
+import net.kenevans.gpxcombined.GpxType;
 
 /*
  * Created on May 11, 2011

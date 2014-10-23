@@ -6,10 +6,10 @@ import java.util.TimeZone;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import net.kenevans.gpx.ExtensionsType;
-import net.kenevans.gpx.TrkType;
-import net.kenevans.gpx.TrksegType;
-import net.kenevans.gpx.WptType;
+import net.kenevans.gpxcombined.ExtensionsType;
+import net.kenevans.gpxcombined.TrkType;
+import net.kenevans.gpxcombined.TrksegType;
+import net.kenevans.gpxcombined.WptType;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.LabeledList;
