@@ -6,8 +6,8 @@ import java.util.List;
 import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpxcombined.TrkType;
 import net.kenevans.gpxcombined.TrksegType;
+import net.kenevans.gpxcombined.parser.GPXClone;
 import net.kenevans.gpxinspector.ui.TrkInfoDialog;
-import net.kenevans.parser.GPXClone;
 
 import org.eclipse.swt.widgets.Display;
 

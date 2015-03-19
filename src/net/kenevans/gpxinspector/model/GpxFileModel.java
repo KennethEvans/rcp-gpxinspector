@@ -12,12 +12,12 @@ import net.kenevans.gpxcombined.RteType;
 import net.kenevans.gpxcombined.TrkType;
 import net.kenevans.gpxcombined.TrksegType;
 import net.kenevans.gpxcombined.WptType;
+import net.kenevans.gpxcombined.parser.GPXClone;
 import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.plugin.Activator;
 import net.kenevans.gpxinspector.ui.FileInfoDialog;
 import net.kenevans.gpxinspector.ui.SaveFilesDialog;
 import net.kenevans.gpxinspector.utils.GpxException;
-import net.kenevans.parser.GPXClone;
 
 import org.eclipse.swt.widgets.Display;
 

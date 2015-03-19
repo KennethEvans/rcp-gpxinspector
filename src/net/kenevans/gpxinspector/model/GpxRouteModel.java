@@ -6,8 +6,8 @@ import java.util.List;
 import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpxcombined.RteType;
 import net.kenevans.gpxcombined.WptType;
+import net.kenevans.gpxcombined.parser.GPXClone;
 import net.kenevans.gpxinspector.ui.RteInfoDialog;
-import net.kenevans.parser.GPXClone;
 
 import org.eclipse.swt.widgets.Display;
 
