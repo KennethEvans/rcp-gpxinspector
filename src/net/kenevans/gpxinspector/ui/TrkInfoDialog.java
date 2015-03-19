@@ -6,10 +6,10 @@ import java.util.TimeZone;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import net.kenevans.gpxcombined.ExtensionsType;
-import net.kenevans.gpxcombined.TrkType;
-import net.kenevans.gpxcombined.TrksegType;
-import net.kenevans.gpxcombined.WptType;
+import net.kenevans.gpxtrackpointextensionsv1.ExtensionsType;
+import net.kenevans.gpxtrackpointextensionsv1.TrkType;
+import net.kenevans.gpxtrackpointextensionsv1.TrksegType;
+import net.kenevans.gpxtrackpointextensionsv1.WptType;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.LabeledList;
@@ -689,7 +689,7 @@ public class TrkInfoDialog extends InfoDialog
         clipboard.dispose();
 
         // DEBUG
-//        System.out.println(string);
+        // System.out.println(string);
     }
 
 }

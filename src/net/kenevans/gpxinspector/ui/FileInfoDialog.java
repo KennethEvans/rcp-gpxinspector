@@ -3,14 +3,14 @@ package net.kenevans.gpxinspector.ui;
 import java.io.File;
 import java.util.Date;
 
-import net.kenevans.gpxcombined.BoundsType;
-import net.kenevans.gpxcombined.CopyrightType;
-import net.kenevans.gpxcombined.EmailType;
-import net.kenevans.gpxcombined.ExtensionsType;
-import net.kenevans.gpxcombined.GpxType;
-import net.kenevans.gpxcombined.LinkType;
-import net.kenevans.gpxcombined.MetadataType;
-import net.kenevans.gpxcombined.PersonType;
+import net.kenevans.gpxtrackpointextensionsv1.BoundsType;
+import net.kenevans.gpxtrackpointextensionsv1.CopyrightType;
+import net.kenevans.gpxtrackpointextensionsv1.EmailType;
+import net.kenevans.gpxtrackpointextensionsv1.ExtensionsType;
+import net.kenevans.gpxtrackpointextensionsv1.GpxType;
+import net.kenevans.gpxtrackpointextensionsv1.LinkType;
+import net.kenevans.gpxtrackpointextensionsv1.MetadataType;
+import net.kenevans.gpxtrackpointextensionsv1.PersonType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.utils.LabeledList;
 import net.kenevans.gpxinspector.utils.LabeledText;
@@ -113,7 +113,8 @@ public class FileInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:",
+            TEXT_WIDTH_LARGE);
         labeledText.getText().setEditable(false);
         GridDataFactory.fillDefaults().grab(true, false).grab(true, false)
             .applyTo(labeledText.getComposite());
@@ -217,7 +218,8 @@ public class FileInfoDialog extends InfoDialog
         createCopyrightGroup(box);
 
         // Desc
-        LabeledText labeledText = new LabeledText(box, "Desc:", TEXT_WIDTH_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Desc:",
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         descText = labeledText.getText();
@@ -275,7 +277,8 @@ public class FileInfoDialog extends InfoDialog
         createLinkGroup(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:",
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         authorNameText = labeledText.getText();
@@ -324,7 +327,8 @@ public class FileInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Link
-        LabeledText labeledText = new LabeledText(box, "Href:", TEXT_WIDTH_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Href:",
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         linkHrefText = labeledText.getText();

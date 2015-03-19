@@ -1,7 +1,7 @@
 package net.kenevans.gpxinspector.ui;
 
-import net.kenevans.gpxcombined.ExtensionsType;
-import net.kenevans.gpxcombined.WptType;
+import net.kenevans.gpxtrackpointextensionsv1.ExtensionsType;
+import net.kenevans.gpxtrackpointextensionsv1.WptType;
 import net.kenevans.gpxinspector.kml.KmlUtils;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxTrackSegmentModel;

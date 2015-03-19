@@ -7,12 +7,12 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import net.kenevans.core.utils.SWTUtils;
-import net.kenevans.gpxcombined.GpxType;
-import net.kenevans.gpxcombined.RteType;
-import net.kenevans.gpxcombined.TrkType;
-import net.kenevans.gpxcombined.TrksegType;
-import net.kenevans.gpxcombined.WptType;
-import net.kenevans.gpxcombined.parser.GPXClone;
+import net.kenevans.gpxtrackpointextensionsv1.GpxType;
+import net.kenevans.gpxtrackpointextensionsv1.RteType;
+import net.kenevans.gpxtrackpointextensionsv1.TrkType;
+import net.kenevans.gpxtrackpointextensionsv1.TrksegType;
+import net.kenevans.gpxtrackpointextensionsv1.WptType;
+import net.kenevans.gpxtrackpointextensionsv1.parser.GPXClone;
 import net.kenevans.gpxinspector.converters.ConverterDescriptor;
 import net.kenevans.gpxinspector.plugin.Activator;
 import net.kenevans.gpxinspector.ui.FileInfoDialog;

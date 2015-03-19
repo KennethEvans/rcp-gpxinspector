@@ -9,8 +9,8 @@ import java.util.List;
 
 import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.core.utils.Utils;
-import net.kenevans.gpxcombined.TrksegType;
-import net.kenevans.gpxcombined.WptType;
+import net.kenevans.gpxtrackpointextensionsv1.TrksegType;
+import net.kenevans.gpxtrackpointextensionsv1.WptType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
@@ -293,7 +293,7 @@ public class FindTracksAndWaypoints0
                 SWTUtils.errMsg("Unexpected end of file at line " + lineNum
                     + ":\n" + file.getName());
                 in.close();
-               return;
+                return;
             }
             if(!line.equals(GPSLINK_ID)) {
                 SWTUtils.errMsg("Invalid GPSLink file (Bad ID) at line "

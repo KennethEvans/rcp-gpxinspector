@@ -9,9 +9,9 @@ import java.util.TimeZone;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import net.kenevans.gpxcombined.TrkType;
-import net.kenevans.gpxcombined.TrksegType;
-import net.kenevans.gpxcombined.WptType;
+import net.kenevans.gpxtrackpointextensionsv1.TrkType;
+import net.kenevans.gpxtrackpointextensionsv1.TrksegType;
+import net.kenevans.gpxtrackpointextensionsv1.WptType;
 
 /*
  * Created on Sep 6, 2010

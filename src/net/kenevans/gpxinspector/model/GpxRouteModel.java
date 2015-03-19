@@ -4,9 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import net.kenevans.core.utils.SWTUtils;
-import net.kenevans.gpxcombined.RteType;
-import net.kenevans.gpxcombined.WptType;
-import net.kenevans.gpxcombined.parser.GPXClone;
+import net.kenevans.gpxtrackpointextensionsv1.RteType;
+import net.kenevans.gpxtrackpointextensionsv1.WptType;
+import net.kenevans.gpxtrackpointextensionsv1.parser.GPXClone;
 import net.kenevans.gpxinspector.ui.RteInfoDialog;
 
 import org.eclipse.swt.widgets.Display;

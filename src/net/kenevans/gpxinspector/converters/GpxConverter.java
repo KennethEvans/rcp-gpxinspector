@@ -4,8 +4,8 @@ import java.io.File;
 
 import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.core.utils.Utils;
-import net.kenevans.gpxcombined.GpxType;
-import net.kenevans.gpxcombined.parser.GPXParser;
+import net.kenevans.gpxtrackpointextensionsv1.GpxType;
+import net.kenevans.gpxtrackpointextensionsv1.parser.GPXParser;
 
 /*
  * Created on May 11, 2011

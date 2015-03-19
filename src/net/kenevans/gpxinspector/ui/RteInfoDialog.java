@@ -1,7 +1,7 @@
 package net.kenevans.gpxinspector.ui;
 
-import net.kenevans.gpxcombined.ExtensionsType;
-import net.kenevans.gpxcombined.RteType;
+import net.kenevans.gpxtrackpointextensionsv1.ExtensionsType;
+import net.kenevans.gpxtrackpointextensionsv1.RteType;
 import net.kenevans.gpxinspector.model.GpxRouteModel;
 import net.kenevans.gpxinspector.utils.LabeledList;
 import net.kenevans.gpxinspector.utils.LabeledText;
@@ -84,7 +84,8 @@ public class RteInfoDialog extends InfoDialog
         GridDataFactory.fillDefaults().grab(true, true).applyTo(box);
 
         // Name
-        LabeledText labeledText = new LabeledText(box, "Name:", TEXT_WIDTH_LARGE);
+        LabeledText labeledText = new LabeledText(box, "Name:",
+            TEXT_WIDTH_LARGE);
         GridDataFactory.fillDefaults().grab(true, false)
             .applyTo(labeledText.getComposite());
         nameText = labeledText.getText();
