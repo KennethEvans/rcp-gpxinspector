@@ -42,6 +42,8 @@ public class GpxUtils
     /** Multiplier to convert millisec to hours. */
     public static final double MS2HR = .001 * SEC2HR;
 
+    /** String used for non-available data */
+    private static final String NOT_AVAILABLE = "NA";
     /**
      * The speed in m/sec below which there is considered to be no movement for
      * the purposes of calculating Moving Time. This is, of course, arbitrary.
@@ -108,8 +110,8 @@ public class GpxUtils
         int nPoints = 0;
         XMLGregorianCalendar xgcal = null;
         GregorianCalendar gcal = null;
-
         for(WptType wpt : seg.getTrkpt()) {
+            ;
             xgcal = wpt.getTime();
             if(xgcal != null) {
                 gcal = xgcal.toGregorianCalendar(TimeZone.getTimeZone("GMT"),
@@ -185,6 +187,7 @@ public class GpxUtils
             movingTime = Double.NaN;
         }
         stat.setNPoints(nPoints);
+        stat.setStartTime(firstTime);
         stat.setElapsedTime(deltaTime);
         stat.setMovingTime(movingTime);
         stat.setLength(length);
@@ -216,6 +219,7 @@ public class GpxUtils
         int nPoints = 0;
         double length = 0;
         double movingTime = 0;
+        double firstTime = 0;
         double elapsedTime = 0;
         double maxSpeed = 0;
         double avgSpeed = 0;
@@ -223,8 +227,13 @@ public class GpxUtils
         double maxEle = -Double.MAX_VALUE, minEle = Double.MAX_VALUE;
         double avgEle = 0;
         TrackStat segStat;
+        boolean first = true;
         for(TrksegType seg : segments) {
             segStat = trksegStatistics(seg);
+            if(first) {
+                first = false;
+                firstTime = segStat.getStartTime();
+            }
             nPoints += segStat.getNPoints();
             length += segStat.getLength();
             movingTime += segStat.getMovingTime();
@@ -271,6 +280,7 @@ public class GpxUtils
             movingTime = Double.NaN;
         }
         stat.setNPoints(nPoints);
+        stat.setStartTime(firstTime);
         stat.setElapsedTime(elapsedTime);
         stat.setMovingTime(movingTime);
         stat.setLength(length);
@@ -283,15 +293,89 @@ public class GpxUtils
         return stat;
     }
 
+    /**
+     * Returns a time string of the form HH:mm:ss from the specified date
+     * number. If the input is null, then the value of NOT_AVAILABLE is
+     * returned. The string represents GMT time.
+     * 
+     * @param startTime The long date number.
+     * @return
+     * @see #NOT_AVAILABLE
+     */
     public static String timeString(double time) {
         if(Double.isNaN(time)) {
-            return "NA";
+            return NOT_AVAILABLE;
         }
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         long longTime = Math.round(time);
         Date date = new Date(longTime);
         return formatter.format(date);
+    }
+
+    /**
+     * Returns a time string of the form mm/dd/yyyy from the specified
+     * XMLGregorianCalendar. If the input is null, then the value of
+     * NOT_AVAILABLE is returned.
+     * 
+     * @param xgcal
+     * @return
+     * @see #NOT_AVAILABLE
+     */
+    public static String getSpreadsheetTimeFromXMLGregorianCalendar(
+        XMLGregorianCalendar xgcal) {
+        if(xgcal == null) {
+            return NOT_AVAILABLE;
+        }
+        GregorianCalendar gcal = xgcal.toGregorianCalendar(
+            TimeZone.getTimeZone("GMT"), null, null);
+        // Get the date
+        Date date = gcal.getTime();
+        // Make a new local GregorianCalendar with this date
+        gcal = new GregorianCalendar();
+        gcal.setTime(date);
+        String time = String.format("%02d/%02d/%04d",
+            gcal.get(GregorianCalendar.MONTH) + 1,
+            gcal.get(GregorianCalendar.DAY_OF_MONTH),
+            gcal.get(GregorianCalendar.YEAR));
+        return time;
+    }
+
+    /**
+     * Returns a time string of the form yyyy-MM-dd'T'HH:mm:ss'Z' from the
+     * specified date number. If the input is null, then the value of
+     * NOT_AVAILABLE is returned. The string represents GMT time.
+     * 
+     * @param startTime The long date number.
+     * @return
+     * @see #NOT_AVAILABLE
+     */
+    public static String getGmtTimeString(double startTime) {
+        if(Double.isNaN(startTime)) {
+            return NOT_AVAILABLE;
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = new Date(Math.round(startTime));
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return formatter.format(date);
+    }
+
+    /**
+     * Returns a time string of the form given by Date.toString() from the
+     * specified date number. If the input is null, then the value of
+     * NOT_AVAILABLE is returned. The string represents local time.
+     * 
+     * @param startTime The long date number.
+     * @return
+     * @see #NOT_AVAILABLE
+     */
+    public static String getLocalTimeString(double startTime) {
+        if(Double.isNaN(startTime)) {
+            return NOT_AVAILABLE;
+        }
+        Date date = new Date(Math.round(startTime));
+        return date.toString();
     }
 
 }

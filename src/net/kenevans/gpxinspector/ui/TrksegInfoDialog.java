@@ -174,7 +174,7 @@ public class TrksegInfoDialog extends TrkInfoDialog
                 continue;
             }
         }
-        time = getSpreadsheetTimeFromXMLGregorianCalendar(xgcal);
+        time = GpxUtils.getSpreadsheetTimeFromXMLGregorianCalendar(xgcal);
 
         // They also don't have a name, use the dialog title
         copySummary(getTitle(), time, "", stat);

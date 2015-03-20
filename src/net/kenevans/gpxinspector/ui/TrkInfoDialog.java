@@ -1,20 +1,17 @@
 package net.kenevans.gpxinspector.ui;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import net.kenevans.gpxtrackpointextensionsv1.ExtensionsType;
-import net.kenevans.gpxtrackpointextensionsv1.TrkType;
-import net.kenevans.gpxtrackpointextensionsv1.TrksegType;
-import net.kenevans.gpxtrackpointextensionsv1.WptType;
+import net.kenevans.core.utils.SWTUtils;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.LabeledList;
 import net.kenevans.gpxinspector.utils.LabeledText;
 import net.kenevans.gpxinspector.utils.TrackStat;
+import net.kenevans.gpxtrackpointextensionsv1.ExtensionsType;
+import net.kenevans.gpxtrackpointextensionsv1.TrkType;
+import net.kenevans.gpxtrackpointextensionsv1.TrksegType;
+import net.kenevans.gpxtrackpointextensionsv1.WptType;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -438,8 +435,13 @@ public class TrkInfoDialog extends InfoDialog
      * Sets the statistics controls from the given statistics.
      */
     protected void setStatistics(TrackStat stat) {
+        String statString = "";
         // Time
-        String statString = "Time: Elapsed: ";
+        String gmtString = GpxUtils.getGmtTimeString(stat.getStartTime());
+        String localString = GpxUtils.getLocalTimeString(stat.getStartTime());
+        statString += "Time: \tLocal: " + localString + ", GMT: " + gmtString
+            + SWTUtils.LS;
+        statString += "\tElapsed: ";
         double val = stat.getElapsedTime();
         statString += GpxUtils.timeString(val);
         statString += ", Moving: ";
@@ -542,34 +544,6 @@ public class TrkInfoDialog extends InfoDialog
     }
 
     /**
-     * Returns a time string of the form mm/dd/yyyy from the specified
-     * XMLGregorianCalendar. If the input is null, then the value of
-     * NOT_AVAILABLE is returned.
-     * 
-     * @param xgcal
-     * @return
-     * @see #NOT_AVAILABLE
-     */
-    public static String getSpreadsheetTimeFromXMLGregorianCalendar(
-        XMLGregorianCalendar xgcal) {
-        if(xgcal == null) {
-            return NOT_AVAILABLE;
-        }
-        GregorianCalendar gcal = xgcal.toGregorianCalendar(
-            TimeZone.getTimeZone("GMT"), null, null);
-        // Get the date
-        Date date = gcal.getTime();
-        // Make a new local GregorianCalendar with this date
-        gcal = new GregorianCalendar();
-        gcal.setTime(date);
-        String time = String.format("%02d/%02d/%04d",
-            gcal.get(GregorianCalendar.MONTH) + 1,
-            gcal.get(GregorianCalendar.DAY_OF_MONTH),
-            gcal.get(GregorianCalendar.YEAR));
-        return time;
-    }
-
-    /**
      * Copies a comma-separated track summary to the clipboard. This routine
      * should be overwritten in inheriting classes to handle different models.
      */
@@ -588,7 +562,7 @@ public class TrkInfoDialog extends InfoDialog
                 }
             }
         }
-        time = getSpreadsheetTimeFromXMLGregorianCalendar(xgcal);
+        time = GpxUtils.getSpreadsheetTimeFromXMLGregorianCalendar(xgcal);
 
         copySummary(trk.getName(), time,
             trk.getDesc() == null ? "" : trk.getDesc(), stat);

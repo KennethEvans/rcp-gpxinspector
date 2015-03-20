@@ -29,6 +29,8 @@ public class TrackStat
     private int nPoints = 0;
     /** The length in meters. */
     private double length = 0;
+    /** The start time in millisec. */
+    private double startTime;
     /** The elapsed time in millisec. */
     private double elapsedTime = 0;
     /** The moving time in millisec. */
@@ -66,10 +68,12 @@ public class TrackStat
      * @param minEle
      * @param avgEle
      */
-    public TrackStat(int nPoints, double length, double elapsedTime,
-        double movingTime, double maxSpeed, double avgSpeed,
-        double avgMovingSpeed, double maxEle, double minEle, double avgEle) {
+    public TrackStat(int nPoints, double length, double startTime,
+        double elapsedTime, double movingTime, double maxSpeed,
+        double avgSpeed, double avgMovingSpeed, double maxEle, double minEle,
+        double avgEle) {
         this.nPoints = nPoints;
+        this.startTime = startTime;
         this.elapsedTime = elapsedTime;
         this.movingTime = movingTime;
         this.maxSpeed = maxSpeed;
@@ -106,6 +110,20 @@ public class TrackStat
      */
     public void setLength(double length) {
         this.length = length;
+    }
+
+    /**
+     * @return The value of startTime.
+     */
+    public double getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * @param startTime The new value for startTime.
+     */
+    public void setStartTime(double startTime) {
+        this.startTime = startTime;
     }
 
     /**
