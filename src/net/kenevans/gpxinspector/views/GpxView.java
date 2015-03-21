@@ -1518,17 +1518,44 @@ public class GpxView extends ViewPart implements IPreferenceConstants
     public GpxFileSetModel getInitalInput() {
         IPreferenceStore prefs = Activator.getDefault().getPreferenceStore();
         boolean useStartupFiles = prefs.getBoolean(P_USE_STARTUP_FILES);
-        String initalFilesString = prefs.getString(P_STARTUP_FILES);
+        String startupFilesString = prefs.getString(P_STARTUP_FILES);
         String[] initialFiles;
+        ArrayList<String> initialFilesList = new ArrayList<String>();
         try {
+            // Check command-line arguments for files
+            String[] args = Platform.getCommandLineArgs();
+            if(args != null && args.length > 0) {
+                File file = null;
+                for(String arg : args) {
+                    System.out.println(arg);
+                    if(arg.startsWith("-")) {
+                        continue;
+                    }
+                    if(arg.equals("net.kenevans.gpxinspector.product")) {
+                        continue;
+                    }
+                    System.out.println("Checking " + arg);
+                    file = new File(arg);
+                    if(file.exists()) {
+                        initialFilesList.add(arg);
+                    }
+                }
+            }
+            // Get initial files from preferences
             // Note a blank string will give 1 blank item, not 0.
-            if(!useStartupFiles || initalFilesString == null
-                || initalFilesString.length() == 0) {
+            if(!useStartupFiles || startupFilesString == null
+                || startupFilesString.length() == 0) {
                 initialFiles = new String[0];
             } else {
-                initialFiles = initalFilesString.split(STARTUP_FILE_SEPARATOR);
+                initialFiles = startupFilesString.split(STARTUP_FILE_SEPARATOR);
             }
-            gpxFileSetModel = new GpxFileSetModel(initialFiles);
+            for(String initialFile : initialFiles) {
+                initialFilesList.add(initialFile);
+            }
+            String[] startupFiles = initialFilesList
+                .toArray(new String[initialFilesList.size()]);
+
+            gpxFileSetModel = new GpxFileSetModel(startupFiles);
         } catch(Exception ex) {
             SWTUtils.excMsgAsync("Error parsing initial input", ex);
         }
