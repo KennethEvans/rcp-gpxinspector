@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.Beta10
 Bundle-Activator: net.kenevans.gpxinspector.plugin.Activator
 Bundle-Vendor: kenevans.net
 Require-Bundle: org.eclipse.help.ui;bundle-version="3.5.0",
+ org.eclipse.help.webapp;bundle-version="3.6.301",
  net.kenevans.gpx;bundle-version="1.1.0",
  net.kenevans.jak;bundle-version="1.0.0",
  net.kenevans.jaxb;bundle-version="2.2.1",

@@ -1527,14 +1527,12 @@ public class GpxView extends ViewPart implements IPreferenceConstants
             if(args != null && args.length > 0) {
                 File file = null;
                 for(String arg : args) {
-                    System.out.println(arg);
                     if(arg.startsWith("-")) {
                         continue;
                     }
                     if(arg.equals("net.kenevans.gpxinspector.product")) {
                         continue;
                     }
-                    System.out.println("Checking " + arg);
                     file = new File(arg);
                     if(file.exists()) {
                         initialFilesList.add(arg);
