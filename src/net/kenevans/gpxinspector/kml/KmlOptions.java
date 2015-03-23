@@ -20,6 +20,7 @@ public class KmlOptions implements IPreferenceConstants
     private double trkLineWidth;
     private int trkColorMode;
     private Boolean useTrkIcon;
+    private Boolean useTrkTrack;
     private String trkIconUrl;
 
     private String rteColor;
@@ -55,6 +56,7 @@ public class KmlOptions implements IPreferenceConstants
         trkLineWidth = Double.parseDouble(stringVal);
         trkColorMode = prefs.getInt(P_TRK_COLOR_MODE);
         useTrkIcon = prefs.getBoolean(P_USE_TRK_ICON);
+        useTrkTrack = prefs.getBoolean(P_USE_TRK_TRACK);
         trkIconUrl = prefs.getString(P_TRK_ICON_URL);
 
         rteColor = prefs.getString(P_RTE_COLOR);
@@ -165,6 +167,20 @@ public class KmlOptions implements IPreferenceConstants
      */
     public void setUseTrkIcon(Boolean useTrkIcon) {
         this.useTrkIcon = useTrkIcon;
+    }
+
+    /**
+     * @return The value of useTrkTrack.
+     */
+    public Boolean getUseTrkTrack() {
+        return useTrkTrack;
+    }
+
+    /**
+     * @param useTrkTrack The new value for useTrkTrack.
+     */
+    public void setUseTrkTrack(Boolean useTrkTrack) {
+        this.useTrkTrack = useTrkTrack;
     }
 
     /**

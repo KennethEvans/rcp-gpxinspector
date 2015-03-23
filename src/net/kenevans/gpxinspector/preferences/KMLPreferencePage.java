@@ -63,6 +63,8 @@ public class KMLPreferencePage extends FieldEditorPreferencePage implements
             "Track color mode:", kmlColorModes, parent));
         addField(new BooleanFieldEditor(IPreferenceConstants.P_USE_TRK_ICON,
             "Use icon at start of track:", parent));
+        addField(new BooleanFieldEditor(IPreferenceConstants.P_USE_TRK_TRACK,
+            "Generate KML Track with TimeStamps that can be played:", parent));
 
         addField(new StringFieldEditor(IPreferenceConstants.P_RTE_COLOR,
             "Route color:", parent));

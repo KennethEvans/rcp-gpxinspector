@@ -343,6 +343,54 @@ public class GpxUtils
 
     /**
      * Returns a time string of the form yyyy-MM-dd'T'HH:mm:ss'Z' from the
+     * specified XMLGregorianCalendar. If the input is null, then the value of
+     * NOT_AVAILABLE is returned.
+     * 
+     * @param xgcal
+     * @return
+     * @see #NOT_AVAILABLE
+     */
+    public static String getGmtTimeFromXMLGregorianCalendar(
+        XMLGregorianCalendar xgcal) {
+        if(xgcal == null) {
+            return NOT_AVAILABLE;
+        }
+        GregorianCalendar gcal = xgcal.toGregorianCalendar(
+            TimeZone.getTimeZone("GMT"), null, null);
+        // Get the date
+        Date date = gcal.getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat(
+            "yyyy-MM-dd'T'HH:mm:ss'Z'");
+        // Make a new local GregorianCalendar with this date
+        gcal = new GregorianCalendar();
+        gcal.setTime(date);
+        formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return formatter.format(date);
+    }
+
+    /**
+     * Returns a time string of the form given by Date.toString() from the
+     * specified XMLGregorianCalendar. If the input is null, then the value of
+     * NOT_AVAILABLE is returned.
+     * 
+     * @param xgcal
+     * @return
+     * @see #NOT_AVAILABLE
+     */
+    public static String getLocalTimeFromXMLGregorianCalendar(
+        XMLGregorianCalendar xgcal) {
+        if(xgcal == null) {
+            return NOT_AVAILABLE;
+        }
+        GregorianCalendar gcal = xgcal.toGregorianCalendar(
+            TimeZone.getTimeZone("GMT"), null, null);
+        // Get the date
+        Date date = gcal.getTime();
+        return date.toString();
+    }
+
+    /**
+     * Returns a time string of the form yyyy-MM-dd'T'HH:mm:ss'Z' from the
      * specified date number. If the input is null, then the value of
      * NOT_AVAILABLE is returned. The string represents GMT time.
      * 
@@ -354,9 +402,9 @@ public class GpxUtils
         if(Double.isNaN(startTime)) {
             return NOT_AVAILABLE;
         }
+        Date date = new Date(Math.round(startTime));
         SimpleDateFormat formatter = new SimpleDateFormat(
             "yyyy-MM-dd'T'HH:mm:ss'Z'");
-        Date date = new Date(Math.round(startTime));
         formatter.setTimeZone(TimeZone.getTimeZone("GMT"));
         return formatter.format(date);
     }

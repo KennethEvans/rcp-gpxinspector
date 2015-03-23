@@ -35,7 +35,10 @@ import de.micromata.opengis.kml.v_2_2_0.KmlFactory;
 import de.micromata.opengis.kml.v_2_2_0.LineString;
 import de.micromata.opengis.kml.v_2_2_0.MultiGeometry;
 import de.micromata.opengis.kml.v_2_2_0.Placemark;
+import de.micromata.opengis.kml.v_2_2_0.Snippet;
 import de.micromata.opengis.kml.v_2_2_0.Style;
+import de.micromata.opengis.kml.v_2_2_0.gx.MultiTrack;
+import de.micromata.opengis.kml.v_2_2_0.gx.Track;
 
 /*
  * Created on Aug 23, 2010
@@ -45,6 +48,8 @@ import de.micromata.opengis.kml.v_2_2_0.Style;
 public class KmlUtils implements IPreferenceConstants
 {
     static private boolean VERBOSE = false;
+    /** The line separator for this platform. */
+    public static final String LS = System.getProperty("line.separator");
     /** The number of points for the find circle copied to the clipboard. */
     private static final int N_CIRCLE_POINTS = 101;
     /** The delta used to determine d(lat)/d(radius) and d(lon)/d(radius). */
@@ -165,9 +170,13 @@ public class KmlUtils implements IPreferenceConstants
         Folder routeFolder;
         MultiGeometry mg;
         Placemark placemark;
+        Placemark trackPlacemark;
+        MultiTrack mt;
+        Track track;
         LineString ls = null;
         double lat, lon, alt;
         String fileName;
+        String when;
         List<GpxFileModel> fileModels = fileSetModel.getGpxFileModels();
         for(GpxFileModel fileModel : fileModels) {
             if(!fileModel.getChecked()) {
@@ -230,19 +239,31 @@ public class KmlUtils implements IPreferenceConstants
             List<TrksegType> trackSegments;
             List<WptType> trackPoints;
             trackModels = fileModel.getTrackModels();
-            boolean first = kmlOptions.getUseTrkIcon() ? true : false;
+            boolean useTrackIconFirst;
+            boolean useTrackTrackFirst;
             if(trackModels.size() > 0) {
                 folder = fileFolder.createAndAddFolder().withName("Tracks")
                     .withOpen(true);
             } else {
                 folder = null;
             }
+            trackPlacemark = null;
+            mt = null;
+            track = null;
             for(GpxTrackModel trackModel : trackModels) {
                 if(!trackModel.getChecked()) {
                     continue;
                 }
                 if(VERBOSE) {
                     System.out.println(trackModel.getLabel());
+                }
+                // Make a Placemark for the track
+                if(kmlOptions.getUseTrkTrack()) {
+                    trackPlacemark = folder.createAndAddPlacemark()
+                        .withName(trackModel.getLabel() + " Track")
+                        .withStyleUrl("#trk" + trkColors[nTrack % nTrkColors])
+                        .withSnippetd("");
+                    mt = trackPlacemark.createAndSetMultiTrack();
                 }
                 // Make a Placemark with MultiGeometry
                 placemark = folder.createAndAddPlacemark()
@@ -251,11 +272,15 @@ public class KmlUtils implements IPreferenceConstants
                 // Need MultiGeometry to handle non-connected segments
                 mg = placemark.createAndSetMultiGeometry();
                 trackSegments = trackModel.getTrack().getTrkseg();
-                first = kmlOptions.getUseTrkIcon() ? true : false;
+                useTrackIconFirst = kmlOptions.getUseTrkIcon() ? true : false;
+                useTrackTrackFirst = kmlOptions.getUseTrkTrack() ? true : false;
                 for(TrksegType trackSegment : trackSegments) {
                     // Add a LineString to the MultiGeometry
                     ls = mg.createAndAddLineString().withExtrude(false)
                         .withTessellate(true);
+                    if(mt != null) {
+                        track = mt.createAndAddTrack();
+                    }
                     trackPoints = trackSegment.getTrkpt();
                     for(WptType trackPoint : trackPoints) {
                         if(trackPoint.getLat() != null) {
@@ -273,19 +298,39 @@ public class KmlUtils implements IPreferenceConstants
                         } else {
                             alt = 0;
                         }
+                        if(trackPoint.getTime() != null) {
+                            when = GpxUtils
+                                .getGmtTimeFromXMLGregorianCalendar(trackPoint
+                                    .getTime());
+                        } else {
+                            when = null;
+                        }
                         // Add coordinates to the LineString
-                        if(first) {
-                            // Make a Placemark with an Icon at the first point
-                            // on the track
-                            first = false;
+                        ls.addToCoordinates(lon, lat, alt);
+                        if(track != null) {
+                            // Add coordinates and when to the track
+                            track.addToCoord(lon + " " + lat + " " + alt);
+                            track.addToWhen(when);
+                        }
+                        // Make a Placemark with an icon at the first point
+                        // on the track
+                        if(useTrackIconFirst) {
+                            useTrackIconFirst = false;
                             folder
                                 .createAndAddPlacemark()
                                 .withName(trackModel.getLabel())
+                                .withVisibility(!kmlOptions.getUseTrkTrack())
                                 .withStyleUrl(
                                     "#trk" + trkColors[nTrack % nTrkColors])
                                 .createAndSetPoint().addToCoordinates(lon, lat);
                         }
-                        ls.addToCoordinates(lon, lat, alt);
+                        if(trackPlacemark != null && useTrackTrackFirst) {
+                            useTrackTrackFirst = false;
+                            trackPlacemark
+                                .setDescription(GpxUtils
+                                    .getLocalTimeFromXMLGregorianCalendar(trackPoint
+                                        .getTime()));
+                        }
                     }
                 }
                 nTrack++;
@@ -295,7 +340,7 @@ public class KmlUtils implements IPreferenceConstants
             List<GpxRouteModel> routeModels;
             List<WptType> routePoints;
             routeModels = fileModel.getRouteModels();
-            first = kmlOptions.getUseRteIcon() ? true : false;
+            boolean useRteIconFirst;
             if(routeModels.size() > 0) {
                 folder = fileFolder.createAndAddFolder().withName("Routes")
                     .withOpen(true);
@@ -318,7 +363,7 @@ public class KmlUtils implements IPreferenceConstants
                 // Need MultiGeometry to handle non-connected segments
                 mg = placemark.createAndSetMultiGeometry();
                 routePoints = routeModel.getRoute().getRtept();
-                first = kmlOptions.getUseTrkIcon() ? true : false;
+                useRteIconFirst = kmlOptions.getUseRteIcon() ? true : false;
                 // Add a LineString to the MultiGeometry
                 ls = mg.createAndAddLineString().withExtrude(false)
                     .withTessellate(true);
@@ -338,10 +383,10 @@ public class KmlUtils implements IPreferenceConstants
                     } else {
                         alt = 0;
                     }
-                    if(first) {
+                    if(useRteIconFirst) {
                         // Make a Placemark with an Icon at the first point
                         // on the track
-                        first = false;
+                        useRteIconFirst = false;
                         routeFolder
                             .createAndAddPlacemark()
                             .withName(routeModel.getLabel())

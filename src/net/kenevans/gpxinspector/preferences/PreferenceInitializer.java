@@ -54,6 +54,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer
         prefs.setDefault(P_ICON_SCALE, D_ICON_SCALE);
 
         prefs.setDefault(P_USE_TRK_ICON, D_USE_TRK_ICON);
+        prefs.setDefault(P_USE_TRK_TRACK, D_USE_TRK_TRACK);
         prefs.setDefault(P_TRK_COLOR, D_TRK_COLOR);
         prefs.setDefault(P_TRK_ALPHA, D_TRK_ALPHA);
         prefs.setDefault(P_TRK_LINEWIDTH, D_TRK_LINEWIDTH);

@@ -76,8 +76,11 @@ public interface IPreferenceConstants extends IPluginConstants
     /** Determines if icons are shown at the start of a track */
     public static final String P_USE_TRK_ICON = "useTrkIcon";
     public static final Boolean D_USE_TRK_ICON = true;
+    /** Determines if a Track with TimeStamps is shown. */
+    public static final String P_USE_TRK_TRACK = "useTrkTrack";
+    public static final Boolean D_USE_TRK_TRACK = false;
     /** Determines if icons are shown at the start of a route */
-    public static final String P_USE_RTE_ICON = "useTrkIcon";
+    public static final String P_USE_RTE_ICON = "useRteIcon";
     public static final Boolean D_USE_RTE_ICON = true;
     /**
      * The URL for the home icon. Using white will allow the mask to be more

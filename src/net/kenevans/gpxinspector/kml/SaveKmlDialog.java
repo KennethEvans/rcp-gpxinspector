@@ -60,6 +60,7 @@ public class SaveKmlDialog extends Dialog implements IPreferenceConstants
     private Text trkAlphaText;
     private Combo trkColorModeCombo;
     private Button useTrkIconButton;
+    private Button useTrkTrackButton;
     private Text rteLineWidthText;
     private Text rteColorText;
     private Text rteAlphaText;
@@ -529,7 +530,7 @@ public class SaveKmlDialog extends Dialog implements IPreferenceConstants
         useRteIconButton = new Button(composite, SWT.CHECK);
         GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL)
             .grab(true, false).applyTo(useRteIconButton);
-        useRteIconButton.setText("Use route icon");
+        useRteIconButton.setText("Use route Icon");
         useRteIconButton
             .setToolTipText("Whether the tracks will have a placemark "
                 + "and icon at the start.");
@@ -613,10 +614,19 @@ public class SaveKmlDialog extends Dialog implements IPreferenceConstants
         useTrkIconButton = new Button(composite, SWT.CHECK);
         GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL)
             .grab(true, false).applyTo(useTrkIconButton);
-        useTrkIconButton.setText("Use track icon");
+        useTrkIconButton.setText("Use track Icon");
         useTrkIconButton
             .setToolTipText("Whether the tracks will have a placemark "
                 + "and icon at the start.");
+
+        // Use trk track
+        useTrkTrackButton = new Button(composite, SWT.CHECK);
+        GridDataFactory.fillDefaults().align(SWT.BEGINNING, SWT.FILL)
+            .grab(true, false).applyTo(useTrkTrackButton);
+        useTrkTrackButton.setText("Use track Track");
+        useTrkTrackButton
+            .setToolTipText("Whether to generate a KML Track with TimeStamp's"
+                + " that can be played.");
     }
 
     private void setKmlOptionsFromWidgets() {
@@ -632,6 +642,7 @@ public class SaveKmlDialog extends Dialog implements IPreferenceConstants
         kmlOptions.setTrkColor(trkColorText.getText());
         kmlOptions.setTrkAlpha(trkAlphaText.getText());
         kmlOptions.setUseTrkIcon(useTrkIconButton.getSelection());
+        kmlOptions.setUseTrkTrack(useTrkTrackButton.getSelection());
         kmlOptions.setTrkColorMode(trkColorModeCombo.getSelectionIndex());
         kmlOptions.setTrkIconUrl(trkIconUrlText.getText());
         val = Double.parseDouble(rteLineWidthText.getText());
@@ -658,6 +669,7 @@ public class SaveKmlDialog extends Dialog implements IPreferenceConstants
         trkColorText.setText(kmlOptions.getTrkColor());
         trkAlphaText.setText(kmlOptions.getTrkAlpha());
         useTrkIconButton.setSelection(kmlOptions.getUseTrkIcon());
+        useTrkTrackButton.setSelection(kmlOptions.getUseTrkTrack());
         trkColorModeCombo.select(kmlOptions.getTrkColorMode());
         trkIconUrlText.setText(kmlOptions.getTrkIconUrl());
         stringVal = String.format("%g", kmlOptions.getRteLineWidth());
@@ -685,6 +697,7 @@ public class SaveKmlDialog extends Dialog implements IPreferenceConstants
         trkAlphaText.setText(prefs.getString(P_TRK_ALPHA));
         trkColorModeCombo.select(prefs.getInt(P_TRK_COLOR_MODE));
         useTrkIconButton.setSelection(prefs.getBoolean(P_USE_TRK_ICON));
+        useTrkTrackButton.setSelection(prefs.getBoolean(P_USE_TRK_TRACK));
         rteIconUrlText.setText(prefs.getString(P_RTE_ICON_URL));
         rteLineWidthText.setText(prefs.getString(P_TRK_LINEWIDTH));
         rteColorText.setText(prefs.getString(P_RTE_COLOR));
