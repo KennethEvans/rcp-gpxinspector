@@ -13,7 +13,13 @@
 <p>Note that the deployed GpxInspector.ini should initially contain the lines:</p>
 <pre>-vmargs
 -Djava.endorsed.dirs=./plugins/net.kenevans.jaxb_2.2.1
- </pre>
+</pre>
+<p>If you want it to work when GPX Inspector is started from other than in its own directory, then replace the dot with the path to where it is installed, e.g.:</p>
+<pre>
+-Djava.endorsed.dirs=C:/Deploy/GPX Inspector/plugins/net.kenevans.jaxb_2.2.1
+</pre>
+<p>Spaces in the path will be handled all right. Do not use quotes around the path, and do use forward slashes.</p>
+<p> For example, if use set a file association for .gpx files to run GPX Inspector, then when you double click a .gpx file, it will run GPX Inspector, but from the directory of the file. Thus for the file association to work, you must use the full path as above. </p>
 <p>2. You can copy the JARS in net.kenevans.jaxb to the endorsed directory used by the JRE. This directory should be jre/lib/endorsed, where the jre directory is where the JRE executable is located for your version of Java. You may have to create the directory. </p>
 <p>To help debug this problem you can look in Help | About GPX Inspector | Installation Details | Configuration or in the equivalent place in Eclipse if GPX Inspector is used as a plug-in.. This will show the value of java.endorsed.dirs that is being used. Note that the NamespacePrefixManager is found in jaxb-impl.jar. The endorsed directory must be set to a place that contains this JAR. </p>
 <h2><a name="ExpandContract" id="ExpandContract"></a>Expand Level, Collapse Level</h2>
