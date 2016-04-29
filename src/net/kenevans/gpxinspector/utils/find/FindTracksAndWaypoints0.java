@@ -412,11 +412,16 @@ public class FindTracksAndWaypoints0
                     System.out.println(" " + trackName);
                 }
             }
-            if(in != null) in.close();
             if(error) return;
         } catch(Exception ex) {
             SWTUtils.errMsg("Error reading " + file.getName() + "\nat line "
                 + lineNum + "\n" + ex + "\n" + ex.getMessage());
+        } finally {
+            try {
+                if(in != null) in.close();
+            } catch(Exception ex1) {
+                // Do nothing
+            }
         }
     }
 

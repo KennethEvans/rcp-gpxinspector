@@ -128,6 +128,11 @@
                style="push">
          </command>
          <command
+               commandId="net.kenevans.gpxinspector.saveAsFileGroup"
+               label="Save Checked as File Group"
+               style="push">
+         </command>
+         <command
                commandId="net.kenevans.gpxinspector.addStartupFilesFromPreferences"
                icon="icons/add.gif"
                label="Add Startup Files from Preferences"
@@ -425,6 +430,11 @@
                style="push">
          </command>
          <command
+               commandId="net.kenevans.gpxinspector.saveAsFileGroup"
+               label="Save Checked as File Group"
+               style="push">
+         </command>
+         <command
                commandId="net.kenevans.gpxinspector.addStartupFilesFromPreferences"
                icon="icons/add.gif"
                label="Add Startup Files from Preferences"
@@ -640,13 +650,22 @@
                visible="true">
          </separator>
          <command
+               commandId="net.kenevans.gpxinspector.openGpxFileGroup"
+               label="Open GPX File Group..."
+               style="push">
+         </command>
+         <separator
+               name="separator2"
+               visible="true">
+         </separator>
+         <command
                commandId="net.kenevans.gpxinspector.saveKml"
                icon="icons/ge16.png"
                label="Save KML..."
                style="push">
          </command>
          <separator
-               name="separator2"
+               name="separator3"
                visible="true">
          </separator>
          <command
@@ -691,6 +710,11 @@
             id="net.kenevans.gpxinspector.saveAsStartupPreference"
             name="Save Checked as Startup Preference">
       </command>
+      <command
+            categoryId="net.kenevans.gpxinspector.category"
+            id="net.kenevans.gpxinspector.saveAsFileGroup"
+            name="Save Checked as File Group">
+      </command>
       <category
             id="net.kenevans.gpxinspector.category"
             name="GPX Inspector">
@@ -711,6 +735,11 @@
             defaultHandler="net.kenevans.gpxinspector.handlers.OpenGpxFileHandler"
             id="net.kenevans.gpxinspector.openGpxFile"
             name="Open GPX File...">
+      </command>
+      <command
+            categoryId="net.kenevans.gpxinspector.category"
+            id="net.kenevans.gpxinspector.openGpxFileGroup"
+            name="Open GPX File Group...">
       </command>
       <command
             categoryId="net.kenevans.gpxinspector.category"
