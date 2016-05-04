@@ -25,14 +25,14 @@ public interface IPreferenceConstants extends IPluginConstants
     public static final String D_PREFERRED_FILE_EXTENSION = "*.gpx";
 
     public static final String P_GPX_DIR = "gpxDirectory";
-    public static final String D_GPX_DIR = "c:/Users/evans/Documents/GPSLink";
+    public static final String D_GPX_DIR = "C:/Users/evans/Documents/GPSLink";
 
     public static final String P_NO_MOVE_SPEED = "notMovingSpeed";
     // Corresponds to .5 m/sec. 1 mi/hr would be .44704
     public static final String D_NO_MOVE_SPEED = "0.5";
 
     public static final String P_KML_FILENAME = "kmlFileName";
-    public static final String D_KML_FILENAME = "c:/Users/evans/Documents/GPSLink/AAA.kml";
+    public static final String D_KML_FILENAME = "C:/Users/evans/Documents/GPSLink/AAA.kml";
 
     /** The track color */
     public static final String P_TRK_COLOR = "trkColor";

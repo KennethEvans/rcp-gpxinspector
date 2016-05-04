@@ -14,6 +14,7 @@ import net.kenevans.gpxtrackpointextensionsv1.WptType;
 import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
+import net.kenevans.gpxinspector.preferences.IPreferenceConstants;
 import net.kenevans.gpxinspector.utils.GpxException;
 import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.find.FindOptions0.Units;
@@ -23,9 +24,8 @@ import net.kenevans.gpxinspector.utils.find.FindOptions0.Units;
  * By Kenneth Evans, Jr.
  */
 
-public class FindTracksAndWaypoints0
+public class FindTracksAndWaypoints0 implements IPreferenceConstants
 {
-    private static final String DEFAULT_PATH = "c:\\Documents and Settings\\evans\\My Documents\\GPSLink";
     private boolean ok = true;
     private boolean dirSpecified = false;
     private boolean latSpecified = false;
@@ -34,7 +34,7 @@ public class FindTracksAndWaypoints0
     private boolean latMaxSpecified = false;
     private boolean lonMinSpecified = false;
     private boolean lonMaxSpecified = false;
-    private String dirName = DEFAULT_PATH;
+    private String dirName = D_GPX_DIR;
 
     private FindOptions0 options;
     private PrintStream printStream = System.out;
@@ -228,14 +228,15 @@ public class FindTracksAndWaypoints0
                 for(WptType trackPoint : trackPoints) {
                     lat = trackPoint.getLat().doubleValue();
                     lon = trackPoint.getLon().doubleValue();
-                    if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+                    if(GpxUtils.greatCircleDistance(lat0, lon0, lat,
+                        lon) <= radius) {
                         found = true;
                         if(!fileNamePrinted) {
                             System.out.println(file.getAbsolutePath());
                             fileNamePrinted = true;
                         }
-                        System.out.println("  "
-                            + trackModel.getTrack().getName());
+                        System.out
+                            .println("  " + trackModel.getTrack().getName());
                         // Done with this track, don't need more track points
                         break;
                     }
@@ -444,8 +445,8 @@ public class FindTracksAndWaypoints0
         double deltaLon = options.getDeltaLon();
         double miLat = GpxUtils.greatCircleDistance(latitude - deltaLat / 2,
             longitude, latitude + deltaLat / 2, longitude);
-        double miLon = GpxUtils.greatCircleDistance(latitude, longitude
-            - deltaLon / 2, latitude, longitude + deltaLon / 2);
+        double miLon = GpxUtils.greatCircleDistance(latitude,
+            longitude - deltaLon / 2, latitude, longitude + deltaLon / 2);
         double radius = options.getRadius();
         String latDist = "";
         String lonDist = "";
@@ -457,12 +458,10 @@ public class FindTracksAndWaypoints0
             latDist = " (" + format4.format(miLat * 5280) + " ft)";
             lonDist = " (" + format4.format(miLon * 5280) + " ft)";
         } else {
-            latDist = " ("
-                + (miLat >= .9999 ? format3.format(miLat) + " mi)" : format4
-                    .format(miLat * 5280) + " ft)");
-            lonDist = " ("
-                + (miLon >= .9999 ? format3.format(miLon) + " mi)" : format4
-                    .format(miLon * 5280) + " ft)");
+            latDist = " (" + (miLat >= .9999 ? format3.format(miLat) + " mi)"
+                : format4.format(miLat * 5280) + " ft)");
+            lonDist = " (" + (miLon >= .9999 ? format3.format(miLon) + " mi)"
+                : format4.format(miLon * 5280) + " ft)");
         }
         String info = "";
         info += "FindTracks" + ls;
@@ -506,12 +505,11 @@ public class FindTracksAndWaypoints0
         for(int i = 0; i < 7; i++) {
             double miLat = GpxUtils.greatCircleDistance(latitude - del / 2,
                 longitude, latitude + del / 2, longitude);
-            double miLon = GpxUtils.greatCircleDistance(latitude, longitude
-                - del / 2, latitude, longitude + del / 2);
+            double miLon = GpxUtils.greatCircleDistance(latitude,
+                longitude - del / 2, latitude, longitude + del / 2);
             info += "  delta=" + format1.format(del) + ": Latitide: "
-                + format2.format(miLat) + " mi, "
-                + format2.format(miLat * 5280) + " ft" + " Longitude: "
-                + format2.format(miLon) + " mi, "
+                + format2.format(miLat) + " mi, " + format2.format(miLat * 5280)
+                + " ft" + " Longitude: " + format2.format(miLon) + " mi, "
                 + format2.format(miLon * 5280) + " ft" + ls;
             del *= 10;
         }
@@ -624,38 +622,29 @@ public class FindTracksAndWaypoints0
      * Prints usage
      */
     private void usage() {
-        System.out
-            .println("\nUsage: java "
-                + this.getClass().getName()
-                + " [Options] directory\n"
-                + "  Find tracks: Find tracks in .gpsl files that have a trackpoint\n"
-                + "    that lies within the given latitude and longitude plus or minus\n"
-                + "    deltaLat and deltaLon, respectively, or between latMin and latMax,\n"
-                + "    etc., if these are specified.\n"
-                + "  Specifying latMin, etc. takes precedent over latitude, etc.\n"
-                + "    The latitude and longitude must be specified in some way.  (There\n"
-                + "    are no defaults for them.)\n"
-                + "  The default directory is:\n    "
-                + DEFAULT_PATH
-                + "\n"
-                + "  Options:\n"
-                + "    -lat        center latitude, used with deltaLat\n"
-                + "    -lon        center longitude, used with deltaLon\n"
-                + "    -latMin     min latitude\n"
-                + "    -latMax     max latitude\n"
-                + "    -lonMin     min latitude\n"
-                + "    -lonMax     max latitude\n"
-                + "    -deltaLat   deltalat  (Default="
-                + FindOptions0.DEFAULT_DELTA
-                + ")\n"
-                + "    -deltaLon   deltaLon  (Default="
-                + FindOptions0.DEFAULT_DELTA
-                + ")\n"
-                + "    -radius (Default="
-                + FindOptions0.DEFAULT_DELTA
-                + ")\n"
-                + "    -deltaUnits delta units (\"mi\", \"ft\", or \"\")  (Default=\"\")\n"
-                + "    -help       This message\n" + "");
+        System.out.println("\nUsage: java " + this.getClass().getName()
+            + " [Options] directory\n"
+            + "  Find tracks: Find tracks in .gpsl files that have a trackpoint\n"
+            + "    that lies within the given latitude and longitude plus or minus\n"
+            + "    deltaLat and deltaLon, respectively, or between latMin and latMax,\n"
+            + "    etc., if these are specified.\n"
+            + "  Specifying latMin, etc. takes precedent over latitude, etc.\n"
+            + "    The latitude and longitude must be specified in some way.  (There\n"
+            + "    are no defaults for them.)\n"
+            + "  The default directory is:\n    " + D_GPX_DIR + "\n"
+            + "  Options:\n"
+            + "    -lat        center latitude, used with deltaLat\n"
+            + "    -lon        center longitude, used with deltaLon\n"
+            + "    -latMin     min latitude\n"
+            + "    -latMax     max latitude\n"
+            + "    -lonMin     min latitude\n"
+            + "    -lonMax     max latitude\n"
+            + "    -deltaLat   deltalat  (Default=" + FindOptions0.DEFAULT_DELTA
+            + ")\n" + "    -deltaLon   deltaLon  (Default="
+            + FindOptions0.DEFAULT_DELTA + ")\n" + "    -radius (Default="
+            + FindOptions0.DEFAULT_DELTA + ")\n"
+            + "    -deltaUnits delta units (\"mi\", \"ft\", or \"\")  (Default=\"\")\n"
+            + "    -help       This message\n" + "");
     }
 
     /**

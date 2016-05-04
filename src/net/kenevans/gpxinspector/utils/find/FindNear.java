@@ -16,6 +16,7 @@ import net.kenevans.gpxinspector.model.GpxFileModel;
 import net.kenevans.gpxinspector.model.GpxFileSetModel;
 import net.kenevans.gpxinspector.model.GpxTrackModel;
 import net.kenevans.gpxinspector.model.GpxWaypointModel;
+import net.kenevans.gpxinspector.preferences.IPreferenceConstants;
 import net.kenevans.gpxinspector.utils.GpxUtils;
 import net.kenevans.gpxinspector.utils.find.FindNearOptions.Units;
 
@@ -26,10 +27,8 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
  * By Kenneth Evans, Jr.
  */
 
-public class FindNear
+public class FindNear implements IPreferenceConstants
 {
-    private static final String DEFAULT_PATH = "c:\\Documents and Settings\\evans\\My Documents\\GPSLink";
-
     /**
      * Mode<br>
      * <br>
@@ -127,9 +126,8 @@ public class FindNear
         Mode mode) {
         // TODO Print a warning
         if(mode != Mode.ADD) {
-            SWTUtils
-                .warnMsgAsync("find(GpxFileSetModel, FindNearOptions, Mode)"
-                    + " is intended for Mode.ADD");
+            SWTUtils.warnMsgAsync("find(GpxFileSetModel, FindNearOptions, Mode)"
+                + " is intended for Mode.ADD");
         }
         this.gpxFileSetModel = gpxFileSetModel;
         this.options = options;
@@ -290,7 +288,8 @@ public class FindNear
                 waypoint = waypointModel.getWaypoint();
                 lat = waypoint.getLat().doubleValue();
                 lon = waypoint.getLon().doubleValue();
-                if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+                if(GpxUtils.greatCircleDistance(lat0, lon0, lat,
+                    lon) <= radius) {
                     found = true;
                     foundWaypoints = true;
                 }
@@ -299,8 +298,8 @@ public class FindNear
                     if(found) {
                         if(!fileNamePrinted) {
                             if(outStream != null) {
-                                outStream.println(fileModel.getFile()
-                                    .getAbsolutePath());
+                                outStream.println(
+                                    fileModel.getFile().getAbsolutePath());
                             }
                             fileNamePrinted = true;
                         }
@@ -311,8 +310,8 @@ public class FindNear
                             wptPrinted = true;
                         }
                         if(outStream != null) {
-                            outStream.println("  "
-                                + waypointModel.getWaypoint().getName());
+                            outStream.println(
+                                "  " + waypointModel.getWaypoint().getName());
                         }
                     }
                 } else if(mode == Mode.CHECK) {
@@ -333,7 +332,8 @@ public class FindNear
                     for(WptType trackPoint : trackPoints) {
                         lat = trackPoint.getLat().doubleValue();
                         lon = trackPoint.getLon().doubleValue();
-                        if(GpxUtils.greatCircleDistance(lat0, lon0, lat, lon) <= radius) {
+                        if(GpxUtils.greatCircleDistance(lat0, lon0, lat,
+                            lon) <= radius) {
                             foundTracks = true;
                             found = true;
                         }
@@ -354,8 +354,8 @@ public class FindNear
                                     trkPrinted = true;
                                 }
                                 if(outStream != null) {
-                                    outStream.println("  "
-                                        + trackModel.getTrack().getName());
+                                    outStream.println(
+                                        "  " + trackModel.getTrack().getName());
                                 }
                             }
                         } else if(mode == Mode.CHECK) {
@@ -477,8 +477,8 @@ public class FindNear
             return null;
         }
         if(!file.isDirectory()) {
-            SWTUtils.errMsgAsync("Search directory is not a directory:\n"
-                + dirName);
+            SWTUtils.errMsgAsync(
+                "Search directory is not a directory:\n" + dirName);
             return null;
         }
 
@@ -532,9 +532,8 @@ public class FindNear
                         // Set this one to be checked if it isn't already (to
                         // handle duplicate names)
                         for(GpxWaypointModel model : waypointModels) {
-                            if(!model.getChecked()
-                                && line.equals("  "
-                                    + model.getWaypoint().getName())) {
+                            if(!model.getChecked() && line
+                                .equals("  " + model.getWaypoint().getName())) {
                                 model.setChecked(true);
                             }
                         }
@@ -543,9 +542,8 @@ public class FindNear
                         // Set this one to be checked if it isn't already (to
                         // handle duplicate names)
                         for(GpxTrackModel model : trackModels) {
-                            if(!model.getChecked()
-                                && line.equals("  "
-                                    + model.getTrack().getName())) {
+                            if(!model.getChecked() && line
+                                .equals("  " + model.getTrack().getName())) {
                                 model.setChecked(true);
                             }
                         }
@@ -618,8 +616,8 @@ public class FindNear
                         fileError = false;
                         fileModel = new GpxFileModel(gpxFileSetModel, line);
                     } catch(Throwable t) {
-                        SWTUtils.excMsgAsync("Error adding GpxFileModel for\n"
-                            + line, t);
+                        SWTUtils.excMsgAsync(
+                            "Error adding GpxFileModel for\n" + line, t);
                         fileError = true;
                     }
                     doingWaypoints = false;
@@ -770,26 +768,20 @@ public class FindNear
         if(outStream == null) {
             return;
         }
-        outStream
-            .println("\nUsage: java "
-                + this.getClass().getName()
-                + " [Options] directory\n"
-                + "  Find tracks: Find tracks in .gpx or .gpsl files that have a trackpoint that lies\n"
-                + "    within the given radius of the specified latitude and longitude.\n"
-                + "  The default directory is:\n    "
-                + DEFAULT_PATH
-                + "\n"
-                + "  Options:\n"
-                + "    -lat     latitude  (Must be specified)\n"
-                + "    -lon     longitude (Must be specified)\n"
-                + "    -radius  radius (Default="
-                + FindNearOptions.DEFAULT_RADIUS
-                + ")\n"
-                + "    -units   radius units (\"mi\", \"ft\", \"m\", \"km\", )  (Default=\""
-                + FindNearOptions.DEFAULT_UNITS.getName() + "\")\n"
-                + "    --gpsl   Omit .gpsl files\n"
-                + "    --gpx    Omit .gpx files\n"
-                + "    -help    This message\n" + "");
+        outStream.println("\nUsage: java " + this.getClass().getName()
+            + " [Options] directory\n"
+            + "  Find tracks: Find tracks in .gpx or .gpsl files that have a trackpoint that lies\n"
+            + "    within the given radius of the specified latitude and longitude.\n"
+            + "  The default directory is:\n    " + D_GPX_DIR + "\n"
+            + "  Options:\n" + "    -lat     latitude  (Must be specified)\n"
+            + "    -lon     longitude (Must be specified)\n"
+            + "    -radius  radius (Default=" + FindNearOptions.DEFAULT_RADIUS
+            + ")\n"
+            + "    -units   radius units (\"mi\", \"ft\", \"m\", \"km\", )  (Default=\""
+            + FindNearOptions.DEFAULT_UNITS.getName() + "\")\n"
+            + "    --gpsl   Omit .gpsl files\n"
+            + "    --gpx    Omit .gpx files\n" + "    -help    This message\n"
+            + "");
     }
 
     /**
