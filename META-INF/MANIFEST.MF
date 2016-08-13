@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GPX Inspector
 Bundle-SymbolicName: net.kenevans.gpxinspector;singleton:=true
-Bundle-Version: 1.0.0.Beta12
+Bundle-Version: 1.0.0.Beta13
 Bundle-Activator: net.kenevans.gpxinspector.plugin.Activator
 Bundle-Vendor: kenevans.net
 Require-Bundle: org.eclipse.help.ui;bundle-version="3.5.0",
@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.help.ui;bundle-version="3.5.0",
  net.kenevans.jaxb;bundle-version="2.2.1",
  net.kenevans.commons-io;bundle-version="2.0.1",
  net.kenevans.core.utils;bundle-version="1.0.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: net.kenevans.gpxinspector.converters,
