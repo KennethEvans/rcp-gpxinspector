@@ -23,7 +23,7 @@ public class Activator extends AbstractUIPlugin
 {
 
     // The plug-in ID
-    public static final String PLUGIN_ID = "net.kenevans.gpxinspector";
+    public static final String PLUGIN_ID = "net.kenevans.rcp.gpxinspector";
     public static final String CONVERTERS_EXTENSION_POINT_ID = "converters";
     /** A list of converter proxies. */
     private List<ConverterDescriptor> converterDescriptors;
@@ -109,7 +109,7 @@ public class Activator extends AbstractUIPlugin
             IStatus status = new Status(IStatus.ERROR, PLUGIN_ID, 0,
                 "Failed to find any Converters.", null);
             getDefault().getLog().log(status);
-            SWTUtils.errMsg("Failed to find any Converters");
+            SWTUtils.errMsgAsync("Failed to find any Converters");
         }
     }
 

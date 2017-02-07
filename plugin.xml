@@ -41,7 +41,7 @@
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="net.kenevans.gpxinspector.application"
+            application="net.kenevans.rcp.gpxinspector.application"
             name="GPX Inspector">
          <property
                name="windowImages"
@@ -53,7 +53,7 @@
          </property>
          <property
                name="aboutImage"
-               value="icons/GPXInspectorAbout.png">
+               value="/net.kenevans.gpxinspector/icons/GPXInspectorAbout.png">
          </property>
          <property
                name="aboutText"

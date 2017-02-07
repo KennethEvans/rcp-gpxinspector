@@ -6,13 +6,14 @@ Bundle-Version: 1.1.0.0
 Bundle-Activator: net.kenevans.gpxinspector.plugin.Activator
 Bundle-Vendor: kenevans.net
 Require-Bundle: org.eclipse.help.ui,
- org.eclipse.help.webapp,
+ org.eclipse.help.webapp;bundle-version="3.8.0",
  net.kenevans.rcp.gpx,
- net.kenevans.jak;bundle-version="1.0.0",
- net.kenevans.jaxb;bundle-version="2.2.1",
- net.kenevans.rcp.commons-io;bundle-version="2.0.1",
+ net.kenevans.rcp.jak,
+ net.kenevans.rcp.jaxb,
+ net.kenevans.rcp.commons-io,
  net.kenevans.rcp.core.utils,
- org.eclipse.equinox.ds
+ org.eclipse.equinox.ds,
+ org.eclipse.equinox.event
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

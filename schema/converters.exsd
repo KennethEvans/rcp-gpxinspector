@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="net.kenevans.gpxinspector" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="net.kenevans.rcp.gpxinspector" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="net.kenevans.gpxinspector" id="converters" name="Converters"/>
+         <meta.schema plugin="net.kenevans.rcp.gpxinspector" id="converters" name="Converters"/>
       </appinfo>
       <documentation>
          GPX Inspector reads and writes GPX files.  This extension point allows third-party plug-ins to provide converters for reading and writing other file formats and translating their contents to and from the GPX model used in GPX Inspector.
@@ -96,7 +96,7 @@
          This is the extension definition that defines the built-in GPX converter:
 &lt;pre&gt;
    &lt;extension
-         point=&quot;net.kenevans.gpxinspector.converters&quot;&gt;
+         point=&quot;net.kenevans.rcp.gpxinspector.converters&quot;&gt;
       &lt;converter
             class=&quot;net.kenevans.gpxinspector.converters.GpxConverter&quot;
             id=&quot;net.kenevans.gpxinspector.gpxConverter&quot;
